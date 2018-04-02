@@ -41,7 +41,7 @@ describe('No locale', () => {
     expect(component.toJSON()).toBe('fun')
   })
 
-  test('Function message with props', () => {
+  test('Function message with params', () => {
     const component = renderer.create(
       <MessageProvider messages={{ x: ({ v, w }) => `${v} ${w}` }}>
         <Message id='x' v='V' w='W' />
@@ -50,10 +50,10 @@ describe('No locale', () => {
     expect(component.toJSON()).toBe('V W')
   })
 
-  test('Function message with conflicting props', () => {
+  test('Function message with conflicting params', () => {
     const component = renderer.create(
       <MessageProvider messages={{ x: ({ key }) => `${key}` }}>
-        <Message id='x' props={{ key: 'K' }} />
+        <Message id='x' params={{ key: 'K' }} />
       </MessageProvider>
     )
     expect(component.toJSON()).toBe('K')
@@ -97,7 +97,7 @@ describe('With locale', () => {
     expect(component.toJSON()).toBe('fun')
   })
 
-  test('Function message with props', () => {
+  test('Function message with params', () => {
     const component = renderer.create(
       <MessageProvider messages={{ lc: { x: ({ v, w }) => `${v} ${w}` } }} locale='lc'>
         <Message id='x' v='V' w='W' />
@@ -106,10 +106,10 @@ describe('With locale', () => {
     expect(component.toJSON()).toBe('V W')
   })
 
-  test('Function message with conflicting props', () => {
+  test('Function message with conflicting params', () => {
     const component = renderer.create(
       <MessageProvider messages={{ lc: { x: ({ key }) => `${key}` } }} locale='lc'>
-        <Message id='x' props={{ key: 'K' }} />
+        <Message id='x' params={{ key: 'K' }} />
       </MessageProvider>
     )
     expect(component.toJSON()).toBe('K')
@@ -153,7 +153,7 @@ describe('Alternative locale', () => {
     expect(component.toJSON()).toBe('fun!')
   })
 
-  test('Function message with props', () => {
+  test('Function message with params', () => {
     const component = renderer.create(
       <MessageProvider messages={{ lc: { x: ({ v, w }) => `${v} ${w}` }, alt: { x: ({ v, w }) => `${w} ${v}` } }} locale='lc'>
         <Message id='x' locale='alt' v='V' w='W' />
@@ -162,10 +162,10 @@ describe('Alternative locale', () => {
     expect(component.toJSON()).toBe('W V')
   })
 
-  test('Function message with conflicting props', () => {
+  test('Function message with conflicting params', () => {
     const component = renderer.create(
       <MessageProvider messages={{ lc: { x: ({ key }) => `${key}` } }} locale='lc'>
-        <Message id='x' props={{ key: 'K' }} />
+        <Message id='x' params={{ key: 'K' }} />
       </MessageProvider>
     )
     expect(component.toJSON()).toBe('K')
