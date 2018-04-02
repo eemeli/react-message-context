@@ -1,0 +1,81 @@
+# API
+
+The public API is available as named exports of the package:
+
+```js
+import {
+  MessageProvider, Message, withLocale, withMessages
+} from 'react-message-context'
+```
+
+<a id="message-provider"></a>
+### `<MessageProvider messages [fallback] [locale]>`
+
+Makes the messages available for its descendants. Internally uses a Context API
+[Provider]. Supports both single- and multi-locale use.
+
+#### Props
+- `messages` (_object_): An object containing the messages as boolean, number,
+  string or function values. Functions will be called with an object parameter.
+  `messages` may be hierarchical, and if it does not use `[]` bracket notation
+  to access child values, it should provide a `getIn()` accessor as used by
+  [Immutable collections].
+
+- [`fallback`] (_string_ or _string[]_): The key or keys of locales to use as
+  fallback options if no match is found in the primary locale. If given as an
+  array, locales are checked in index order.
+
+- [`locale`] (_string_): The key of the current locale. If `fallback` or
+  `locale` is set, the top level of `messages` should consist of locale keys,
+  e.g. `{ en: {...}, fr: {...} }`.
+
+- `children` (_ReactElement_): The root of your component hierarchy.
+
+[Provider]: https://reactjs.org/docs/context.html#provider
+[Immutable collections]: https://facebook.github.io/immutable-js/docs/#/Collection/getIn
+
+
+<a id="message"></a>
+### `<Message id [locale] [onError] [params] [...msgParams]>`
+
+The string value of a message. Internally uses a Context API [Consumer].
+
+#### Props
+- `id` (_string_ or _string[]_): The key or key path of the message.
+- [`locale`] (_string_ or _string[]_): If set, overrides the `locale` and
+  `fallback` of the ancestral MessageProvider.
+- [`onError(id, type): string`] (_function_): If set, called if `id` does not
+  resolve to a message value (after checking fallback locales, if set). `type`
+  is the type of the value at `id`, most likely either `'object'` or `'unknown'`.
+  A non-empty return value will replace the default `String(id)` fallback value.
+- [`params`] and [`msgParams`] (_object_): Parameters to pass to function
+  messages as their first and only argument. `params` will override `msgParams`,
+  to allow for data keys such as `key` and `locale`.
+
+[Consumer]: https://reactjs.org/docs/context.html#consumer
+
+
+<a id="with-locale"></a>
+### `withLocale(Component)`
+
+A [higher-order component] providing the wrapped `Component` with a `locale`
+prop matching the current `locale` prop of the ancestor `MessageProvider`
+component.
+
+[higher-order component]: https://reactjs.org/docs/higher-order-components.html
+
+
+<a id="with-messages"></a>
+### `withMessages([id], [locale])(Component)`
+
+A [higher-order component] providing the wrapped `Component` with a `messages`
+prop. `messages` may be a single message, an object of messages, or `undefined`
+if `id` is not found in the messages. Messages are not resolved, i.e. their
+values are as set in the MessageProvider props.
+
+#### Arguments
+- [`id`] (_string_ or _string[]_): The key or key path of the message or message
+  object. If empty or `[]`, matches the root of the messages object or the
+  current locale, if set.
+- [`locale`] (_string_ or _string[]_): If set, overrides the `locale` and
+  `fallback` of the ancestral MessageProvider.
