@@ -126,6 +126,15 @@ describe('Alternative locale', () => {
     expect(component.toJSON()).toBe('XX')
   })
 
+  test('String message with array locale', () => {
+    const component = renderer.create(
+      <MessageProvider messages={{ lc: { x: 'X' }, alt: { x: 'XX' } }} locale='lc'>
+        <Message id='x' locale={['none', 'alt']} />
+      </MessageProvider>
+    )
+    expect(component.toJSON()).toBe('XX')
+  })
+
   test('Number message', () => {
     const component = renderer.create(
       <MessageProvider messages={{ lc: { x: 42 }, alt: { x: 420 } }} locale='lc'>

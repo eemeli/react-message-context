@@ -7,7 +7,8 @@ import { PathType } from './prop-types'
 const Message = ({ id, locale, onError, params, ...msgParams }) => (
   <Consumer>
     {({ locales, messages }) => {
-      const msg = getMessage(messages, locale ? [locale] : locales, id)
+      const lc = Array.isArray(locale) ? locale : locale ? [locale] : locales
+      const msg = getMessage(messages, lc, id)
       switch (typeof msg) {
         case 'function':
           return msg(Object.assign(msgParams, params))
@@ -24,7 +25,7 @@ const Message = ({ id, locale, onError, params, ...msgParams }) => (
 
 Message.propTypes = {
   id: PathType.isRequired,
-  locale: PropTypes.string,
+  locale: PathType,
   onError: PropTypes.func,
   params: PropTypes.object
 }
