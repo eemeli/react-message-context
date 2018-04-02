@@ -9,6 +9,8 @@ import {
 ```
 
 <a id="message-provider"></a>
+<br/>
+
 ### `<MessageProvider messages [fallback] [locale]>`
 
 Makes the messages available for its descendants. Internally uses a Context API
@@ -20,22 +22,20 @@ Makes the messages available for its descendants. Internally uses a Context API
   `messages` may be hierarchical, and if it does not use `[]` bracket notation
   to access child values, it should provide a `getIn()` accessor as used by
   [Immutable collections].
-
 - [`fallback`] (_string_ or _string[]_): The key or keys of locales to use as
   fallback options if no match is found in the primary locale. If given as an
   array, locales are checked in index order.
-
 - [`locale`] (_string_): The key of the current locale. If `fallback` or
   `locale` is set, the top level of `messages` should consist of locale keys,
   e.g. `{ en: {...}, fr: {...} }`.
-
 - `children` (_ReactElement_): The root of your component hierarchy.
 
 [Provider]: https://reactjs.org/docs/context.html#provider
 [Immutable collections]: https://facebook.github.io/immutable-js/docs/#/Collection/getIn
 
-
 <a id="message"></a>
+<br/>
+
 ### `<Message id [locale] [onError] [params] [...msgParams]>`
 
 The string value of a message. Internally uses a Context API [Consumer].
@@ -54,8 +54,9 @@ The string value of a message. Internally uses a Context API [Consumer].
 
 [Consumer]: https://reactjs.org/docs/context.html#consumer
 
-
 <a id="with-locale"></a>
+<br/>
+
 ### `withLocale(Component)`
 
 A [higher-order component] providing the wrapped `Component` with a `locale`
@@ -64,8 +65,9 @@ component.
 
 [higher-order component]: https://reactjs.org/docs/higher-order-components.html
 
-
 <a id="with-messages"></a>
+<br/>
+
 ### `withMessages([id], [locale])(Component)`
 
 A [higher-order component] providing the wrapped `Component` with a `messages`
