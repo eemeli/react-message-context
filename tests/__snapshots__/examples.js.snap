@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Example 1 1`] = `
+<ul>
+  <li>
+    Your message
+     is important
+  </li>
+  <li>
+    The answer is 
+    42
+  </li>
+  <li>
+    42 and 42 are equal
+  </li>
+</ul>
+`;
+
+exports[`Example 2 1`] = `
+<ul>
+  <li>
+    Viestisi
+     
+    on väärän pituinen (pitäisi olla 42 merkkiä)
+  </li>
+  <li>
+    The value
+     
+    must be equal to 13
+  </li>
+</ul>
+`;

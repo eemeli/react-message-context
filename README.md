@@ -38,15 +38,14 @@ import { Message, MessageProvider, withMessages } from 'react-message-context'
 const messages = {
   message: 'Your message',
   answers: {
-    sixByNine: ({ base }) => (6 * 9).toString(base)
+    sixByNine: ({ base }) => (6 * 9).toString(base),
     universe: 42
   }
 }
 
 const Equality = ({ messages: { sixByNine, universe } }) => (
-  `${sixByNine(13)} and ${universe} are equal`
+  `${sixByNine({ base: 13 })} and ${universe} are equal`
 )
-
 const WrappedEquality = withMessages('answers')(Equality)
 
 const App = () => <ul>
@@ -80,7 +79,8 @@ Finnish but using English as a fallback locale:
 message: Your message
 value: The value
 errors.accepted: must be accepted
-errors.wrong_length: is the wrong length (should be {count, plural, one{1 character} other{# characters}})
+errors.wrong_length: is the wrong length (should be {count, plural, \
+  one{1 character} other{# characters}})
 errors.equal_to: must be equal to {count}
 ```
 
@@ -88,7 +88,8 @@ errors.equal_to: must be equal to {count}
 ```
 message: Viestisi
 errors.accepted: pitää hyväksyä
-errors.wrong_length: on väärän pituinen (pitäisi olla {count, plural, one{1 merkki} other{# merkkiä}})
+errors.wrong_length: on väärän pituinen (pitäisi olla {count, plural, \
+  one{1 merkki} other{# merkkiä}})
 ```
 
 #### example.js
@@ -123,3 +124,8 @@ ReactDOM.render(
 //   - Viestisi on väärän pituinen (pitäisi olla 42 merkkiä)
 //   - The value must be equal to 13
 ```
+
+Note that in the preceding, `messages` could also be an [immutable] Map defined
+with `fromJS({ en, fi })` with no other changes needed in the code
+
+[immutable]: https://facebook.github.io/immutable-js/
