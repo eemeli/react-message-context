@@ -23,10 +23,10 @@ import { Consumer } from './message-context'
  */
 const withMessages = (id, locales) => (Component) => (props) => (
   <Consumer>
-    {({ data, locales: lc0 }) => {
+    {({ locales: lc0, messages }) => {
       const lc = Array.isArray(locales) ? locales : locales ? [locales] : lc0
-      const messages = getMessage(data, lc, id)
-      return <Component {...props} messages={messages} />
+      const msg = getMessage(messages, lc, id)
+      return <Component {...props} messages={msg} />
     }}
   </Consumer>
 )

@@ -7,7 +7,7 @@ import MessageProvider from '../src/message-provider'
 describe('No locale', () => {
   test('String message', () => {
     const component = renderer.create(
-      <MessageProvider data={{ x: 'X' }}>
+      <MessageProvider messages={{ x: 'X' }}>
         <Message id='x' />
       </MessageProvider>
     )
@@ -16,7 +16,7 @@ describe('No locale', () => {
 
   test('Number message', () => {
     const component = renderer.create(
-      <MessageProvider data={{ x: 42 }}>
+      <MessageProvider messages={{ x: 42 }}>
         <Message id='x' />
       </MessageProvider>
     )
@@ -25,7 +25,7 @@ describe('No locale', () => {
 
   test('Boolean message', () => {
     const component = renderer.create(
-      <MessageProvider data={{ x: false }}>
+      <MessageProvider messages={{ x: false }}>
         <Message id='x' />
       </MessageProvider>
     )
@@ -34,7 +34,7 @@ describe('No locale', () => {
 
   test('Function message', () => {
     const component = renderer.create(
-      <MessageProvider data={{ x: () => 'fun' }}>
+      <MessageProvider messages={{ x: () => 'fun' }}>
         <Message id='x' />
       </MessageProvider>
     )
@@ -43,7 +43,7 @@ describe('No locale', () => {
 
   test('Function message with props', () => {
     const component = renderer.create(
-      <MessageProvider data={{ x: ({ v, w }) => `${v} ${w}` }}>
+      <MessageProvider messages={{ x: ({ v, w }) => `${v} ${w}` }}>
         <Message id='x' v='V' w='W' />
       </MessageProvider>
     )
@@ -52,7 +52,7 @@ describe('No locale', () => {
 
   test('Function message with conflicting props', () => {
     const component = renderer.create(
-      <MessageProvider data={{ x: ({ key }) => `${key}` }}>
+      <MessageProvider messages={{ x: ({ key }) => `${key}` }}>
         <Message id='x' props={{ key: 'K' }} />
       </MessageProvider>
     )
@@ -63,7 +63,7 @@ describe('No locale', () => {
 describe('With locale', () => {
   test('String message', () => {
     const component = renderer.create(
-      <MessageProvider data={{ lc: { x: 'X' } }} locale='lc'>
+      <MessageProvider messages={{ lc: { x: 'X' } }} locale='lc'>
         <Message id='x' />
       </MessageProvider>
     )
@@ -72,7 +72,7 @@ describe('With locale', () => {
 
   test('Number message', () => {
     const component = renderer.create(
-      <MessageProvider data={{ lc: { x: 42 } }} locale='lc'>
+      <MessageProvider messages={{ lc: { x: 42 } }} locale='lc'>
         <Message id='x' />
       </MessageProvider>
     )
@@ -81,7 +81,7 @@ describe('With locale', () => {
 
   test('Boolean message', () => {
     const component = renderer.create(
-      <MessageProvider data={{ lc: { x: false } }} locale='lc'>
+      <MessageProvider messages={{ lc: { x: false } }} locale='lc'>
         <Message id='x' />
       </MessageProvider>
     )
@@ -90,7 +90,7 @@ describe('With locale', () => {
 
   test('Function message', () => {
     const component = renderer.create(
-      <MessageProvider data={{ lc: { x: () => 'fun' } }} locale='lc'>
+      <MessageProvider messages={{ lc: { x: () => 'fun' } }} locale='lc'>
         <Message id='x' />
       </MessageProvider>
     )
@@ -99,7 +99,7 @@ describe('With locale', () => {
 
   test('Function message with props', () => {
     const component = renderer.create(
-      <MessageProvider data={{ lc: { x: ({ v, w }) => `${v} ${w}` } }} locale='lc'>
+      <MessageProvider messages={{ lc: { x: ({ v, w }) => `${v} ${w}` } }} locale='lc'>
         <Message id='x' v='V' w='W' />
       </MessageProvider>
     )
@@ -108,7 +108,7 @@ describe('With locale', () => {
 
   test('Function message with conflicting props', () => {
     const component = renderer.create(
-      <MessageProvider data={{ lc: { x: ({ key }) => `${key}` } }} locale='lc'>
+      <MessageProvider messages={{ lc: { x: ({ key }) => `${key}` } }} locale='lc'>
         <Message id='x' props={{ key: 'K' }} />
       </MessageProvider>
     )
@@ -119,7 +119,7 @@ describe('With locale', () => {
 describe('Alternative locale', () => {
   test('String message', () => {
     const component = renderer.create(
-      <MessageProvider data={{ lc: { x: 'X' }, alt: { x: 'XX' } }} locale='lc'>
+      <MessageProvider messages={{ lc: { x: 'X' }, alt: { x: 'XX' } }} locale='lc'>
         <Message id='x' locale='alt' />
       </MessageProvider>
     )
@@ -128,7 +128,7 @@ describe('Alternative locale', () => {
 
   test('Number message', () => {
     const component = renderer.create(
-      <MessageProvider data={{ lc: { x: 42 }, alt: { x: 420 } }} locale='lc'>
+      <MessageProvider messages={{ lc: { x: 42 }, alt: { x: 420 } }} locale='lc'>
         <Message id='x' locale='alt' />
       </MessageProvider>
     )
@@ -137,7 +137,7 @@ describe('Alternative locale', () => {
 
   test('Boolean message', () => {
     const component = renderer.create(
-      <MessageProvider data={{ lc: { x: false }, alt: { x: true } }} locale='lc'>
+      <MessageProvider messages={{ lc: { x: false }, alt: { x: true } }} locale='lc'>
         <Message id='x' locale='alt' />
       </MessageProvider>
     )
@@ -146,7 +146,7 @@ describe('Alternative locale', () => {
 
   test('Function message', () => {
     const component = renderer.create(
-      <MessageProvider data={{ lc: { x: () => 'fun' }, alt: { x: 'fun!' } }} locale='lc'>
+      <MessageProvider messages={{ lc: { x: () => 'fun' }, alt: { x: 'fun!' } }} locale='lc'>
         <Message id='x' locale='alt' />
       </MessageProvider>
     )
@@ -155,7 +155,7 @@ describe('Alternative locale', () => {
 
   test('Function message with props', () => {
     const component = renderer.create(
-      <MessageProvider data={{ lc: { x: ({ v, w }) => `${v} ${w}` }, alt: { x: ({ v, w }) => `${w} ${v}` } }} locale='lc'>
+      <MessageProvider messages={{ lc: { x: ({ v, w }) => `${v} ${w}` }, alt: { x: ({ v, w }) => `${w} ${v}` } }} locale='lc'>
         <Message id='x' locale='alt' v='V' w='W' />
       </MessageProvider>
     )
@@ -164,7 +164,7 @@ describe('Alternative locale', () => {
 
   test('Function message with conflicting props', () => {
     const component = renderer.create(
-      <MessageProvider data={{ lc: { x: ({ key }) => `${key}` } }} locale='lc'>
+      <MessageProvider messages={{ lc: { x: ({ key }) => `${key}` } }} locale='lc'>
         <Message id='x' props={{ key: 'K' }} />
       </MessageProvider>
     )
@@ -172,10 +172,10 @@ describe('Alternative locale', () => {
   })
 })
 
-describe('Hierarchical data', () => {
+describe('Hierarchical messages', () => {
   test('Object id, no locale', () => {
     const component = renderer.create(
-      <MessageProvider data={{ lc: { obj: { x: 'X' } } }}>
+      <MessageProvider messages={{ lc: { obj: { x: 'X' } } }}>
         <Message id={['lc', 'obj', 'x']} />
       </MessageProvider>
     )
@@ -184,7 +184,7 @@ describe('Hierarchical data', () => {
 
   test('Object id, with locale', () => {
     const component = renderer.create(
-      <MessageProvider data={{ lc: { obj: { x: 'X' } } }} locale='lc'>
+      <MessageProvider messages={{ lc: { obj: { x: 'X' } } }} locale='lc'>
         <Message id={['obj', 'x']} />
       </MessageProvider>
     )
@@ -193,7 +193,7 @@ describe('Hierarchical data', () => {
 
   test('Incomplete path, no error handler', () => {
     const component = renderer.create(
-      <MessageProvider data={{ lc: { obj: { x: 'X' } } }}>
+      <MessageProvider messages={{ lc: { obj: { x: 'X' } } }}>
         <Message id={['lc', 'obj']} />
       </MessageProvider>
     )
@@ -202,7 +202,7 @@ describe('Hierarchical data', () => {
 
   test('Incomplete path, with error handler', () => {
     const component = renderer.create(
-      <MessageProvider data={{ lc: { obj: { x: 'X' } } }}>
+      <MessageProvider messages={{ lc: { obj: { x: 'X' } } }}>
         <Message id={['lc', 'obj']} onError={(id, type) => String(id.concat(type)) } />
       </MessageProvider>
     )
@@ -211,7 +211,7 @@ describe('Hierarchical data', () => {
 
   test('Bad path, no error handler', () => {
     const component = renderer.create(
-      <MessageProvider data={{ lc: { obj: { x: 'X' } } }}>
+      <MessageProvider messages={{ lc: { obj: { x: 'X' } } }}>
         <Message id={['lc', 'none']} />
       </MessageProvider>
     )
@@ -220,7 +220,7 @@ describe('Hierarchical data', () => {
 
   test('Bad path, with error handler', () => {
     const component = renderer.create(
-      <MessageProvider data={{ lc: { obj: { x: 'X' } } }}>
+      <MessageProvider messages={{ lc: { obj: { x: 'X' } } }}>
         <Message id={['lc', 'none']} onError={(id, type) => String(id.concat(type)) } />
       </MessageProvider>
     )

@@ -23,7 +23,7 @@ describe('No locale', () => {
   test('String id', () => {
     const Wrapped = withMessages('x')(ShowMessages)
     const component = renderer.create(
-      <MessageProvider data={{ x: 'X' }}>
+      <MessageProvider messages={{ x: 'X' }}>
         <Wrapped />
       </MessageProvider>
     )
@@ -33,7 +33,7 @@ describe('No locale', () => {
   test('String array id', () => {
     const Wrapped = withMessages(['x', 'y'])(ShowMessages)
     const component = renderer.create(
-      <MessageProvider data={{ x: { y: 'Y' } }}>
+      <MessageProvider messages={{ x: { y: 'Y' } }}>
         <Wrapped />
       </MessageProvider>
     )
@@ -43,7 +43,7 @@ describe('No locale', () => {
   test('Object value', () => {
     const Wrapped = withMessages(['x'])(ShowMessages)
     const component = renderer.create(
-      <MessageProvider data={{ x: { y: 'Y' } }}>
+      <MessageProvider messages={{ x: { y: 'Y' } }}>
         <Wrapped />
       </MessageProvider>
     )
@@ -55,7 +55,7 @@ describe('With locale', () => {
   test('String id', () => {
     const Wrapped = withMessages('x')(ShowMessages)
     const component = renderer.create(
-      <MessageProvider data={{ lc: { x: 'X' } }} locale='lc'>
+      <MessageProvider messages={{ lc: { x: 'X' } }} locale='lc'>
         <Wrapped />
       </MessageProvider>
     )
@@ -65,7 +65,7 @@ describe('With locale', () => {
   test('String array id', () => {
     const Wrapped = withMessages(['x', 'y'])(ShowMessages)
     const component = renderer.create(
-      <MessageProvider data={{ lc: { x: { y: 'Y' } } }} locale='lc'>
+      <MessageProvider messages={{ lc: { x: { y: 'Y' } } }} locale='lc'>
         <Wrapped />
       </MessageProvider>
     )
@@ -75,7 +75,7 @@ describe('With locale', () => {
   test('Object value', () => {
     const Wrapped = withMessages(['x'])(ShowMessages)
     const component = renderer.create(
-      <MessageProvider data={{ lc: { x: { y: 'Y' } } }} locale='lc'>
+      <MessageProvider messages={{ lc: { x: { y: 'Y' } } }} locale='lc'>
         <Wrapped />
       </MessageProvider>
     )
@@ -85,7 +85,7 @@ describe('With locale', () => {
   test('Alternative locale string', () => {
     const Wrapped = withMessages(['x'], 'alt')(ShowMessages)
     const component = renderer.create(
-      <MessageProvider data={{ lc: { x: 'X' }, alt: { x: 'XX' } }} locale='lc'>
+      <MessageProvider messages={{ lc: { x: 'X' }, alt: { x: 'XX' } }} locale='lc'>
         <Wrapped />
       </MessageProvider>
     )
@@ -95,7 +95,7 @@ describe('With locale', () => {
   test('Alternative locale array', () => {
     const Wrapped = withMessages(['x'], ['none', 'alt'])(ShowMessages)
     const component = renderer.create(
-      <MessageProvider data={{ lc: { x: 'X' }, alt: { x: 'XX' } }} locale='lc'>
+      <MessageProvider messages={{ lc: { x: 'X' }, alt: { x: 'XX' } }} locale='lc'>
         <Wrapped />
       </MessageProvider>
     )

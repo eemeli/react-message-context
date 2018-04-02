@@ -5,20 +5,20 @@ import { PathType } from './prop-types'
 
 export default class MessageProvider extends Component {
   static propTypes = {
-    data: PropTypes.object.isRequired,
     fallback: PathType,
-    locale: PropTypes.string
+    locale: PropTypes.string,
+    messages: PropTypes.object.isRequired
   }
 
-  static getDerivedStateFromProps ({ data, fallback, locale }, prev) {
+  static getDerivedStateFromProps ({ fallback, locale, messages }, prev) {
     const locales = fallback
       ? [locale].concat(fallback)
       : locale ? [locale] : []
     return (
-      data !== prev.data ||
+      messages !== prev.messages ||
       locales.length !== prev.locales.length ||
       prev.locales.some((lc, i) => lc !== locales[i])
-    ) ? { data, locales } : null
+    ) ? { locales, messages } : null
   }
 
   state = defaultValue

@@ -6,8 +6,8 @@ import { PathType } from './prop-types'
 
 const Message = ({ id, locale, onError, props, ...msgProps }) => (
   <Consumer>
-    {({ data, locales }) => {
-      const msg = getMessage(data, locale ? [locale] : locales, id)
+    {({ locales, messages }) => {
+      const msg = getMessage(messages, locale ? [locale] : locales, id)
       switch (typeof msg) {
         case 'function':
           return msg(Object.assign(msgProps, props))

@@ -9,7 +9,7 @@ const ShowLocale = ({ locale }) => String(locale)
 test('No locale', () => {
   const Wrapped = withLocale(ShowLocale)
   const component = renderer.create(
-    <MessageProvider data={{ x: 'X' }}>
+    <MessageProvider messages={{ x: 'X' }}>
       <Wrapped />
     </MessageProvider>
   )
@@ -19,7 +19,7 @@ test('No locale', () => {
 test('Plain locale', () => {
   const Wrapped = withLocale(ShowLocale)
   const component = renderer.create(
-    <MessageProvider data={{ x: 'X' }} locale='lc'>
+    <MessageProvider messages={{ x: 'X' }} locale='lc'>
       <Wrapped />
     </MessageProvider>
   )
@@ -29,7 +29,7 @@ test('Plain locale', () => {
 test('Emoji locale', () => {
   const Wrapped = withLocale(ShowLocale)
   const component = renderer.create(
-    <MessageProvider data={{ x: 'X' }} locale='🤪'>
+    <MessageProvider messages={{ x: 'X' }} locale='🤪'>
       <Wrapped />
     </MessageProvider>
   )
