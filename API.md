@@ -61,9 +61,10 @@ The string value of a message. Internally uses a Context API [Consumer].
 
 A [higher-order component] providing the wrapped `Component` with a `locale`
 prop matching the current `locale` prop of the ancestor `MessageProvider`
-component.
+component. The HOC [forwards] its `ref` to `Component`.
 
 [higher-order component]: https://reactjs.org/docs/higher-order-components.html
+[forwards]: https://reactjs.org/docs/forwarding-refs.html
 
 <a id="with-messages"></a>
 <br/>
@@ -73,7 +74,8 @@ component.
 A [higher-order component] providing the wrapped `Component` with a `messages`
 prop. `messages` may be a single message, an object of messages, or `undefined`
 if `id` is not found in the messages. Messages are not resolved, i.e. their
-values are as set in the MessageProvider props.
+values are as set in the MessageProvider props. The HOC [forwards] its `ref` to
+`Component`.
 
 #### Arguments
 - [`id`] (_string_ or _string[]_): The key or key path of the message or message
