@@ -1,3 +1,4 @@
+import { fromJS } from 'immutable'
 import React, { Component } from 'react'
 import renderer from 'react-test-renderer'
 
@@ -35,9 +36,7 @@ test('Example 1', () => {
   expect(component.toJSON()).toMatchSnapshot()
 })
 
-test('Example 2', () => {
-  const messages = { en, fi }
-
+describe('Example 2', () => {
   const Errors = () => <ul>
     <li>
       <Message id='message' />{' '}
@@ -49,10 +48,23 @@ test('Example 2', () => {
     </li>
   </ul>
 
-  const component = renderer.create(
-    <MessageProvider locale='fi' fallback='en' messages={messages}>
-      <Errors />
-    </MessageProvider>,
-  )
-  expect(component.toJSON()).toMatchSnapshot()
+  test('With plain object', () => {
+    const messages = { en, fi }
+    const component = renderer.create(
+      <MessageProvider locale='fi' fallback='en' messages={messages}>
+        <Errors />
+      </MessageProvider>,
+    )
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  test('With immutable Map', () => {
+    const messages = fromJS({ en, fi })
+    const component = renderer.create(
+      <MessageProvider locale='fi' fallback='en' messages={messages}>
+        <Errors />
+      </MessageProvider>,
+    )
+    expect(component.toJSON()).toMatchSnapshot()
+  })
 })

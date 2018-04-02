@@ -16,7 +16,22 @@ exports[`Example 1 1`] = `
 </ul>
 `;
 
-exports[`Example 2 1`] = `
+exports[`Example 2 With immutable Map 1`] = `
+<ul>
+  <li>
+    Viestisi
+     
+    on väärän pituinen (pitäisi olla 42 merkkiä)
+  </li>
+  <li>
+    The value
+     
+    must be equal to 13
+  </li>
+</ul>
+`;
+
+exports[`Example 2 With plain object 1`] = `
 <ul>
   <li>
     Viestisi

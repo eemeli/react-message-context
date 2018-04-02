@@ -1,3 +1,4 @@
+import { fromJS } from 'immutable'
 import React, { Component } from 'react'
 import renderer from 'react-test-renderer'
 
@@ -181,58 +182,69 @@ describe('Alternative locale', () => {
   })
 })
 
-describe('Hierarchical messages', () => {
-  test('Object id, no locale', () => {
-    const component = renderer.create(
-      <MessageProvider messages={{ lc: { obj: { x: 'X' } } }}>
-        <Message id={['lc', 'obj', 'x']} />
-      </MessageProvider>
-    )
-    expect(component.toJSON()).toBe('X')
-  })
+Object.entries({
+  object: (obj) => obj,
+  'immutable Map': (obj) => fromJS(obj)
+}).forEach(([name, getMessages]) => {
+  describe(`Hierarchical messages: ${name}`, () => {
+    test('Object id, no locale', () => {
+      const messages = getMessages({ lc: { obj: { x: 'X' } } })
+      const component = renderer.create(
+        <MessageProvider messages={messages}>
+          <Message id={['lc', 'obj', 'x']} />
+        </MessageProvider>
+      )
+      expect(component.toJSON()).toBe('X')
+    })
 
-  test('Object id, with locale', () => {
-    const component = renderer.create(
-      <MessageProvider messages={{ lc: { obj: { x: 'X' } } }} locale='lc'>
-        <Message id={['obj', 'x']} />
-      </MessageProvider>
-    )
-    expect(component.toJSON()).toBe('X')
-  })
+    test('Object id, with locale', () => {
+      const messages = getMessages({ lc: { obj: { x: 'X' } } })
+      const component = renderer.create(
+        <MessageProvider messages={messages} locale='lc'>
+          <Message id={['obj', 'x']} />
+        </MessageProvider>
+      )
+      expect(component.toJSON()).toBe('X')
+    })
 
-  test('Incomplete path, no error handler', () => {
-    const component = renderer.create(
-      <MessageProvider messages={{ lc: { obj: { x: 'X' } } }}>
-        <Message id={['lc', 'obj']} />
-      </MessageProvider>
-    )
-    expect(component.toJSON()).toBe('lc,obj')
-  })
+    test('Incomplete path, no error handler', () => {
+      const messages = getMessages({ lc: { obj: { x: 'X' } } })
+      const component = renderer.create(
+        <MessageProvider messages={messages}>
+          <Message id={['lc', 'obj']} />
+        </MessageProvider>
+      )
+      expect(component.toJSON()).toBe('lc,obj')
+    })
 
-  test('Incomplete path, with error handler', () => {
-    const component = renderer.create(
-      <MessageProvider messages={{ lc: { obj: { x: 'X' } } }}>
-        <Message id={['lc', 'obj']} onError={(id, type) => String(id.concat(type)) } />
-      </MessageProvider>
-    )
-    expect(component.toJSON()).toBe('lc,obj,object')
-  })
+    test('Incomplete path, with error handler', () => {
+      const messages = getMessages({ lc: { obj: { x: 'X' } } })
+      const component = renderer.create(
+        <MessageProvider messages={messages}>
+          <Message id={['lc', 'obj']} onError={(id, type) => String(id.concat(type)) } />
+        </MessageProvider>
+      )
+      expect(component.toJSON()).toBe('lc,obj,object')
+    })
 
-  test('Bad path, no error handler', () => {
-    const component = renderer.create(
-      <MessageProvider messages={{ lc: { obj: { x: 'X' } } }}>
-        <Message id={['lc', 'none']} />
-      </MessageProvider>
-    )
-    expect(component.toJSON()).toBe('lc,none')
-  })
+    test('Bad path, no error handler', () => {
+      const messages = getMessages({ lc: { obj: { x: 'X' } } })
+      const component = renderer.create(
+        <MessageProvider messages={messages}>
+          <Message id={['lc', 'none']} />
+        </MessageProvider>
+      )
+      expect(component.toJSON()).toBe('lc,none')
+    })
 
-  test('Bad path, with error handler', () => {
-    const component = renderer.create(
-      <MessageProvider messages={{ lc: { obj: { x: 'X' } } }}>
-        <Message id={['lc', 'none']} onError={(id, type) => String(id.concat(type)) } />
-      </MessageProvider>
-    )
-    expect(component.toJSON()).toBe('lc,none,undefined')
+    test('Bad path, with error handler', () => {
+      const messages = getMessages({ lc: { obj: { x: 'X' } } })
+      const component = renderer.create(
+        <MessageProvider messages={messages}>
+          <Message id={['lc', 'none']} onError={(id, type) => String(id.concat(type)) } />
+        </MessageProvider>
+      )
+      expect(component.toJSON()).toBe('lc,none,undefined')
+    })
   })
 })
