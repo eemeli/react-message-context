@@ -182,10 +182,14 @@ describe('Alternative locale', () => {
   })
 })
 
-Object.entries({
+const hierObj = {
   object: (obj) => obj,
   'immutable Map': (obj) => fromJS(obj)
-}).forEach(([name, getMessages]) => {
+}
+
+Object.keys(hierObj).forEach((name) => {
+  const getMessages = hierObj[name]
+
   describe(`Hierarchical messages: ${name}`, () => {
     test('Object id, no locale', () => {
       const messages = getMessages({ lc: { obj: { x: 'X' } } })
