@@ -22,11 +22,9 @@ var plural = function (value, offset, lcfunc, data, isOrdinal) {
 };
 
 export default {
-  message: function(d) { return "Your message"; },
-  value: function(d) { return "The value"; },
+  confirm: function(d) { return "Are you sure?"; },
   errors: {
-    accepted: function(d) { return "must be accepted"; },
-    wrong_length: function(d) { return "is the wrong length (should be " + plural(d.count, 0, en, { one: "1 character", other: number(d.count, "count") + " characters" }) + ")"; },
-    equal_to: function(d) { return "must be equal to " + d.count; }
+    wrong_length: function(d) { return "Your message is the wrong length (should be " + plural(d.length, 0, en, { one: "1 character", other: number(d.length, "length") + " characters" }) + ")"; },
+    equal_to: function(d) { return "The value must be equal to " + d.count; }
   }
 }

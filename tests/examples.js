@@ -39,11 +39,9 @@ test('Example 1', () => {
 describe('Example 2', () => {
   const Errors = () => <ul>
     <li>
-      <Message id='message' />{' '}
-      <Message id={['errors', 'wrong_length']} count={42} />
+      <Message id={['errors', 'wrong_length']} length={42} />
     </li>
     <li>
-      <Message id='value' />{' '}
       <Message id={['errors', 'equal_to']} count={13} />
     </li>
   </ul>

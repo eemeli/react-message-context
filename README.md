@@ -76,20 +76,17 @@ Finnish but using English as a fallback locale:
 
 #### messages_en.properties
 ```
-message: Your message
-value: The value
-errors.accepted: must be accepted
-errors.wrong_length: is the wrong length (should be {count, plural, \
-  one{1 character} other{# characters}})
-errors.equal_to: must be equal to {count}
+confirm: Are you sure?
+errors.wrong_length: Your message is the wrong length (should be \
+  {length, plural, one{1 character} other{# characters}})
+errors.equal_to: The value must be equal to {count}
 ```
 
 #### messages_fi.properties
 ```
-message: Viestisi
-errors.accepted: pitää hyväksyä
-errors.wrong_length: on väärän pituinen (pitäisi olla {count, plural, \
-  one{1 merkki} other{# merkkiä}})
+confirm: Oletko varma?
+errors.wrong_length: Viestisi on väärän pituinen (pitäisi olla \
+  {length, plural, one{1 merkki} other{# merkkiä}})
 ```
 
 #### example.js
@@ -104,11 +101,9 @@ const messages = { en, fi }
 
 const Errors = () => <ul>
   <li>
-    <Message id='message' />{' '}
-    <Message id={['errors', 'wrong_length']} count={42} />
+    <Message id={['errors', 'wrong_length']} length={42} />
   </li>
   <li>
-    <Message id='value' />{' '}
     <Message id={['errors', 'equal_to']} count={13} />
   </li>
 </ul>

@@ -18,9 +18,8 @@ var plural = function (value, offset, lcfunc, data, isOrdinal) {
 };
 
 export default {
-  message: function(d) { return "Viestisi"; },
+  confirm: function(d) { return "Oletko varma?"; },
   errors: {
-    accepted: function(d) { return "pitää hyväksyä"; },
-    wrong_length: function(d) { return "on väärän pituinen (pitäisi olla " + plural(d.count, 0, fi, { one: "1 merkki", other: number(d.count, "count") + " merkkiä" }) + ")"; }
+    wrong_length: function(d) { return "Viestisi on väärän pituinen (pitäisi olla " + plural(d.length, 0, fi, { one: "1 merkki", other: number(d.length, "length") + " merkkiä" }) + ")"; }
   }
 }
