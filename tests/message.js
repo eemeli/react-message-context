@@ -252,3 +252,49 @@ Object.keys(hierObj).forEach((name) => {
     })
   })
 })
+
+describe('Render prop', () => {
+  test('String message with lookup', () => {
+    const component = renderer.create(
+      <MessageProvider messages={{ x: 'X' }}>
+        <Message id='x'>
+          {msg => msg}
+        </Message>
+      </MessageProvider>
+    )
+    expect(component.toJSON()).toBe('X')
+  })
+
+  test('String message without lookup', () => {
+    const component = renderer.create(
+      <MessageProvider messages={{ x: 'X' }}>
+        <Message>
+          {msg => msg.x}
+        </Message>
+      </MessageProvider>
+    )
+    expect(component.toJSON()).toBe('X')
+  })
+
+  test('Function message with lookup', () => {
+    const component = renderer.create(
+      <MessageProvider messages={{ x: () => 'fun' }}>
+        <Message id='x'>
+          {msg => msg()}
+        </Message>
+      </MessageProvider>
+    )
+    expect(component.toJSON()).toBe('fun')
+  })
+
+  test('Function message without lookup', () => {
+    const component = renderer.create(
+      <MessageProvider messages={{ x: () => 'fun' }}>
+        <Message>
+          {msg => msg.x()}
+        </Message>
+      </MessageProvider>
+    )
+    expect(component.toJSON()).toBe('fun')
+  })
+})

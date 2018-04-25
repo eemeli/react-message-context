@@ -4,11 +4,12 @@ import getMessage from './get-message'
 import { Consumer } from './message-context'
 import { PathType } from './prop-types'
 
-const Message = ({ id, locale, onError, params, ...msgParams }) => (
+const Message = ({ children, id, locale, onError, params, ...msgParams }) => (
   <Consumer>
     {({ locales, messages }) => {
       const lc = Array.isArray(locale) ? locale : locale ? [locale] : locales
       const msg = getMessage(messages, lc, id)
+      if (children) return children(msg)
       switch (typeof msg) {
         case 'function':
           return msg(Object.assign(msgParams, params))
@@ -24,7 +25,8 @@ const Message = ({ id, locale, onError, params, ...msgParams }) => (
 )
 
 Message.propTypes = {
-  id: PathType.isRequired,
+  children: PropTypes.func,
+  id: PathType,
   locale: PathType,
   onError: PropTypes.func,
   params: PropTypes.object

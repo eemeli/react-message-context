@@ -38,7 +38,8 @@ Makes the messages available for its descendants. Internally uses a Context API
 
 ### `<Message id [locale] [onError] [params] [...msgParams]>`
 
-The string value of a message. Internally uses a Context API [Consumer].
+The string value of a message. Internally uses a Context API [Consumer]. May
+also be used with a render prop: `<Message id={id}>{msg => {...}}</Message>`.
 
 #### Props
 - `id` (_string_ or _string[]_): The key or key path of the message.
@@ -51,6 +52,8 @@ The string value of a message. Internally uses a Context API [Consumer].
 - [`params`] and [`msgParams`] (_object_): Parameters to pass to function
   messages as their first and only argument. `params` will override `msgParams`,
   to allow for data keys such as `key` and `locale`.
+- [`children`] (_function_): If set, will be called with the found message. In
+  this case, `onError` and `params` will be ignored and `id` is optional.
 
 [Consumer]: https://reactjs.org/docs/context.html#consumer
 
