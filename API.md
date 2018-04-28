@@ -11,7 +11,7 @@ import {
 <a id="message-provider"></a>
 <br/>
 
-### `<MessageProvider messages [fallback] [locale]>`
+### `<MessageProvider messages [locale] [fallback] [pathSep]>`
 
 Makes the messages available for its descendants. Internally uses a Context API
 [Provider]. Supports both single- and multi-locale use.
@@ -22,12 +22,15 @@ Makes the messages available for its descendants. Internally uses a Context API
   `messages` may be hierarchical, and if it does not use `[]` bracket notation
   to access child values, it should provide a `getIn()` accessor as used by
   [Immutable collections].
-- [`fallback`] (_string_ or _string[]_): The key or keys of locales to use as
-  fallback options if no match is found in the primary locale. If given as an
-  array, locales are checked in index order.
 - [`locale`] (_string_): The key of the current locale. If `fallback` or
   `locale` is set, the top level of `messages` should consist of locale keys,
   e.g. `{ en: {...}, fr: {...} }`.
+- [`fallback`] (_string_ or _string[]_): The key or keys of locales to use as
+  fallback options if no match is found in the primary locale. If given as an
+  array, locales are checked in index order.
+- [`pathSep`] (_bool_ or _string_): By default, `.` in a `<Message id>` splits
+  the path into parts, such that e.g. `'a.b'` is equivalent to `['a', 'b']`.
+  Use this option to customize or disable this behaviour.
 - `children` (_ReactElement_): The root of your component hierarchy.
 
 [Provider]: https://reactjs.org/docs/context.html#provider

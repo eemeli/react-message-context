@@ -20,7 +20,7 @@ React and prop-types are peer dependencies. **React 16.3** or later is required.
 ## Documentation
 
 #### [API](API.md)
-- [`<MessageProvider messages [fallback] [locale]>`](API.md#message-provider)
+- [`<MessageProvider messages [locale] [fallback] [pathSep]>`](API.md#message-provider)
 - [`<Message id [locale] [onError] [props] [...msgProps]>`](API.md#message)
 - [`withLocale(Component)`](API.md#with-locale)
 - [`withMessages([id], [lc])(Component)`](API.md#with-messages)
@@ -50,7 +50,7 @@ const WrappedEquality = withMessages('answers')(Equality)
 
 const App = () => <ul>
   <li><Message id='message' /> is important</li>
-  <li>The answer is <Message id={['answers', 'sixByNine']} base={13} /></li>
+  <li>The answer is <Message id='answers.sixByNine' base={13} /></li>
   <li><WrappedEquality /></li>
 </ul>
 
@@ -101,10 +101,10 @@ const messages = { en, fi }
 
 const Errors = () => <ul>
   <li>
-    <Message id={['errors', 'wrong_length']} length={42} />
+    <Message id='errors.wrong_length' length={42} />
   </li>
   <li>
-    <Message id={['errors', 'equal_to']} count={13} />
+    <Message id='errors.equal_to' count={13} />
   </li>
 </ul>
 

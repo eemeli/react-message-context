@@ -7,18 +7,25 @@ export default class MessageProvider extends Component {
   static propTypes = {
     fallback: PathType,
     locale: PropTypes.string,
-    messages: PropTypes.object.isRequired
+    messages: PropTypes.object.isRequired,
+    pathSep: PropTypes.oneOfType([PropTypes.bool, PropTypes.string])
   }
 
-  static getDerivedStateFromProps ({ fallback, locale, messages }, prev) {
+  static defaultProps = {
+    pathSep: '.'
+  }
+
+  static getDerivedStateFromProps ({ fallback, locale, messages, pathSep }, prev) {
+    if (typeof pathSep !== 'string') pathSep = pathSep ? MessageProvider.defaultProps.pathSep : null
     const locales = fallback
       ? [locale].concat(fallback)
       : locale ? [locale] : []
     return (
       messages !== prev.messages ||
+      pathSep !== prev.pathSep ||
       locales.length !== prev.locales.length ||
       prev.locales.some((lc, i) => lc !== locales[i])
-    ) ? { locales, messages } : null
+    ) ? { locales, messages, pathSep } : null
   }
 
   state = defaultValue

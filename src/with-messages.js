@@ -24,9 +24,9 @@ import { Consumer } from './message-context'
 const withMessages = (id, locales) => (Component) => {
   const render = (props, ref) => (
     <Consumer>
-      {({ locales: lc0, messages }) => {
+      {({ locales: lc0, messages, pathSep }) => {
         const lc = Array.isArray(locales) ? locales : locales ? [locales] : lc0
-        const msg = getMessage(messages, lc, id)
+        const msg = getMessage(messages, lc, id, pathSep)
         return <Component {...props} messages={msg} ref={ref} />
       }}
     </Consumer>

@@ -11,20 +11,25 @@ const getIn = (messages, path) => {
   }
 }
 
+const getPath = (id, pathSep) => {
+  if (!id) return []
+  if (Array.isArray(id)) return id
+  return pathSep ? id.split(pathSep) : [id]
+}
+
 /**
  * @private
  * @param {object} messages
  * @param {string[]} locales
  * @param {string|string[]} [id]
+ * @param {string} [pathSep]
  * @returns {any}
  */
-export default (messages, locales, id) => {
+export default (messages, locales, id, pathSep) => {
   if (!messages) return undefined
-  if (locales.length === 0) {
-    const path = Array.isArray(id) ? id : id ? [id] : []
-    return getIn(messages, path)
-  }
-  const path = id ? [''].concat(id) : ['']
+  const path = getPath(id, pathSep)
+  if (locales.length === 0) return getIn(messages, path)
+  path.unshift(null)
   for (let i = 0; i < locales.length; ++i) {
     path[0] = locales[i]
     const msg = getIn(messages, path)

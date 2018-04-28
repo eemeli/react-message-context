@@ -191,7 +191,7 @@ Object.keys(hierObj).forEach((name) => {
   const getMessages = hierObj[name]
 
   describe(`Hierarchical messages: ${name}`, () => {
-    test('Object id, no locale', () => {
+    test('Array id, no locale', () => {
       const messages = getMessages({ lc: { obj: { x: 'X' } } })
       const component = renderer.create(
         <MessageProvider messages={messages}>
@@ -201,7 +201,7 @@ Object.keys(hierObj).forEach((name) => {
       expect(component.toJSON()).toBe('X')
     })
 
-    test('Object id, with locale', () => {
+    test('Array id, with locale', () => {
       const messages = getMessages({ lc: { obj: { x: 'X' } } })
       const component = renderer.create(
         <MessageProvider messages={messages} locale='lc'>
@@ -211,6 +211,38 @@ Object.keys(hierObj).forEach((name) => {
       expect(component.toJSON()).toBe('X')
     })
 
+    test('Path id, no locale', () => {
+      const messages = getMessages({ lc: { obj: { x: 'X' } } })
+      const component = renderer.create(
+        <MessageProvider messages={messages}>
+          <Message id='lc.obj.x' />
+        </MessageProvider>
+      )
+      expect(component.toJSON()).toBe('X')
+    })
+
+    test('Path id, with locale', () => {
+      const messages = getMessages({ lc: { obj: { x: 'X' } } })
+      const component = renderer.create(
+        <MessageProvider messages={messages} locale='lc'>
+          <Message id='obj.x' />
+        </MessageProvider>
+      )
+      expect(component.toJSON()).toBe('X')
+    })
+
+    test('Path id, custom separator', () => {
+      const messages = getMessages({ lc: { obj: { x: 'X' } } })
+      const component = renderer.create(
+        <MessageProvider messages={messages} pathSep='/'>
+          <Message id='lc/obj/x' />
+          <Message id='lc/obj/y' />
+          <Message id='lc.obj.x' />
+        </MessageProvider>
+      )
+      expect(component.toJSON()).toMatchObject(['X', 'lc/obj/y', 'lc.obj.x'])
+    })
+
     test('Incomplete path, no error handler', () => {
       const messages = getMessages({ lc: { obj: { x: 'X' } } })
       const component = renderer.create(
@@ -218,7 +250,7 @@ Object.keys(hierObj).forEach((name) => {
           <Message id={['lc', 'obj']} />
         </MessageProvider>
       )
-      expect(component.toJSON()).toBe('lc,obj')
+      expect(component.toJSON()).toBe('lc.obj')
     })
 
     test('Incomplete path, with error handler', () => {
@@ -231,6 +263,26 @@ Object.keys(hierObj).forEach((name) => {
       expect(component.toJSON()).toBe('lc,obj,object')
     })
 
+    test('Bad path, custom pathSep', () => {
+      const messages = getMessages({ lc: { obj: { x: 'X' } } })
+      const component = renderer.create(
+        <MessageProvider messages={messages} pathSep='/'>
+          <Message id={['lc', 'none']} />
+        </MessageProvider>
+      )
+      expect(component.toJSON()).toBe('lc/none')
+    })
+
+    test('Bad path, disabled pathSep', () => {
+      const messages = getMessages({ lc: { obj: { x: 'X' } } })
+      const component = renderer.create(
+        <MessageProvider messages={messages} pathSep={false}>
+          <Message id={['lc', 'none']} />
+        </MessageProvider>
+      )
+      expect(component.toJSON()).toBe('lc,none')
+    })
+
     test('Bad path, no error handler', () => {
       const messages = getMessages({ lc: { obj: { x: 'X' } } })
       const component = renderer.create(
@@ -238,7 +290,7 @@ Object.keys(hierObj).forEach((name) => {
           <Message id={['lc', 'none']} />
         </MessageProvider>
       )
-      expect(component.toJSON()).toBe('lc,none')
+      expect(component.toJSON()).toBe('lc.none')
     })
 
     test('Bad path, with error handler', () => {
