@@ -350,3 +350,14 @@ describe('Render prop', () => {
     expect(component.toJSON()).toBe('fun')
   })
 })
+
+test('Should not modify an array id', () => {
+  const id = ['x']
+  const component = renderer.create(
+    <MessageProvider messages={{ lc: { x: 'X' } }} locale='lc'>
+      <Message id={id} />
+      {id}
+    </MessageProvider>
+  )
+  expect(component.toJSON()).toEqual(['X', 'x'])
+})
