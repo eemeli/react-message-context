@@ -11,7 +11,7 @@ const getIn = (messages, path) => {
   }
 }
 
-const getPath = (id, pathSep) => {
+export const getPath = (id, pathSep) => {
   if (!id) return []
   if (Array.isArray(id)) return id
   return pathSep ? id.split(pathSep) : [id]

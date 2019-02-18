@@ -78,10 +78,11 @@ component. The HOC [forwards] its `ref` to `Component`.
 ### `withMessages([id], [locale])(Component)`
 
 A [higher-order component] providing the wrapped `Component` with a `messages`
-prop. `messages` may be a single message, an object of messages, or `undefined`
-if `id` is not found in the messages. Messages are not resolved, i.e. their
-values are as set in the MessageProvider props. The HOC [forwards] its `ref` to
-`Component`.
+function as a prop. The function takes two arguments, `msgId` and `msgParams`.
+`msgId` may be a key or key path that will be concatenated with the HOC's `id`
+to form the complete message path. If the message at that path is a function,
+it will be called with `msgParams` as its single argument. The HOC [forwards]
+its `ref` to `Component`.
 
 #### Arguments
 - [`id`] (_string_ or _string[]_): The key or key path of the message or message

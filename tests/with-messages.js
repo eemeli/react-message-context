@@ -4,24 +4,9 @@ import renderer from 'react-test-renderer'
 import MessageProvider from '../src/message-provider'
 import withMessages from '../src/with-messages'
 
-const ShowMessages = ({ messages }) => {
-  switch (typeof messages) {
-    case 'object':
-      return Array.isArray(messages)
-        ? String(messages)
-        : messages
-          ? String(Object.keys(messages))
-          : 'null'
-    case 'function':
-      return messages()
-    default:
-      return String(messages)
-  }
-}
-
 describe('No locale', () => {
   test('String id', () => {
-    const Wrapped = withMessages('x')(ShowMessages)
+    const Wrapped = withMessages('x')(({ messages }) => messages())
     const component = renderer.create(
       <MessageProvider messages={{ x: 'X' }}>
         <Wrapped />
@@ -31,7 +16,17 @@ describe('No locale', () => {
   })
 
   test('String array id', () => {
-    const Wrapped = withMessages(['x', 'y'])(ShowMessages)
+    const Wrapped = withMessages(['x', 'y'])(({ messages }) => messages())
+    const component = renderer.create(
+      <MessageProvider messages={{ x: { y: 'Y' } }}>
+        <Wrapped />
+      </MessageProvider>
+    )
+    expect(component.toJSON()).toBe('Y')
+  })
+
+  test('String path id', () => {
+    const Wrapped = withMessages('x.y')(({ messages }) => messages())
     const component = renderer.create(
       <MessageProvider messages={{ x: { y: 'Y' } }}>
         <Wrapped />
@@ -41,19 +36,19 @@ describe('No locale', () => {
   })
 
   test('Object value', () => {
-    const Wrapped = withMessages(['x'])(ShowMessages)
+    const Wrapped = withMessages(['x'])(({ messages }) => messages('y'))
     const component = renderer.create(
       <MessageProvider messages={{ x: { y: 'Y' } }}>
         <Wrapped />
       </MessageProvider>
     )
-    expect(component.toJSON()).toBe('y')
+    expect(component.toJSON()).toBe('Y')
   })
 })
 
 describe('With locale', () => {
   test('String id', () => {
-    const Wrapped = withMessages('x')(ShowMessages)
+    const Wrapped = withMessages('x')(({ messages }) => messages())
     const component = renderer.create(
       <MessageProvider messages={{ lc: { x: 'X' } }} locale='lc'>
         <Wrapped />
@@ -63,7 +58,7 @@ describe('With locale', () => {
   })
 
   test('String array id', () => {
-    const Wrapped = withMessages(['x', 'y'])(ShowMessages)
+    const Wrapped = withMessages(['x', 'y'])(({ messages }) => messages())
     const component = renderer.create(
       <MessageProvider messages={{ lc: { x: { y: 'Y' } } }} locale='lc'>
         <Wrapped />
@@ -73,17 +68,17 @@ describe('With locale', () => {
   })
 
   test('Object value', () => {
-    const Wrapped = withMessages(['x'])(ShowMessages)
+    const Wrapped = withMessages(['x'])(({ messages }) => messages('y'))
     const component = renderer.create(
       <MessageProvider messages={{ lc: { x: { y: 'Y' } } }} locale='lc'>
         <Wrapped />
       </MessageProvider>
     )
-    expect(component.toJSON()).toBe('y')
+    expect(component.toJSON()).toBe('Y')
   })
 
   test('Alternative locale string', () => {
-    const Wrapped = withMessages(['x'], 'alt')(ShowMessages)
+    const Wrapped = withMessages(['x'], 'alt')(({ messages }) => messages())
     const component = renderer.create(
       <MessageProvider messages={{ lc: { x: 'X' }, alt: { x: 'XX' } }} locale='lc'>
         <Wrapped />
@@ -93,7 +88,7 @@ describe('With locale', () => {
   })
 
   test('Alternative locale array', () => {
-    const Wrapped = withMessages(['x'], ['none', 'alt'])(ShowMessages)
+    const Wrapped = withMessages(['x'], ['none', 'alt'])(({ messages }) => messages())
     const component = renderer.create(
       <MessageProvider messages={{ lc: { x: 'X' }, alt: { x: 'XX' } }} locale='lc'>
         <Wrapped />
@@ -106,7 +101,7 @@ describe('With locale', () => {
 test('Forwarded ref', () => {
   class TestRef extends Component {
     test = () => true
-    render = () => String(this.props.messages)
+    render = () => String(this.props.messages())
   }
   const Wrapped = withMessages('x')(TestRef)
 

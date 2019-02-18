@@ -17,9 +17,11 @@ test('Example 1', () => {
     }
   }
 
-  const Equality = ({ messages: { sixByNine, universe } }) => (
-    `${sixByNine({ base: 13 })} and ${universe} are equal`
-  )
+  const Equality = ({ messages }) => {
+    const foo = messages('sixByNine', { base: 13 })
+    const bar = messages('universe')
+    return `${foo} and ${bar} are equal`
+  }
   const WrappedEquality = withMessages('answers')(Equality)
 
   const App = () => <ul>

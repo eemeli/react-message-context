@@ -1,5 +1,5 @@
 import React from 'react'
-import getMessage from './get-message'
+import getMessage, { getPath } from './get-message'
 import { Consumer } from './message-context'
 
 /**
@@ -21,13 +21,32 @@ import { Consumer } from './message-context'
  *
  * <WrappedList />
  */
-const withMessages = (id, locales) => (Component) => {
+const withMessages = (id, locales) => Component => {
   const render = (props, ref) => (
     <Consumer>
       {({ locales: lc0, messages, pathSep }) => {
         const lc = Array.isArray(locales) ? locales : locales ? [locales] : lc0
         const msg = getMessage(messages, lc, id, pathSep)
-        return <Component {...props} messages={msg} ref={ref} />
+        const msgFn = (msgId, msgParams) => {
+          let res
+          if (typeof msg === 'object') {
+            const msgPath = getPath(id, pathSep).concat(getPath(msgId))
+            res = getMessage(messages, lc, msgPath, pathSep)
+          } else {
+            if (msgId && !msgParams) msgParams = msgId
+            res = msg
+          }
+          switch (typeof res) {
+            case 'function':
+              return res(msgParams)
+            case 'boolean':
+            case 'number':
+              return String(res)
+            default:
+              return res
+          }
+        }
+        return <Component {...props} messages={msgFn} ref={ref} />
       }}
     </Consumer>
   )
