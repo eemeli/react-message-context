@@ -1,7 +1,7 @@
 {
   "name": "react-message-context",
   "version": "0.3.1",
-  "description": "React message provider, using the new Context API",
+  "description": "React message provider, using the Context API",
   "repository": "eemeli/react-message-context",
   "keywords": [
     "i18n",
@@ -30,6 +30,10 @@
     "testMatch": [
       "**/tests/*.js"
     ]
+  },
+  "prettier": {
+    "semi": false,
+    "singleQuote": true
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
