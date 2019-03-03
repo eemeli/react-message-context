@@ -26,12 +26,13 @@ const withMessages = (id, locales) => Component => {
     <Consumer>
       {({ locales: lc0, messages, pathSep }) => {
         const lc = Array.isArray(locales) ? locales : locales ? [locales] : lc0
-        const msg = getMessage(messages, lc, id, pathSep)
+        const path = getPath(id, pathSep)
+        const msg = getMessage(messages, lc, path)
         const msgFn = (msgId, msgParams) => {
           let res
           if (typeof msg === 'object') {
-            const msgPath = getPath(id, pathSep).concat(getPath(msgId))
-            res = getMessage(messages, lc, msgPath, pathSep)
+            const msgPath = path.concat(getPath(msgId, pathSep))
+            res = getMessage(messages, lc, msgPath)
           } else {
             if (msgId && !msgParams) msgParams = msgId
             res = msg
