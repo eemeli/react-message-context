@@ -42,18 +42,18 @@
     "singleQuote": true
   },
   "devDependencies": {
-    "@babel/cli": "^7.2.3",
-    "@babel/core": "^7.3.4",
-    "@babel/plugin-proposal-class-properties": "^7.3.4",
-    "@babel/preset-env": "^7.3.4",
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.5",
+    "@babel/plugin-proposal-class-properties": "^7.4.4",
+    "@babel/preset-env": "^7.4.5",
     "@babel/preset-react": "^7.0.0",
-    "babel-jest": "^24.1.0",
+    "babel-jest": "^24.8.0",
     "immutable": "^3.8.2",
-    "jest": "^24.1.0",
+    "jest": "^24.8.0",
     "prop-types": "^15.7.2",
-    "react": "^16.8.3",
-    "react-dom": "^16.8.3",
-    "react-test-renderer": "^16.8.3"
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-test-renderer": "^16.8.6"
   },
   "peerDependencies": {
     "prop-types": ">=15.5.7",
