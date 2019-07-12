@@ -1,8 +1,10 @@
 import React from 'react'
 
-export const defaultValue = {
+const defaultValue = {
   locales: [],
   messages: {}
 }
+const context = React.createContext(defaultValue)
+const { Consumer, Provider } = context
 
-export const { Consumer, Provider } = React.createContext(defaultValue)
+export { context as default, Consumer, Provider, defaultValue }
