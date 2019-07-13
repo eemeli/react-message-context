@@ -37,3 +37,23 @@ exports[`Example 2 With plain object 1`] = `
   </li>
 </ul>
 `;
+
+exports[`Example 3 With immutable Map 1`] = `
+Array [
+  "FÖÖ",
+  "FOO",
+  "BÄR",
+  "bar",
+  "QUX",
+]
+`;
+
+exports[`Example 3 With plain object 1`] = `
+Array [
+  "FÖÖ",
+  "FOO",
+  "BÄR",
+  "bar",
+  "QUX",
+]
+`;

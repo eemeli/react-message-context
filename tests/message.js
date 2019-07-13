@@ -9,7 +9,7 @@ describe('No locale', () => {
   test('String message', () => {
     const component = renderer.create(
       <MessageProvider messages={{ x: 'X' }}>
-        <Message id='x' />
+        <Message id="x" />
       </MessageProvider>
     )
     expect(component.toJSON()).toBe('X')
@@ -18,7 +18,7 @@ describe('No locale', () => {
   test('Number message', () => {
     const component = renderer.create(
       <MessageProvider messages={{ x: 42 }}>
-        <Message id='x' />
+        <Message id="x" />
       </MessageProvider>
     )
     expect(component.toJSON()).toBe('42')
@@ -27,7 +27,7 @@ describe('No locale', () => {
   test('Boolean message', () => {
     const component = renderer.create(
       <MessageProvider messages={{ x: false }}>
-        <Message id='x' />
+        <Message id="x" />
       </MessageProvider>
     )
     expect(component.toJSON()).toBe('false')
@@ -36,7 +36,7 @@ describe('No locale', () => {
   test('Function message', () => {
     const component = renderer.create(
       <MessageProvider messages={{ x: () => 'fun' }}>
-        <Message id='x' />
+        <Message id="x" />
       </MessageProvider>
     )
     expect(component.toJSON()).toBe('fun')
@@ -45,7 +45,7 @@ describe('No locale', () => {
   test('Function message with params', () => {
     const component = renderer.create(
       <MessageProvider messages={{ x: ({ v, w }) => `${v} ${w}` }}>
-        <Message id='x' v='V' w='W' />
+        <Message id="x" v="V" w="W" />
       </MessageProvider>
     )
     expect(component.toJSON()).toBe('V W')
@@ -54,7 +54,7 @@ describe('No locale', () => {
   test('Function message with conflicting params', () => {
     const component = renderer.create(
       <MessageProvider messages={{ x: ({ key }) => `${key}` }}>
-        <Message id='x' params={{ key: 'K' }} />
+        <Message id="x" params={{ key: 'K' }} />
       </MessageProvider>
     )
     expect(component.toJSON()).toBe('K')
@@ -64,8 +64,8 @@ describe('No locale', () => {
 describe('With locale', () => {
   test('String message', () => {
     const component = renderer.create(
-      <MessageProvider messages={{ lc: { x: 'X' } }} locale='lc'>
-        <Message id='x' />
+      <MessageProvider messages={{ x: 'X' }} locale="lc">
+        <Message id="x" />
       </MessageProvider>
     )
     expect(component.toJSON()).toBe('X')
@@ -73,8 +73,8 @@ describe('With locale', () => {
 
   test('Number message', () => {
     const component = renderer.create(
-      <MessageProvider messages={{ lc: { x: 42 } }} locale='lc'>
-        <Message id='x' />
+      <MessageProvider messages={{ x: 42 }} locale="lc">
+        <Message id="x" />
       </MessageProvider>
     )
     expect(component.toJSON()).toBe('42')
@@ -82,8 +82,8 @@ describe('With locale', () => {
 
   test('Boolean message', () => {
     const component = renderer.create(
-      <MessageProvider messages={{ lc: { x: false } }} locale='lc'>
-        <Message id='x' />
+      <MessageProvider messages={{ x: false }} locale="lc">
+        <Message id="x" />
       </MessageProvider>
     )
     expect(component.toJSON()).toBe('false')
@@ -91,8 +91,8 @@ describe('With locale', () => {
 
   test('Function message', () => {
     const component = renderer.create(
-      <MessageProvider messages={{ lc: { x: () => 'fun' } }} locale='lc'>
-        <Message id='x' />
+      <MessageProvider messages={{ x: () => 'fun' }} locale="lc">
+        <Message id="x" />
       </MessageProvider>
     )
     expect(component.toJSON()).toBe('fun')
@@ -100,8 +100,8 @@ describe('With locale', () => {
 
   test('Function message with params', () => {
     const component = renderer.create(
-      <MessageProvider messages={{ lc: { x: ({ v, w }) => `${v} ${w}` } }} locale='lc'>
-        <Message id='x' v='V' w='W' />
+      <MessageProvider messages={{ x: ({ v, w }) => `${v} ${w}` }} locale="lc">
+        <Message id="x" v="V" w="W" />
       </MessageProvider>
     )
     expect(component.toJSON()).toBe('V W')
@@ -109,19 +109,21 @@ describe('With locale', () => {
 
   test('Function message with conflicting params', () => {
     const component = renderer.create(
-      <MessageProvider messages={{ lc: { x: ({ key }) => `${key}` } }} locale='lc'>
-        <Message id='x' params={{ key: 'K' }} />
+      <MessageProvider messages={{ x: ({ key }) => `${key}` }} locale="lc">
+        <Message id="x" params={{ key: 'K' }} />
       </MessageProvider>
     )
     expect(component.toJSON()).toBe('K')
   })
 })
 
-describe('Alternative locale', () => {
+describe('Inherited locale', () => {
   test('String message', () => {
     const component = renderer.create(
-      <MessageProvider messages={{ lc: { x: 'X' }, alt: { x: 'XX' } }} locale='lc'>
-        <Message id='x' locale='alt' />
+      <MessageProvider locale="alt" messages={{ x: 'XX' }}>
+        <MessageProvider locale="lc" messages={{ x: 'X' }}>
+          <Message id="x" locale="alt" />
+        </MessageProvider>
       </MessageProvider>
     )
     expect(component.toJSON()).toBe('XX')
@@ -129,8 +131,10 @@ describe('Alternative locale', () => {
 
   test('String message with array locale', () => {
     const component = renderer.create(
-      <MessageProvider messages={{ lc: { x: 'X' }, alt: { x: 'XX' } }} locale='lc'>
-        <Message id='x' locale={['none', 'alt']} />
+      <MessageProvider locale="alt" messages={{ x: 'XX' }}>
+        <MessageProvider locale="lc" messages={{ x: 'X' }}>
+          <Message id="x" locale={['none', 'alt']} />
+        </MessageProvider>
       </MessageProvider>
     )
     expect(component.toJSON()).toBe('XX')
@@ -138,8 +142,10 @@ describe('Alternative locale', () => {
 
   test('Number message', () => {
     const component = renderer.create(
-      <MessageProvider messages={{ lc: { x: 42 }, alt: { x: 420 } }} locale='lc'>
-        <Message id='x' locale='alt' />
+      <MessageProvider locale="alt" messages={{ x: 420 }}>
+        <MessageProvider locale="lc" messages={{ x: 42 }}>
+          <Message id="x" locale="alt" />
+        </MessageProvider>
       </MessageProvider>
     )
     expect(component.toJSON()).toBe('420')
@@ -147,8 +153,10 @@ describe('Alternative locale', () => {
 
   test('Boolean message', () => {
     const component = renderer.create(
-      <MessageProvider messages={{ lc: { x: false }, alt: { x: true } }} locale='lc'>
-        <Message id='x' locale='alt' />
+      <MessageProvider locale="alt" messages={{ x: true }}>
+        <MessageProvider locale="lc" messages={{ x: false }}>
+          <Message id="x" locale="alt" />
+        </MessageProvider>
       </MessageProvider>
     )
     expect(component.toJSON()).toBe('true')
@@ -156,55 +164,50 @@ describe('Alternative locale', () => {
 
   test('Function message', () => {
     const component = renderer.create(
-      <MessageProvider messages={{ lc: { x: () => 'fun' }, alt: { x: 'fun!' } }} locale='lc'>
-        <Message id='x' locale='alt' />
+      <MessageProvider locale="alt" messages={{ x: () => 'FUN!' }}>
+        <MessageProvider locale="lc" messages={{ x: () => 'fun' }}>
+          <Message id="x" locale="alt" />
+        </MessageProvider>
       </MessageProvider>
     )
-    expect(component.toJSON()).toBe('fun!')
+    expect(component.toJSON()).toBe('FUN!')
   })
 
   test('Function message with params', () => {
     const component = renderer.create(
-      <MessageProvider messages={{ lc: { x: ({ v, w }) => `${v} ${w}` }, alt: { x: ({ v, w }) => `${w} ${v}` } }} locale='lc'>
-        <Message id='x' locale='alt' v='V' w='W' />
+      <MessageProvider locale="alt" messages={{ x: ({ v, w }) => `${w}${v}` }}>
+        <MessageProvider locale="lc" messages={{ x: ({ v, w }) => `${v}${w}` }}>
+          <Message id="x" locale="alt" v="V" w="W" />
+        </MessageProvider>
       </MessageProvider>
     )
-    expect(component.toJSON()).toBe('W V')
-  })
-
-  test('Function message with conflicting params', () => {
-    const component = renderer.create(
-      <MessageProvider messages={{ lc: { x: ({ key }) => `${key}` } }} locale='lc'>
-        <Message id='x' params={{ key: 'K' }} />
-      </MessageProvider>
-    )
-    expect(component.toJSON()).toBe('K')
+    expect(component.toJSON()).toBe('WV')
   })
 })
 
 const hierObj = {
-  object: (obj) => obj,
-  'immutable Map': (obj) => fromJS(obj)
+  object: obj => obj,
+  'immutable Map': obj => fromJS(obj)
 }
 
-Object.keys(hierObj).forEach((name) => {
+Object.keys(hierObj).forEach(name => {
   const getMessages = hierObj[name]
 
   describe(`Hierarchical messages: ${name}`, () => {
     test('Array id, no locale', () => {
-      const messages = getMessages({ lc: { obj: { x: 'X' } } })
+      const messages = getMessages({ obj: { x: 'X' } })
       const component = renderer.create(
         <MessageProvider messages={messages}>
-          <Message id={['lc', 'obj', 'x']} />
+          <Message id={['obj', 'x']} />
         </MessageProvider>
       )
       expect(component.toJSON()).toBe('X')
     })
 
     test('Array id, with locale', () => {
-      const messages = getMessages({ lc: { obj: { x: 'X' } } })
+      const messages = getMessages({ obj: { x: 'X' } })
       const component = renderer.create(
-        <MessageProvider messages={messages} locale='lc'>
+        <MessageProvider messages={messages} locale="lc">
           <Message id={['obj', 'x']} />
         </MessageProvider>
       )
@@ -212,95 +215,101 @@ Object.keys(hierObj).forEach((name) => {
     })
 
     test('Path id, no locale', () => {
-      const messages = getMessages({ lc: { obj: { x: 'X' } } })
+      const messages = getMessages({ obj: { x: 'X' } })
       const component = renderer.create(
         <MessageProvider messages={messages}>
-          <Message id='lc.obj.x' />
+          <Message id="obj.x" />
         </MessageProvider>
       )
       expect(component.toJSON()).toBe('X')
     })
 
     test('Path id, with locale', () => {
-      const messages = getMessages({ lc: { obj: { x: 'X' } } })
+      const messages = getMessages({ obj: { x: 'X' } })
       const component = renderer.create(
-        <MessageProvider messages={messages} locale='lc'>
-          <Message id='obj.x' />
+        <MessageProvider messages={messages} locale="lc">
+          <Message id="obj.x" />
         </MessageProvider>
       )
       expect(component.toJSON()).toBe('X')
     })
 
     test('Path id, custom separator', () => {
-      const messages = getMessages({ lc: { obj: { x: 'X' } } })
+      const messages = getMessages({ obj: { x: 'X' } })
       const component = renderer.create(
-        <MessageProvider messages={messages} pathSep='/'>
-          <Message id='lc/obj/x' />
-          <Message id='lc/obj/y' />
-          <Message id='lc.obj.x' />
+        <MessageProvider messages={messages} pathSep="/">
+          <Message id="obj/x" />
+          <Message id="obj/y" />
+          <Message id="obj.x" />
         </MessageProvider>
       )
-      expect(component.toJSON()).toMatchObject(['X', 'lc/obj/y', 'lc.obj.x'])
+      expect(component.toJSON()).toMatchObject(['X', 'obj/y', 'obj.x'])
     })
 
     test('Incomplete path, no error handler', () => {
-      const messages = getMessages({ lc: { obj: { x: 'X' } } })
+      const messages = getMessages({ obj: { x: 'X' } })
       const component = renderer.create(
         <MessageProvider messages={messages}>
-          <Message id={['lc', 'obj']} />
+          <Message id={['obj']} />
         </MessageProvider>
       )
-      expect(component.toJSON()).toBe('lc.obj')
+      expect(component.toJSON()).toBe('obj')
     })
 
     test('Incomplete path, with error handler', () => {
-      const messages = getMessages({ lc: { obj: { x: 'X' } } })
+      const messages = getMessages({ obj: { x: 'X' } })
       const component = renderer.create(
         <MessageProvider messages={messages}>
-          <Message id={['lc', 'obj']} onError={(id, type) => String(id.concat(type)) } />
+          <Message
+            id={['obj']}
+            onError={(id, type) => String(id.concat(type))}
+          />
         </MessageProvider>
       )
-      expect(component.toJSON()).toBe('lc,obj,object')
+      expect(component.toJSON()).toBe('obj,object')
     })
 
     test('Bad path, custom pathSep', () => {
-      const messages = getMessages({ lc: { obj: { x: 'X' } } })
+      const messages = getMessages({ obj: { x: 'X' } })
       const component = renderer.create(
-        <MessageProvider messages={messages} pathSep='/'>
-          <Message id={['lc', 'none']} />
+        <MessageProvider messages={messages} pathSep="/">
+          <Message id={['not', 'valid']} />
         </MessageProvider>
       )
-      expect(component.toJSON()).toBe('lc/none')
+      expect(component.toJSON()).toBe('not/valid')
     })
 
     test('Bad path, disabled pathSep', () => {
-      const messages = getMessages({ lc: { obj: { x: 'X' } } })
+      const messages = getMessages({ obj: { x: 'X' } })
       const component = renderer.create(
         <MessageProvider messages={messages} pathSep={false}>
-          <Message id={['lc', 'none']} />
+          <Message id={['not', 'valid']} />
         </MessageProvider>
       )
-      expect(component.toJSON()).toBe('lc,none')
+      expect(component.toJSON()).toBe('not,valid')
     })
 
     test('Bad path, no error handler', () => {
-      const messages = getMessages({ lc: { obj: { x: 'X' } } })
+      const messages = getMessages({ obj: { x: 'X' } })
       const component = renderer.create(
         <MessageProvider messages={messages}>
-          <Message id={['lc', 'none']} />
+          <Message id={['not', 'valid']} />
         </MessageProvider>
       )
-      expect(component.toJSON()).toBe('lc.none')
+      expect(component.toJSON()).toBe('not.valid')
     })
 
     test('Bad path, with error handler', () => {
-      const messages = getMessages({ lc: { obj: { x: 'X' } } })
+      const messages = getMessages({ obj: { x: 'X' } })
       const component = renderer.create(
         <MessageProvider messages={messages}>
-          <Message id={['lc', 'none']} onError={(id, type) => String(id.concat(type)) } />
+          <Message
+            id={['not', 'valid']}
+            onError={(id, type) => String(id.concat(type))}
+          />
         </MessageProvider>
       )
-      expect(component.toJSON()).toBe('lc,none,undefined')
+      expect(component.toJSON()).toBe('not,valid,undefined')
     })
   })
 })
@@ -309,9 +318,7 @@ describe('Render prop', () => {
   test('String message with lookup', () => {
     const component = renderer.create(
       <MessageProvider messages={{ x: 'X' }}>
-        <Message id='x'>
-          {msg => msg}
-        </Message>
+        <Message id="x">{msg => msg}</Message>
       </MessageProvider>
     )
     expect(component.toJSON()).toBe('X')
@@ -320,9 +327,7 @@ describe('Render prop', () => {
   test('String message without lookup', () => {
     const component = renderer.create(
       <MessageProvider messages={{ x: 'X' }}>
-        <Message>
-          {msg => msg.x}
-        </Message>
+        <Message>{msg => msg.x}</Message>
       </MessageProvider>
     )
     expect(component.toJSON()).toBe('X')
@@ -331,9 +336,7 @@ describe('Render prop', () => {
   test('Function message with lookup', () => {
     const component = renderer.create(
       <MessageProvider messages={{ x: () => 'fun' }}>
-        <Message id='x'>
-          {msg => msg()}
-        </Message>
+        <Message id="x">{msg => msg()}</Message>
       </MessageProvider>
     )
     expect(component.toJSON()).toBe('fun')
@@ -342,9 +345,7 @@ describe('Render prop', () => {
   test('Function message without lookup', () => {
     const component = renderer.create(
       <MessageProvider messages={{ x: () => 'fun' }}>
-        <Message>
-          {msg => msg.x()}
-        </Message>
+        <Message>{msg => msg.x()}</Message>
       </MessageProvider>
     )
     expect(component.toJSON()).toBe('fun')
@@ -354,7 +355,7 @@ describe('Render prop', () => {
 test('Should not modify an array id', () => {
   const id = ['x']
   const component = renderer.create(
-    <MessageProvider messages={{ lc: { x: 'X' } }} locale='lc'>
+    <MessageProvider messages={{ x: 'X' }} locale="lc">
       <Message id={id} />
       {id}
     </MessageProvider>

@@ -13,7 +13,7 @@ test('No locale', () => {
       <Wrapped />
     </MessageProvider>
   )
-  expect(component.toJSON()).toBe('undefined')
+  expect(component.toJSON()).toBe('')
 })
 
 test('Plain locale', () => {

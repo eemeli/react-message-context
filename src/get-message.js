@@ -1,4 +1,5 @@
-const getIn = (messages, path) => {
+function getIn(messages, path) {
+  if (!messages) return undefined
   if (typeof messages.getIn === 'function') {
     return messages.getIn(path)
   } else {
@@ -11,7 +12,7 @@ const getIn = (messages, path) => {
   }
 }
 
-export const getPath = (id, pathSep) => {
+export function getPath(id, pathSep) {
   if (!id) return []
   if (Array.isArray(id)) return id
   return pathSep ? id.split(pathSep) : [id]
@@ -25,16 +26,11 @@ export const getPath = (id, pathSep) => {
  * @param {string} [pathSep]
  * @returns {any}
  */
-export default (messages, locales, id, pathSep) => {
-  if (!messages) return undefined
-  let path = getPath(id, pathSep)
-  if (locales.length === 0) return getIn(messages, path)
-  path = [null].concat(path)
-  for (let i = 0; i < locales.length; ++i) {
-    path[0] = locales[i]
-    const msg = getIn(messages, path)
+export default function getMessage(messages, locales, id, pathSep) {
+  const path = getPath(id, pathSep)
+  for (const lc of locales) {
+    const msg = getIn(messages[lc], path)
     if (typeof msg !== 'undefined') return msg
   }
   return undefined
 }
-

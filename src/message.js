@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import getMessage from './get-message'
-import { Consumer } from './message-context'
+import MessageContext from './message-context'
 import { PathType } from './prop-types'
 
 const Message = ({ children, id, locale, onError, params, ...msgParams }) => (
-  <Consumer>
+  <MessageContext.Consumer>
     {({ locales, messages, pathSep }) => {
       const lc = Array.isArray(locale) ? locale : locale ? [locale] : locales
       const msg = getMessage(messages, lc, id, pathSep)
@@ -19,11 +19,12 @@ const Message = ({ children, id, locale, onError, params, ...msgParams }) => (
           return String(msg)
         default:
           let res = onError && onError(id, typeof msg)
-          if (!res) res = pathSep && Array.isArray(id) ? id.join(pathSep) : String(id)
+          if (!res)
+            res = pathSep && Array.isArray(id) ? id.join(pathSep) : String(id)
           return res
       }
     }}
-  </Consumer>
+  </MessageContext.Consumer>
 )
 
 Message.propTypes = {

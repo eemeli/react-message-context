@@ -70,7 +70,7 @@ describe('With locale', () => {
   test('String id', () => {
     const Wrapped = withMessages('x')(({ messages }) => messages())
     const component = renderer.create(
-      <MessageProvider messages={{ lc: { x: 'X' } }} locale="lc">
+      <MessageProvider locale="lc" messages={{ x: 'X' }}>
         <Wrapped />
       </MessageProvider>
     )
@@ -80,7 +80,7 @@ describe('With locale', () => {
   test('String array id', () => {
     const Wrapped = withMessages(['x', 'y'])(({ messages }) => messages())
     const component = renderer.create(
-      <MessageProvider messages={{ lc: { x: { y: 'Y' } } }} locale="lc">
+      <MessageProvider locale="lc" messages={{ x: { y: 'Y' } }}>
         <Wrapped />
       </MessageProvider>
     )
@@ -90,53 +90,61 @@ describe('With locale', () => {
   test('Object value', () => {
     const Wrapped = withMessages(['x'])(({ messages }) => messages('y'))
     const component = renderer.create(
-      <MessageProvider messages={{ lc: { x: { y: 'Y' } } }} locale="lc">
+      <MessageProvider locale="lc" messages={{ x: { y: 'Y' } }}>
         <Wrapped />
       </MessageProvider>
     )
     expect(component.toJSON()).toBe('Y')
-  })
-
-  test('Alternative locale string', () => {
-    const Wrapped = withMessages(['x'], 'alt')(({ messages }) => messages())
-    const component = renderer.create(
-      <MessageProvider
-        messages={{ lc: { x: 'X' }, alt: { x: 'XX' } }}
-        locale="lc"
-      >
-        <Wrapped />
-      </MessageProvider>
-    )
-    expect(component.toJSON()).toBe('XX')
-  })
-
-  test('Alternative locale array', () => {
-    const Wrapped = withMessages(['x'], ['none', 'alt'])(({ messages }) =>
-      messages()
-    )
-    const component = renderer.create(
-      <MessageProvider
-        messages={{ lc: { x: 'X' }, alt: { x: 'XX' } }}
-        locale="lc"
-      >
-        <Wrapped />
-      </MessageProvider>
-    )
-    expect(component.toJSON()).toBe('XX')
   })
 
   test('Empty path id with custom path separator', () => {
     const Wrapped = withMessages()(({ messages }) => messages('x/y'))
     const component = renderer.create(
-      <MessageProvider
-        messages={{ lc: { x: { y: 'Y' } } }}
-        locale="lc"
-        pathSep="/"
-      >
+      <MessageProvider locale="lc" messages={{ x: { y: 'Y' } }} pathSep="/">
         <Wrapped />
       </MessageProvider>
     )
     expect(component.toJSON()).toBe('Y')
+  })
+})
+
+describe('Wrapped provider', () => {
+  test('Inherited locale', () => {
+    const Wrapped = withMessages(['x'])(({ messages }) => messages())
+    const component = renderer.create(
+      <MessageProvider locale="alt" messages={{ x: 'XX' }}>
+        <MessageProvider locale="lc" messages={{ x: 'X' }}>
+          <Wrapped />
+        </MessageProvider>
+      </MessageProvider>
+    )
+    expect(component.toJSON()).toBe('X')
+  })
+
+  test('Locale as string', () => {
+    const Wrapped = withMessages(['x'], 'alt')(({ messages }) => messages())
+    const component = renderer.create(
+      <MessageProvider locale="alt" messages={{ x: 'XX' }}>
+        <MessageProvider locale="lc" messages={{ x: 'X' }}>
+          <Wrapped />
+        </MessageProvider>
+      </MessageProvider>
+    )
+    expect(component.toJSON()).toBe('XX')
+  })
+
+  test('Locale as array', () => {
+    const Wrapped = withMessages(['x'], ['none', 'alt'])(({ messages }) =>
+      messages()
+    )
+    const component = renderer.create(
+      <MessageProvider locale="alt" messages={{ x: 'XX' }}>
+        <MessageProvider locale="lc" messages={{ x: 'X' }}>
+          <Wrapped />
+        </MessageProvider>
+      </MessageProvider>
+    )
+    expect(component.toJSON()).toBe('XX')
   })
 })
 
@@ -149,7 +157,7 @@ test('Forwarded ref', () => {
 
   const mockFn = jest.fn()
   const component = renderer.create(
-    <MessageProvider messages={{ lc: { x: 'X' } }} locale="lc">
+    <MessageProvider locale="lc" messages={{ x: 'X' }}>
       <Wrapped ref={mockFn} />
     </MessageProvider>
   )

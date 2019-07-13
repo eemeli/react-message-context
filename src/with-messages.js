@@ -1,6 +1,33 @@
 import React from 'react'
 import getMessage, { getPath } from './get-message'
-import { Consumer } from './message-context'
+import MessageContext from './message-context'
+
+function getMessagesFunction({ locales, messages, pathSep }, id, argLocales) {
+  if (argLocales !== undefined) {
+    locales = Array.isArray(argLocales) ? argLocales : [argLocales]
+  }
+  const path = getPath(id, pathSep)
+  const msg = getMessage(messages, locales, path)
+  return (msgId, msgParams) => {
+    let res
+    if (typeof msg === 'object') {
+      const msgPath = path.concat(getPath(msgId, pathSep))
+      res = getMessage(messages, locales, msgPath)
+    } else {
+      if (msgId && !msgParams) msgParams = msgId
+      res = msg
+    }
+    switch (typeof res) {
+      case 'function':
+        return res(msgParams)
+      case 'boolean':
+      case 'number':
+        return String(res)
+      default:
+        return res
+    }
+  }
+}
 
 /**
  * Returns a HOC providing the wrapped component with a `messages` prop
@@ -21,40 +48,20 @@ import { Consumer } from './message-context'
  *
  * <WrappedList />
  */
-const withMessages = (id, locales) => Component => {
+const withMessages = (id, argLocales) => Component => {
   const render = (props, ref) => (
-    <Consumer>
-      {({ locales: lc0, messages, pathSep }) => {
-        const lc = Array.isArray(locales) ? locales : locales ? [locales] : lc0
-        const path = getPath(id, pathSep)
-        const msg = getMessage(messages, lc, path)
-        const msgFn = (msgId, msgParams) => {
-          let res
-          if (typeof msg === 'object') {
-            const msgPath = path.concat(getPath(msgId, pathSep))
-            res = getMessage(messages, lc, msgPath)
-          } else {
-            if (msgId && !msgParams) msgParams = msgId
-            res = msg
-          }
-          switch (typeof res) {
-            case 'function':
-              return res(msgParams)
-            case 'boolean':
-            case 'number':
-              return String(res)
-            default:
-              return res
-          }
-        }
-        return <Component {...props} messages={msgFn} ref={ref} />
-      }}
-    </Consumer>
+    <MessageContext.Consumer>
+      {context => (
+        <Component
+          {...props}
+          messages={getMessagesFunction(context, id, argLocales)}
+          ref={ref}
+        />
+      )}
+    </MessageContext.Consumer>
   )
-  let args = `[${id}]`
-  if (locales) args += `, [${locales}]`
   const name = Component.displayName || Component.name
-  render.displayName = `withMessages(${args})(${name})`
+  render.displayName = `withMessages()(${name})`
   return React.forwardRef(render)
 }
 
