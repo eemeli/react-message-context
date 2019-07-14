@@ -12,14 +12,6 @@ function getIn(messages, path) {
   }
 }
 
-export function getLocales(ctxLocales, argLocale) {
-  return Array.isArray(argLocale)
-    ? argLocale
-    : argLocale != null
-    ? [argLocale]
-    : ctxLocales
-}
-
 export function getPath(id, pathSep) {
   if (!id) return []
   if (Array.isArray(id)) return id
@@ -28,17 +20,17 @@ export function getPath(id, pathSep) {
 
 /**
  * @private
- * @param {object} messages
- * @param {string[]} locales
- * @param {string|string[]} [id]
- * @param {string} [pathSep]
+ * @param {Context} context
+ * @param {string|string[]} id
+ * @param {string|string[]} [locale]
  * @returns {any}
  */
-export default function getMessage(messages, locales, id, pathSep) {
+export default function getMessage({ locales, messages, pathSep }, id, locale) {
+  if (locale != null) locales = Array.isArray(locale) ? locale : [locale]
   const path = getPath(id, pathSep)
   for (const lc of locales) {
     const msg = getIn(messages[lc], path)
-    if (typeof msg !== 'undefined') return msg
+    if (msg !== undefined) return msg
   }
   return undefined
 }

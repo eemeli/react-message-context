@@ -1,14 +1,13 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import getMessage, { getLocales } from './get-message'
+import getMessage from './get-message'
 import MessageContext from './message-context'
 import { PathType } from './prop-types'
 
 const Message = ({ children, id, locale, onError, params, ...msgParams }) => (
   <MessageContext.Consumer>
-    {({ locales, messages, pathSep }) => {
-      const lc = getLocales(locales, locale)
-      const msg = getMessage(messages, lc, id, pathSep)
+    {context => {
+      const msg = getMessage(context, id, locale)
       if (children) return children(msg)
       switch (typeof msg) {
         case 'function':
@@ -19,13 +18,17 @@ const Message = ({ children, id, locale, onError, params, ...msgParams }) => (
           return String(msg)
         default:
           let res = onError && onError(id, typeof msg)
-          if (!res)
+          if (!res) {
+            const { pathSep } = context
             res = pathSep && Array.isArray(id) ? id.join(pathSep) : String(id)
+          }
           return res
       }
     }}
   </MessageContext.Consumer>
 )
+
+Message.displayName = 'Message'
 
 Message.propTypes = {
   children: PropTypes.func,
