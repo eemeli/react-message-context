@@ -72,6 +72,25 @@ locales are identified by an empty string `''`.
 
 [react hook]: https://reactjs.org/docs/hooks-intro.html
 
+<a id="use-message-getter"></a>
+<br/>
+
+### `useMessageGetter([{ id, locale, params }])`
+
+A custom [React hook] providing a message getter function, which may have a
+preset root id path, locale, and/or base parameters for message functions.
+
+The returned function takes two parameters `(msgId, msgParams)`, which will
+extend any values set by the hook's arguments.
+
+#### Arguments
+- [`id`] (_string_ or _string[]_): The key or key path of the message or message
+  object. If empty or `[]`, matches the root of the messages object
+- [`locale`] (_string_ or _string[]_): If set, overrides the current `locale` as
+  set by MessageProviders.
+- [`params`] (_Object_): If set, message function parameters will be assumed to
+  always be an object, with these values set.
+
 <a id="with-messages"></a>
 <br/>
 
