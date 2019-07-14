@@ -4,24 +4,22 @@ import MessageContext from './message-context'
 import getMessage, { getPath } from './get-message'
 
 /**
- *
+ * @param {(null|string|string[])} rootId
  * @param {Object} [opt]
- * @param {(string|string[])} [opt.id]
- * @param {Object} [opt.params]
- * @param {(string|string[])} [opt.locales]
+ * @param {Object} [opt.baseParams]
+ * @param {(string|string[])} [opt.locale]
  */
-export default function useMessageGetter({
-  id: rootId,
-  params: baseParams,
-  locales
-} = {}) {
-  const { locales: lc0, messages, pathSep } = useContext(MessageContext)
-  if (locales == null) locales = lc0
-  else if (!Array.isArray(locales)) locales = [locales]
+export default function useMessageGetter(rootId, { baseParams, locale } = {}) {
+  const { locales, messages, pathSep } = useContext(MessageContext)
+  const lc = Array.isArray(locale)
+    ? locale
+    : locale != null
+    ? [locale]
+    : locales
   const pathPrefix = getPath(rootId, pathSep)
   return function message(id, params) {
     const path = pathPrefix.concat(getPath(id, pathSep))
-    const msg = getMessage(messages, locales, path)
+    const msg = getMessage(messages, lc, path)
     if (typeof msg !== 'function') return msg
     const msgParams = baseParams
       ? Object.assign({}, baseParams, params)

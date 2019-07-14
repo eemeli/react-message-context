@@ -22,7 +22,7 @@ React and prop-types are peer dependencies. **React 16.3** or later is required.
 - [`<MessageProvider messages [locale] [pathSep]>`](API.md#message-provider)
 - [`<Message id [locale] [onError] [props] [...msgProps]>`](API.md#message)
 - [`useLocales()`](API.md#use-locales)
-- [`useMessageGetter([{ id, locale, params }])`](API.md#use-message-getter)
+- [`useMessageGetter(rootId, [{ baseParams, locale }])`](API.md#use-message-getter)
 
 ## Examples
 
@@ -45,9 +45,9 @@ const messages = {
 }
 
 function Equality() {
-  const answers = useMessageGetter('answers')
-  const foo = answers('sixByNine', { base: 13 })
-  const bar = answers('universe')
+  const getAnswer = useMessageGetter('answers')
+  const foo = getAnswer('sixByNine', { base: 13 })
+  const bar = getAnswer('universe')
   return `${foo} and ${bar} are equal`
 }
 
@@ -177,7 +177,7 @@ import React from 'react'
 import { useMessageGetter } from 'react-message-context'
 
 export function HookErrors() {
-  const getErrorMsg = useMessageGetter({ id: 'errors' })
+  const getErrorMsg = useMessageGetter('errors')
   return (
     <ul>
       <li>{getErrorMsg('wrong_length', { length: 42 })}</li>

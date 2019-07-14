@@ -7,7 +7,11 @@ import { PathType } from './prop-types'
 const Message = ({ children, id, locale, onError, params, ...msgParams }) => (
   <MessageContext.Consumer>
     {({ locales, messages, pathSep }) => {
-      const lc = Array.isArray(locale) ? locale : locale ? [locale] : locales
+      const lc = Array.isArray(locale)
+        ? locale
+        : locale != null
+        ? [locale]
+        : locales
       const msg = getMessage(messages, lc, id, pathSep)
       if (children) return children(msg)
       switch (typeof msg) {

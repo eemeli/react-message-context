@@ -18,9 +18,9 @@ test('Example 1', () => {
   }
 
   function Equality() {
-    const answers = useMessageGetter({ id: 'answers' })
-    const foo = answers('sixByNine', { base: 13 })
-    const bar = answers('universe')
+    const getAnswer = useMessageGetter('answers')
+    const foo = getAnswer('sixByNine', { base: 13 })
+    const bar = getAnswer('universe')
     return `${foo} and ${bar} are equal`
   }
 
@@ -61,7 +61,7 @@ describe('Example 2', () => {
   )
 
   function HookErrors() {
-    const getErrorMsg = useMessageGetter({ id: 'errors' })
+    const getErrorMsg = useMessageGetter('errors')
     return (
       <ul>
         <li>{getErrorMsg('wrong_length', { length: 42 })}</li>

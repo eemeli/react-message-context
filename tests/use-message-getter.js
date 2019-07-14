@@ -5,8 +5,8 @@ import renderer from 'react-test-renderer'
 import MessageProvider from '../src/message-provider'
 import useMessageGetter from '../src/use-message-getter'
 
-function ShowMessage({ rootId, locales, baseParams, msgId, msgParams }) {
-  const message = useMessageGetter({ id: rootId, locales, params: baseParams })
+function ShowMessage({ rootId, baseParams, locale, msgId, msgParams }) {
+  const message = useMessageGetter(rootId, { baseParams, locale })
   return JSON.stringify(message(msgId, msgParams))
 }
 
@@ -117,8 +117,8 @@ describe('Wrapped provider', () => {
     const component = renderer.create(
       <MessageProvider locale="alt" messages={{ x: 'XX' }}>
         <MessageProvider locale="lc" messages={{ x: 'X' }}>
-          <ShowMessage locales="alt" rootId="x" />
-          <ShowMessage locales="alt" msgId="x" />
+          <ShowMessage locale="alt" rootId="x" />
+          <ShowMessage locale="alt" msgId="x" />
         </MessageProvider>
       </MessageProvider>
     )
@@ -129,8 +129,8 @@ describe('Wrapped provider', () => {
     const component = renderer.create(
       <MessageProvider locale="alt" messages={{ x: 'XX' }}>
         <MessageProvider locale="lc" messages={{ x: 'X' }}>
-          <ShowMessage locales={['nonesuch', 'alt']} rootId="x" />
-          <ShowMessage locales={['nonesuch', 'alt']} msgId="x" />
+          <ShowMessage locale={['nonesuch', 'alt']} rootId="x" />
+          <ShowMessage locale={['nonesuch', 'alt']} msgId="x" />
         </MessageProvider>
       </MessageProvider>
     )
