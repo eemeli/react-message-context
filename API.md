@@ -4,7 +4,7 @@ The public API is available as named exports of the package:
 
 ```js
 import {
-  MessageProvider, Message, withLocale, withMessages
+  MessageProvider, Message, useLocales, withMessages
 } from 'react-message-context'
 ```
 
@@ -72,18 +72,6 @@ locales are identified by an empty string `''`.
 
 [react hook]: https://reactjs.org/docs/hooks-intro.html
 
-<a id="with-locale"></a>
-<br/>
-
-### `withLocale(Component)`
-
-A [higher-order component] providing the wrapped `Component` with a `locale`
-prop matching the current `locale` prop of the ancestor `MessageProvider`
-component. The HOC [forwards] its `ref` to `Component`.
-
-[higher-order component]: https://reactjs.org/docs/higher-order-components.html
-[forwards]: https://reactjs.org/docs/forwarding-refs.html
-
 <a id="with-messages"></a>
 <br/>
 
@@ -103,3 +91,6 @@ its `ref` to `Component`.
   current locale, if set.
 - [`locale`] (_string_ or _string[]_): If set, overrides the `locale` and
   `fallback` of the ancestral MessageProvider.
+
+[higher-order component]: https://reactjs.org/docs/higher-order-components.html
+[forwards]: https://reactjs.org/docs/forwarding-refs.html
