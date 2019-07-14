@@ -1,3 +1,4 @@
+import merge from 'lodash.merge'
 import React, { Component } from 'react'
 import renderer from 'react-test-renderer'
 
@@ -156,10 +157,25 @@ describe('Inheritance', () => {
       '{"locales":["aa"],"messages":{"aa":{"bb":{},"cc":"CC","dd":{}}},"pathSep":"."}'
     )
   })
+})
 
-  test('Deeply overlapping keys', () => {
+describe('Deeply overlapping keys', () => {
+  test('Overwritten by default', () => {
     const component = renderer.create(
       <MessageProvider messages={{ aa: { bb: 'BB', cc: 'CC' } }}>
+        <MessageProvider messages={{ aa: { bb: 'B', dd: 'D' } }}>
+          <TestConsumer />
+        </MessageProvider>
+      </MessageProvider>
+    )
+    expect(component.toJSON()).toBe(
+      '{"locales":[""],"messages":{"":{"aa":{"bb":"B","dd":"D"}}},"pathSep":"."}'
+    )
+  })
+
+  test('Works with _.merge', () => {
+    const component = renderer.create(
+      <MessageProvider merge={merge} messages={{ aa: { bb: 'BB', cc: 'CC' } }}>
         <MessageProvider messages={{ aa: { bb: 'B', dd: 'D' } }}>
           <TestConsumer />
         </MessageProvider>

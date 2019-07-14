@@ -73,7 +73,7 @@ export const App = () => (
 <a id="message-provider"></a>
 <br/>
 
-### `<MessageProvider messages [locale] [pathSep]>`
+### `<MessageProvider messages [locale] [merge] [pathSep]>`
 
 Makes the messages available for its descendants. Internally uses a Context API
 [Provider]. To support multiple locales and/or namespaces, MessageProviders may
@@ -84,11 +84,14 @@ furthest.
 #### Props
 
 - `messages` (_object_): A hierarchical object containing the messages as
-  boolean, number, string or function values. If the messages overlap those
-  defined in a parent `MessageProvider`, they will be merged deeply.
+  boolean, number, string or function values.
 - [`locale`] (_string_): A key for the locale of the given messages. If uset,
   will inherit the locale from the parent context, or ultimately use en empty
   string.
+- [`merge`] (_Function_): By default, top-level namespaces defined in a child
+  `MessageProvider` overwrite those defined in a parent. Set this to [`_.merge`]
+  or some other function with the same arguments as [Object.assign] to allow for
+  deep merges.
 - [`pathSep`] (_bool_ or _string_): By default, `.` in a `<Message id>` splits
   the path into parts, such that e.g. `'a.b'` is equivalent to `['a', 'b']`.
   Use this option to customize or disable this behaviour. Only valid in an
@@ -96,6 +99,8 @@ furthest.
 - `children` (_ReactElement_): The root of your component hierarchy.
 
 [provider]: https://reactjs.org/docs/context.html#provider
+[`_.merge`]: https://lodash.com/docs/#merge
+[object.assign]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign
 
 #### Example
 

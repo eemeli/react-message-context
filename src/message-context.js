@@ -2,6 +2,7 @@ import React from 'react'
 
 const defaultValue = {
   locales: [],
+  merge: Object.assign,
   messages: {},
   pathSep: undefined
 }
