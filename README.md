@@ -29,15 +29,12 @@ React and prop-types are peer dependencies. **React 16.3** or later is required.
 
 ## Examples
 
-With no locale, using both `Message` and `useMessageGetter`:
+Within a `MessageProvider`, access to the messages is possible using either the
+`Message` component, or via custom hooks such as `useMessage`:
 
-```jsx
+```js
 import React from 'react'
-import {
-  Message,
-  MessageProvider,
-  useMessageGetter
-} from 'react-message-context'
+import { Message, MessageProvider, useMessage } from 'react-message-context'
 
 const messages = {
   message: 'Your message is important',
@@ -48,10 +45,9 @@ const messages = {
 }
 
 function Equality() {
-  const getAnswer = useMessageGetter('answers')
-  const foo = getAnswer('sixByNine', { base: 13 })
-  const bar = getAnswer('universe')
-  return `${foo} and ${bar} are equal`
+  const foo = useMessage('answers.sixByNine')
+  const bar = useMessage('answers.universe')
+  return `${foo({ base: 13 })} and ${bar} are equal`
 }
 
 export const Example = () => (
@@ -119,9 +115,9 @@ export const Example = () => (
 
 ---
 
-Using [messageformat] and [messageformat-loader], defaulting to
-Finnish but using English as a fallback locale, both of the following will
-render as:
+For a more complete experience, use [messageformat] and [messageformat-loader],
+which allows for importing your messages from multiple sources. As a
+demonstration of locale fallback, both of the following will render as:
 
 ```
 - Viestisi on väärän pituinen (pitäisi olla 42 merkkiä)
