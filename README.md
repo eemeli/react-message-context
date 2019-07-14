@@ -1,8 +1,8 @@
 # react-message-context
 
-React message provider, using the [Context API] introduced in React 16.3. Works
-well with just one or many locales, and with messages stored as strings or
-functions. Designed in particular for use with [messageformat].
+React message provider, using the React [Context API]. Works well with just one
+or many locales, and with messages stored as strings or functions. Designed in
+particular for use with [messageformat].
 
 [context api]: https://reactjs.org/docs/context.html
 [messageformat]: https://messageformat.github.io
@@ -13,7 +13,7 @@ functions. Designed in particular for use with [messageformat].
 npm install react-message-context react prop-types
 ```
 
-React and prop-types are peer dependencies. **React 16.3** or later is required.
+React and prop-types are peer dependencies. **React 16.8** or later is required.
 
 ## Documentation
 
