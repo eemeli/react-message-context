@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import React, { Component } from 'react'
+import React, { useContext, useMemo } from 'react'
 import MessageContext, { defaultValue } from './message-context'
 import { ContextType } from './prop-types'
 
@@ -23,54 +23,43 @@ function getMessages({ merge, messages: ctxMessages }, locale, lcMessages) {
   return messages
 }
 
-class InnerMessageProvider extends Component {
-  static propTypes = {
-    context: ContextType,
-    locale: PropTypes.string,
-    messages: PropTypes.object.isRequired,
-    pathSep: PropTypes.oneOfType([PropTypes.bool, PropTypes.string])
-  }
-
-  static defaultProps = {
-    locale: '',
-    pathSep: PATH_SEP
-  }
-
-  static getDerivedStateFromProps(props, state) {
-    const propContext = props.context || defaultValue
-    const pathSep = getPathSep(propContext, props.pathSep)
-    const changed =
-      propContext !== state.prevProps.context ||
-      props.merge !== state.prevProps.merge ||
-      props.messages !== state.prevProps.messages ||
-      props.locale !== state.context.locales[0] ||
-      pathSep !== state.context.pathSep
-    if (!changed) return null
-    const locales = getLocales(propContext, props.locale)
-    const merge = props.merge || propContext.merge
-    const messages = getMessages(propContext, props.locale, props.messages)
-    const context = { locales, merge, messages, pathSep }
-    return { context, prevProps: { context: propContext, merge, messages } }
-  }
-
-  state = {
-    context: defaultValue,
-    prevProps: { context: defaultValue, messages: {} }
-  }
-
-  render() {
-    return (
-      <MessageContext.Provider value={this.state.context}>
-        {this.props.children}
-      </MessageContext.Provider>
-    )
-  }
+function MessageProvider({
+  children,
+  context: parent,
+  locale,
+  merge,
+  messages,
+  pathSep
+}) {
+  if (parent === undefined) parent = useContext(MessageContext)
+  else if (parent === null) parent = defaultValue
+  const context = useMemo(
+    () => ({
+      locales: getLocales(parent, locale),
+      merge: merge || parent.merge,
+      messages: getMessages(parent, locale, messages),
+      pathSep: getPathSep(parent, pathSep)
+    }),
+    [parent, locale, merge, messages, pathSep]
+  )
+  return (
+    <MessageContext.Provider value={context}>
+      {children}
+    </MessageContext.Provider>
+  )
 }
 
-const MessageProvider = props => (
-  <MessageContext.Consumer>
-    {context => <InnerMessageProvider context={context} {...props} />}
-  </MessageContext.Consumer>
-)
-MessageProvider.displayName = 'MessageProvider'
+MessageProvider.propTypes = {
+  context: ContextType,
+  locale: PropTypes.string,
+  merge: PropTypes.func,
+  messages: PropTypes.object.isRequired,
+  pathSep: PropTypes.oneOfType([PropTypes.bool, PropTypes.string])
+}
+
+MessageProvider.defaultProps = {
+  locale: '',
+  pathSep: PATH_SEP
+}
+
 export default MessageProvider
