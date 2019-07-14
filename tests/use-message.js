@@ -2,8 +2,7 @@ import { fromJS } from 'immutable'
 import React from 'react'
 import renderer from 'react-test-renderer'
 
-import MessageProvider from '../src/message-provider'
-import useMessage from '../src/use-message'
+import { MessageProvider, useMessage } from '../src/index'
 
 function ShowMessage({ id, locale, params }) {
   const msg = useMessage(id, locale)

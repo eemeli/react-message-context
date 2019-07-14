@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import renderer from 'react-test-renderer'
 
-import MessageContext from '../src/message-context'
-import MessageProvider from '../src/message-provider'
+import { MessageContext, MessageProvider } from '../src/index'
 
 const TestConsumer = () => (
   <MessageContext.Consumer>

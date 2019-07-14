@@ -1,9 +1,8 @@
 import { fromJS } from 'immutable'
-import React, { Component } from 'react'
+import React from 'react'
 import renderer from 'react-test-renderer'
 
-import Message from '../src/message'
-import MessageProvider from '../src/message-provider'
+import { Message, MessageProvider } from '../src/index'
 
 describe('No locale', () => {
   test('String message', () => {
