@@ -20,7 +20,10 @@ function getLocales(context, locale) {
 }
 
 function getMessages(context, locale, lcMessages) {
-  return merge({}, context && context.messages, { [locale]: lcMessages })
+  const messages = context ? Object.assign({}, context.messages) : {}
+  const prev = messages[locale]
+  messages[locale] = prev ? merge({}, prev, lcMessages) : lcMessages
+  return messages
 }
 
 class InnerMessageProvider extends Component {

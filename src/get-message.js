@@ -1,15 +1,11 @@
 function getIn(messages, path) {
   if (!messages) return undefined
-  if (typeof messages.getIn === 'function') {
-    return messages.getIn(path)
-  } else {
-    let msg = messages
-    for (let i = 0; i < path.length; ++i) {
-      msg = msg[path[i]]
-      if (typeof msg === 'undefined') return undefined
-    }
-    return msg
+  let msg = messages
+  for (const p of path) {
+    msg = msg[p]
+    if (msg === undefined) return undefined
   }
+  return msg
 }
 
 export function getPath(id, pathSep) {

@@ -15,7 +15,7 @@ exports[`Example 1 1`] = `
 </ul>
 `;
 
-exports[`Example 2 ComponentErrors wWith immutable Map 1`] = `
+exports[`Example 2 ComponentErrors 1`] = `
 <ul>
   <li>
     Viestisi on väärän pituinen (pitäisi olla 42 merkkiä)
@@ -26,7 +26,7 @@ exports[`Example 2 ComponentErrors wWith immutable Map 1`] = `
 </ul>
 `;
 
-exports[`Example 2 ComponentErrors with plain object 1`] = `
+exports[`Example 2 HookErrors 1`] = `
 <ul>
   <li>
     Viestisi on väärän pituinen (pitäisi olla 42 merkkiä)
@@ -37,39 +37,7 @@ exports[`Example 2 ComponentErrors with plain object 1`] = `
 </ul>
 `;
 
-exports[`Example 2 HookErrors wWith immutable Map 1`] = `
-<ul>
-  <li>
-    Viestisi on väärän pituinen (pitäisi olla 42 merkkiä)
-  </li>
-  <li>
-    The value must be equal to 13
-  </li>
-</ul>
-`;
-
-exports[`Example 2 HookErrors with plain object 1`] = `
-<ul>
-  <li>
-    Viestisi on väärän pituinen (pitäisi olla 42 merkkiä)
-  </li>
-  <li>
-    The value must be equal to 13
-  </li>
-</ul>
-`;
-
-exports[`Example 3 With immutable Map 1`] = `
-Array [
-  "FÖÖ",
-  "FOO",
-  "BÄR",
-  "bar",
-  "QUX",
-]
-`;
-
-exports[`Example 3 With plain object 1`] = `
+exports[`Example 3 1`] = `
 Array [
   "FÖÖ",
   "FOO",

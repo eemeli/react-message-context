@@ -206,8 +206,3 @@ export const Example = () => (
   </MessageProvider>
 )
 ```
-
-Note that in the preceding, `en` and `fi` could also be [immutable] Maps defined
-with `fromJS()` with no other changes needed in the code.
-
-[immutable]: https://facebook.github.io/immutable-js/

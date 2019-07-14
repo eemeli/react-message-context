@@ -1,4 +1,3 @@
-import { fromJS } from 'immutable'
 import React from 'react'
 import renderer from 'react-test-renderer'
 
@@ -70,7 +69,7 @@ describe('Example 2', () => {
     )
   }
 
-  test('ComponentErrors with plain object', () => {
+  test('ComponentErrors', () => {
     const component = renderer.create(
       <MessageProvider locale="en" messages={en}>
         <MessageProvider locale="fi" messages={fi}>
@@ -81,32 +80,10 @@ describe('Example 2', () => {
     expect(component.toJSON()).toMatchSnapshot()
   })
 
-  test('ComponentErrors wWith immutable Map', () => {
-    const component = renderer.create(
-      <MessageProvider locale="en" messages={fromJS(en)}>
-        <MessageProvider locale="fi" messages={fromJS(fi)}>
-          <ComponentErrors />
-        </MessageProvider>
-      </MessageProvider>
-    )
-    expect(component.toJSON()).toMatchSnapshot()
-  })
-
-  test('HookErrors with plain object', () => {
+  test('HookErrors', () => {
     const component = renderer.create(
       <MessageProvider locale="en" messages={en}>
         <MessageProvider locale="fi" messages={fi}>
-          <HookErrors />
-        </MessageProvider>
-      </MessageProvider>
-    )
-    expect(component.toJSON()).toMatchSnapshot()
-  })
-
-  test('HookErrors wWith immutable Map', () => {
-    const component = renderer.create(
-      <MessageProvider locale="en" messages={fromJS(en)}>
-        <MessageProvider locale="fi" messages={fromJS(fi)}>
           <HookErrors />
         </MessageProvider>
       </MessageProvider>
@@ -115,36 +92,17 @@ describe('Example 2', () => {
   })
 })
 
-describe('Example 3', () => {
-  test('With plain object', () => {
-    const component = renderer.create(
-      <MessageProvider locale="en" messages={{ foo: 'FOO', qux: 'QUX' }}>
-        <MessageProvider locale="fi" messages={{ foo: 'FÖÖ', bar: 'BÄR' }}>
-          <Message id="foo" />
-          <Message id="foo" locale="en" />
-          <Message id="bar" />
-          <Message id="bar" locale="en" />
-          <Message id="qux" />
-        </MessageProvider>
+test('Example 3', () => {
+  const component = renderer.create(
+    <MessageProvider locale="en" messages={{ foo: 'FOO', qux: 'QUX' }}>
+      <MessageProvider locale="fi" messages={{ foo: 'FÖÖ', bar: 'BÄR' }}>
+        <Message id="foo" />
+        <Message id="foo" locale="en" />
+        <Message id="bar" />
+        <Message id="bar" locale="en" />
+        <Message id="qux" />
       </MessageProvider>
-    )
-    expect(component.toJSON()).toMatchSnapshot()
-  })
-
-  test('With immutable Map', () => {
-    const en = fromJS({ foo: 'FOO', qux: 'QUX' })
-    const fi = fromJS({ foo: 'FÖÖ', bar: 'BÄR' })
-    const component = renderer.create(
-      <MessageProvider locale="en" messages={en}>
-        <MessageProvider locale="fi" messages={fi}>
-          <Message id="foo" />
-          <Message id="foo" locale="en" />
-          <Message id="bar" />
-          <Message id="bar" locale="en" />
-          <Message id="qux" />
-        </MessageProvider>
-      </MessageProvider>
-    )
-    expect(component.toJSON()).toMatchSnapshot()
-  })
+    </MessageProvider>
+  )
+  expect(component.toJSON()).toMatchSnapshot()
 })

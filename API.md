@@ -83,11 +83,9 @@ furthest.
 
 #### Props
 
-- `messages` (_object_): An object containing the messages as boolean, number,
-  string or function values. Functions will be called with an object parameter.
-  `messages` may be hierarchical, and if it does not use `[]` bracket notation
-  to access child values, it should provide a `getIn()` accessor as used by
-  [Immutable collections].
+- `messages` (_object_): A hierarchical object containing the messages as
+  boolean, number, string or function values. If the messages overlap those
+  defined in a parent `MessageProvider`, they will be merged deeply.
 - [`locale`] (_string_): A key for the locale of the given messages. If uset,
   will inherit the locale from the parent context, or ultimately use en empty
   string.
@@ -98,7 +96,6 @@ furthest.
 - `children` (_ReactElement_): The root of your component hierarchy.
 
 [provider]: https://reactjs.org/docs/context.html#provider
-[immutable collections]: https://facebook.github.io/immutable-js/docs/#/Collection/getIn
 
 #### Example
 
@@ -111,7 +108,7 @@ const extended = { other: { key: 'Another message' } }
 
 const Example = () => (
   <span>
-    <Message id="example.key" />
+    <Message id={['example', 'key']} />
     {' | '}
     <Message id="other.key" />
   </span>

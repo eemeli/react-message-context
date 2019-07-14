@@ -1,4 +1,3 @@
-import { fromJS } from 'immutable'
 import React from 'react'
 import renderer from 'react-test-renderer'
 
@@ -184,132 +183,120 @@ describe('Inherited locale', () => {
   })
 })
 
-const hierObj = {
-  object: obj => obj,
-  'immutable Map': obj => fromJS(obj)
-}
+describe('Hierarchical messages', () => {
+  test('Array id, no locale', () => {
+    const messages = { obj: { x: 'X' } }
+    const component = renderer.create(
+      <MessageProvider messages={messages}>
+        <Message id={['obj', 'x']} />
+      </MessageProvider>
+    )
+    expect(component.toJSON()).toBe('X')
+  })
 
-Object.keys(hierObj).forEach(name => {
-  const getMessages = hierObj[name]
+  test('Array id, with locale', () => {
+    const messages = { obj: { x: 'X' } }
+    const component = renderer.create(
+      <MessageProvider messages={messages} locale="lc">
+        <Message id={['obj', 'x']} />
+      </MessageProvider>
+    )
+    expect(component.toJSON()).toBe('X')
+  })
 
-  describe(`Hierarchical messages: ${name}`, () => {
-    test('Array id, no locale', () => {
-      const messages = getMessages({ obj: { x: 'X' } })
-      const component = renderer.create(
-        <MessageProvider messages={messages}>
-          <Message id={['obj', 'x']} />
-        </MessageProvider>
-      )
-      expect(component.toJSON()).toBe('X')
-    })
+  test('Path id, no locale', () => {
+    const messages = { obj: { x: 'X' } }
+    const component = renderer.create(
+      <MessageProvider messages={messages}>
+        <Message id="obj.x" />
+      </MessageProvider>
+    )
+    expect(component.toJSON()).toBe('X')
+  })
 
-    test('Array id, with locale', () => {
-      const messages = getMessages({ obj: { x: 'X' } })
-      const component = renderer.create(
-        <MessageProvider messages={messages} locale="lc">
-          <Message id={['obj', 'x']} />
-        </MessageProvider>
-      )
-      expect(component.toJSON()).toBe('X')
-    })
+  test('Path id, with locale', () => {
+    const messages = { obj: { x: 'X' } }
+    const component = renderer.create(
+      <MessageProvider messages={messages} locale="lc">
+        <Message id="obj.x" />
+      </MessageProvider>
+    )
+    expect(component.toJSON()).toBe('X')
+  })
 
-    test('Path id, no locale', () => {
-      const messages = getMessages({ obj: { x: 'X' } })
-      const component = renderer.create(
-        <MessageProvider messages={messages}>
-          <Message id="obj.x" />
-        </MessageProvider>
-      )
-      expect(component.toJSON()).toBe('X')
-    })
+  test('Path id, custom separator', () => {
+    const messages = { obj: { x: 'X' } }
+    const component = renderer.create(
+      <MessageProvider messages={messages} pathSep="/">
+        <Message id="obj/x" />
+        <Message id="obj/y" />
+        <Message id="obj.x" />
+      </MessageProvider>
+    )
+    expect(component.toJSON()).toMatchObject(['X', 'obj/y', 'obj.x'])
+  })
 
-    test('Path id, with locale', () => {
-      const messages = getMessages({ obj: { x: 'X' } })
-      const component = renderer.create(
-        <MessageProvider messages={messages} locale="lc">
-          <Message id="obj.x" />
-        </MessageProvider>
-      )
-      expect(component.toJSON()).toBe('X')
-    })
+  test('Incomplete path, no error handler', () => {
+    const messages = { obj: { x: 'X' } }
+    const component = renderer.create(
+      <MessageProvider messages={messages}>
+        <Message id={['obj']} />
+      </MessageProvider>
+    )
+    expect(component.toJSON()).toBe('obj')
+  })
 
-    test('Path id, custom separator', () => {
-      const messages = getMessages({ obj: { x: 'X' } })
-      const component = renderer.create(
-        <MessageProvider messages={messages} pathSep="/">
-          <Message id="obj/x" />
-          <Message id="obj/y" />
-          <Message id="obj.x" />
-        </MessageProvider>
-      )
-      expect(component.toJSON()).toMatchObject(['X', 'obj/y', 'obj.x'])
-    })
+  test('Incomplete path, with error handler', () => {
+    const messages = { obj: { x: 'X' } }
+    const component = renderer.create(
+      <MessageProvider messages={messages}>
+        <Message id={['obj']} onError={(id, type) => String(id.concat(type))} />
+      </MessageProvider>
+    )
+    expect(component.toJSON()).toBe('obj,object')
+  })
 
-    test('Incomplete path, no error handler', () => {
-      const messages = getMessages({ obj: { x: 'X' } })
-      const component = renderer.create(
-        <MessageProvider messages={messages}>
-          <Message id={['obj']} />
-        </MessageProvider>
-      )
-      expect(component.toJSON()).toBe('obj')
-    })
+  test('Bad path, custom pathSep', () => {
+    const messages = { obj: { x: 'X' } }
+    const component = renderer.create(
+      <MessageProvider messages={messages} pathSep="/">
+        <Message id={['not', 'valid']} />
+      </MessageProvider>
+    )
+    expect(component.toJSON()).toBe('not/valid')
+  })
 
-    test('Incomplete path, with error handler', () => {
-      const messages = getMessages({ obj: { x: 'X' } })
-      const component = renderer.create(
-        <MessageProvider messages={messages}>
-          <Message
-            id={['obj']}
-            onError={(id, type) => String(id.concat(type))}
-          />
-        </MessageProvider>
-      )
-      expect(component.toJSON()).toBe('obj,object')
-    })
+  test('Bad path, disabled pathSep', () => {
+    const messages = { obj: { x: 'X' } }
+    const component = renderer.create(
+      <MessageProvider messages={messages} pathSep={false}>
+        <Message id={['not', 'valid']} />
+      </MessageProvider>
+    )
+    expect(component.toJSON()).toBe('not,valid')
+  })
 
-    test('Bad path, custom pathSep', () => {
-      const messages = getMessages({ obj: { x: 'X' } })
-      const component = renderer.create(
-        <MessageProvider messages={messages} pathSep="/">
-          <Message id={['not', 'valid']} />
-        </MessageProvider>
-      )
-      expect(component.toJSON()).toBe('not/valid')
-    })
+  test('Bad path, no error handler', () => {
+    const messages = { obj: { x: 'X' } }
+    const component = renderer.create(
+      <MessageProvider messages={messages}>
+        <Message id={['not', 'valid']} />
+      </MessageProvider>
+    )
+    expect(component.toJSON()).toBe('not.valid')
+  })
 
-    test('Bad path, disabled pathSep', () => {
-      const messages = getMessages({ obj: { x: 'X' } })
-      const component = renderer.create(
-        <MessageProvider messages={messages} pathSep={false}>
-          <Message id={['not', 'valid']} />
-        </MessageProvider>
-      )
-      expect(component.toJSON()).toBe('not,valid')
-    })
-
-    test('Bad path, no error handler', () => {
-      const messages = getMessages({ obj: { x: 'X' } })
-      const component = renderer.create(
-        <MessageProvider messages={messages}>
-          <Message id={['not', 'valid']} />
-        </MessageProvider>
-      )
-      expect(component.toJSON()).toBe('not.valid')
-    })
-
-    test('Bad path, with error handler', () => {
-      const messages = getMessages({ obj: { x: 'X' } })
-      const component = renderer.create(
-        <MessageProvider messages={messages}>
-          <Message
-            id={['not', 'valid']}
-            onError={(id, type) => String(id.concat(type))}
-          />
-        </MessageProvider>
-      )
-      expect(component.toJSON()).toBe('not,valid,undefined')
-    })
+  test('Bad path, with error handler', () => {
+    const messages = { obj: { x: 'X' } }
+    const component = renderer.create(
+      <MessageProvider messages={messages}>
+        <Message
+          id={['not', 'valid']}
+          onError={(id, type) => String(id.concat(type))}
+        />
+      </MessageProvider>
+    )
+    expect(component.toJSON()).toBe('not,valid,undefined')
   })
 })
 

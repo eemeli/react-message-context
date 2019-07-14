@@ -1,4 +1,3 @@
-import { fromJS } from 'immutable'
 import React from 'react'
 import renderer from 'react-test-renderer'
 
@@ -11,24 +10,14 @@ function ShowMessage({ id, locale, params }) {
 
 const cases = [
   {
-    title: 'No locale, object messages',
+    title: 'No locale',
     locale: undefined,
     messages: { x: { y: 'Y' } }
   },
   {
-    title: 'Set locale, object messages',
+    title: 'Set locale',
     locale: 'lc',
     messages: { x: { y: 'Y' } }
-  },
-  {
-    title: 'No locale, immutable messages',
-    locale: undefined,
-    messages: fromJS({ x: { y: 'Y' } })
-  },
-  {
-    title: 'Set locale, immutable messages',
-    locale: 'lc',
-    messages: fromJS({ x: { y: 'Y' } })
   }
 ]
 
