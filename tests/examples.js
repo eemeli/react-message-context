@@ -1,8 +1,8 @@
 import { fromJS } from 'immutable'
-import React, { Component } from 'react'
+import React from 'react'
 import renderer from 'react-test-renderer'
 
-import { Message, MessageProvider, withMessages } from '../src/index'
+import { Message, MessageProvider, useMessageGetter } from '../src/index'
 
 // actually precompiled with messageformat-cli
 import en from './fixtures/messages_en'
@@ -10,44 +10,46 @@ import fi from './fixtures/messages_fi'
 
 test('Example 1', () => {
   const messages = {
-    message: 'Your message',
+    message: 'Your message is important',
     answers: {
       sixByNine: ({ base }) => (6 * 9).toString(base),
       universe: 42
     }
   }
 
-  const Equality = ({ messages }) => {
-    const foo = messages('sixByNine', { base: 13 })
-    const bar = messages('universe')
+  function Equality() {
+    const answers = useMessageGetter({ id: 'answers' })
+    const foo = answers('sixByNine', { base: 13 })
+    const bar = answers('universe')
     return `${foo} and ${bar} are equal`
   }
-  const WrappedEquality = withMessages('answers')(Equality)
 
-  const App = () => (
-    <ul>
-      <li>
-        <Message id="message" /> is important
-      </li>
-      <li>
-        The answer is <Message id="answers.sixByNine" base={13} />
-      </li>
-      <li>
-        <WrappedEquality />
-      </li>
-    </ul>
+  const Example = () => (
+    <MessageProvider messages={messages}>
+      <ul>
+        <li>
+          <Message id="message" />
+        </li>
+        <li>
+          The answer is <Message id="answers.sixByNine" base={13} />
+        </li>
+        <li>
+          <Equality />
+        </li>
+      </ul>
+    </MessageProvider>
   )
 
   const component = renderer.create(
     <MessageProvider messages={messages}>
-      <App />
+      <Example />
     </MessageProvider>
   )
   expect(component.toJSON()).toMatchSnapshot()
 })
 
 describe('Example 2', () => {
-  const Errors = () => (
+  const ComponentErrors = () => (
     <ul>
       <li>
         <Message id="errors.wrong_length" length={42} />
@@ -58,22 +60,54 @@ describe('Example 2', () => {
     </ul>
   )
 
-  test('With plain object', () => {
+  function HookErrors() {
+    const getErrorMsg = useMessageGetter({ id: 'errors' })
+    return (
+      <ul>
+        <li>{getErrorMsg('wrong_length', { length: 42 })}</li>
+        <li>{getErrorMsg('equal_to', { count: 13 })}</li>
+      </ul>
+    )
+  }
+
+  test('ComponentErrors with plain object', () => {
     const component = renderer.create(
       <MessageProvider locale="en" messages={en}>
         <MessageProvider locale="fi" messages={fi}>
-          <Errors />
+          <ComponentErrors />
         </MessageProvider>
       </MessageProvider>
     )
     expect(component.toJSON()).toMatchSnapshot()
   })
 
-  test('With immutable Map', () => {
+  test('ComponentErrors wWith immutable Map', () => {
     const component = renderer.create(
       <MessageProvider locale="en" messages={fromJS(en)}>
         <MessageProvider locale="fi" messages={fromJS(fi)}>
-          <Errors />
+          <ComponentErrors />
+        </MessageProvider>
+      </MessageProvider>
+    )
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  test('HookErrors with plain object', () => {
+    const component = renderer.create(
+      <MessageProvider locale="en" messages={en}>
+        <MessageProvider locale="fi" messages={fi}>
+          <HookErrors />
+        </MessageProvider>
+      </MessageProvider>
+    )
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  test('HookErrors wWith immutable Map', () => {
+    const component = renderer.create(
+      <MessageProvider locale="en" messages={fromJS(en)}>
+        <MessageProvider locale="fi" messages={fromJS(fi)}>
+          <HookErrors />
         </MessageProvider>
       </MessageProvider>
     )

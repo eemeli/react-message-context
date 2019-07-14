@@ -4,7 +4,7 @@ The public API is available as named exports of the package:
 
 ```js
 import {
-  MessageProvider, Message, useLocales, withMessages
+  MessageProvider, Message, useLocales, useMessageGetter
 } from 'react-message-context'
 ```
 
@@ -90,26 +90,3 @@ extend any values set by the hook's arguments.
   set by MessageProviders.
 - [`params`] (_Object_): If set, message function parameters will be assumed to
   always be an object, with these values set.
-
-<a id="with-messages"></a>
-<br/>
-
-### `withMessages([id], [locale])(Component)`
-
-A [higher-order component] providing the wrapped `Component` with a `messages`
-function as a prop. The function takes two arguments, `msgId` and `msgParams`,
-and returns a string or an object, or `undefined` if the message was not found.
-`msgId` may be a key or key path that will be concatenated with the HOC's `id`
-to form the complete message path. If the message at that path is a function,
-it will be called with `msgParams` as its single argument. The HOC [forwards]
-its `ref` to `Component`.
-
-#### Arguments
-- [`id`] (_string_ or _string[]_): The key or key path of the message or message
-  object. If empty or `[]`, matches the root of the messages object or the
-  current locale, if set.
-- [`locale`] (_string_ or _string[]_): If set, overrides the `locale` and
-  `fallback` of the ancestral MessageProvider.
-
-[higher-order component]: https://reactjs.org/docs/higher-order-components.html
-[forwards]: https://reactjs.org/docs/forwarding-refs.html

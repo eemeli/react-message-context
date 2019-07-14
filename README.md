@@ -23,43 +23,48 @@ React and prop-types are peer dependencies. **React 16.3** or later is required.
 - [`<Message id [locale] [onError] [props] [...msgProps]>`](API.md#message)
 - [`useLocales()`](API.md#use-locales)
 - [`useMessageGetter([{ id, locale, params }])`](API.md#use-message-getter)
-- [`withMessages([id], [lc])(Component)`](API.md#with-messages)
 
 ## Examples
 
-With no locale, using both `Message` and `withMessages`:
+With no locale, using both `Message` and `useMessageGetter`:
 
 ```jsx
 import React from 'react'
-import ReactDOM from 'react-dom'
-import { Message, MessageProvider, withMessages } from 'react-message-context'
+import {
+  Message,
+  MessageProvider,
+  useMessageGetter
+} from 'react-message-context'
 
 const messages = {
-  message: 'Your message',
+  message: 'Your message is important',
   answers: {
     sixByNine: ({ base }) => (6 * 9).toString(base),
     universe: 42
   }
 }
 
-const Equality = ({ messages }) => (
-  const foo = messages('sixByNine', { base: 13 })
-  const bar = messages('universe')
+function Equality() {
+  const answers = useMessageGetter('answers')
+  const foo = answers('sixByNine', { base: 13 })
+  const bar = answers('universe')
   return `${foo} and ${bar} are equal`
-)
-const WrappedEquality = withMessages('answers')(Equality)
+}
 
-const App = () => <ul>
-  <li><Message id='message' /> is important</li>
-  <li>The answer is <Message id='answers.sixByNine' base={13} /></li>
-  <li><WrappedEquality /></li>
-</ul>
-
-ReactDOM.render(
+export const Example = () => (
   <MessageProvider messages={messages}>
-    <App />
-  </MessageProvider>,
-  document.getElementById('root')
+    <ul>
+      <li>
+        <Message id="message" />
+      </li>
+      <li>
+        The answer is <Message id="answers.sixByNine" base={13} />
+      </li>
+      <li>
+        <Equality />
+      </li>
+    </ul>
+  </MessageProvider>
 )
 
 // Will render as:
@@ -77,15 +82,25 @@ namespaces:
 import React from 'react'
 import { Message, MessageProvider } from 'react-message-context'
 
-export Example = () => (
+export const Example = () => (
   <MessageProvider locale="en" messages={{ foo: 'FOO', qux: 'QUX' }}>
     <MessageProvider locale="fi" messages={{ foo: 'FÖÖ', bar: 'BÄR' }}>
       <ul>
-      <li><Message id="foo" /></li>
-      <li><Message id="foo" locale="en" /></li>
-      <li><Message id="bar" /></li>
-      <li><Message id="bar" locale="en" /></li>
-      <li><Message id="qux" /></li>
+        <li>
+          <Message id="foo" />
+        </li>
+        <li>
+          <Message id="foo" locale="en" />
+        </li>
+        <li>
+          <Message id="bar" />
+        </li>
+        <li>
+          <Message id="bar" locale="en" />
+        </li>
+        <li>
+          <Message id="qux" />
+        </li>
       </ul>
     </MessageProvider>
   </MessageProvider>
@@ -95,44 +110,55 @@ export Example = () => (
 // - FÖÖ
 // - FOO
 // - BÄR
-// - bar  // uses fallback to key
-// - QUX  // uses fallback to "en" locale
+// - bar  (uses fallback to key)
+// - QUX  (uses fallback to "en" locale)
 ```
 
 ---
 
-Using [messageformat] and [messageformat-properties-loader], defaulting to
-Finnish but using English as a fallback locale:
-
-[messageformat-properties-loader]: https://www.npmjs.com/package/messageformat-properties-loader
-
-#### messages_en.properties
+Using [messageformat] and [messageformat-loader], defaulting to
+Finnish but using English as a fallback locale, both of the following will
+render as:
 
 ```
+- Viestisi on väärän pituinen (pitäisi olla 42 merkkiä)
+- The value must be equal to 13
+```
+
+[messageformat-loader]: https://www.npmjs.com/package/messageformat-loader
+
+#### messages_en.yaml
+
+```yaml
 confirm: Are you sure?
-errors.wrong_length: Your message is the wrong length (should be \
-  {length, plural, one{1 character} other{# characters}})
-errors.equal_to: The value must be equal to {count}
+errors:
+  wrong_length: |
+    Your message is the wrong length (should be {length, plural,
+      one {1 character}
+      other {# characters}
+    })
+  equal_to: The value must be equal to {count}
 ```
 
-#### messages_fi.properties
+#### messages_fi.yaml
 
-```
+```yaml
 confirm: Oletko varma?
-errors.wrong_length: Viestisi on väärän pituinen (pitäisi olla \
-  {length, plural, one{1 merkki} other{# merkkiä}})
+errors:
+  wrong_length: |
+    Viestisi on väärän pituinen (pitäisi olla {length, plural,
+      one {1 merkki}
+      other {# merkkiä}
+    })
 ```
 
-#### example.js
+#### component-errors.js
 
 ```jsx
 import React from 'react'
-import { Message, MessageProvider } from 'react-message-context'
+import { Message } from 'react-message-context'
 
-import en from './messages_en.properties'
-import fi from './messages_fi.properties'
-
-const Errors = () => (
+export const ComponentErrors = () => (
   <ul>
     <li>
       <Message id="errors.wrong_length" length={42} />
@@ -142,18 +168,44 @@ const Errors = () => (
     </li>
   </ul>
 )
+```
 
-export Example = () => (
+#### hook-errors.js
+
+```jsx
+import React from 'react'
+import { useMessageGetter } from 'react-message-context'
+
+export function HookErrors() {
+  const getErrorMsg = useMessageGetter({ id: 'errors' })
+  return (
+    <ul>
+      <li>{getErrorMsg('wrong_length', { length: 42 })}</li>
+      <li>{getErrorMsg('equal_to', { count: 13 })}</li>
+    </ul>
+  )
+}
+```
+
+#### example.js
+
+```jsx
+import React from 'react'
+import { MessageProvider } from 'react-message-context'
+
+import { ComponentErrors } from './component-errors'
+import { HookErrors } from './hook-errors'
+import en from './messages_en.yaml'
+import fi from './messages_fi.yaml'
+
+export const Example = () => (
   <MessageProvider locale="en" messages={en}>
     <MessageProvider locale="fi" messages={fi}>
-      <Errors />
+      <ComponentErrors />
+      <HookErrors />
     </MessageProvider>
   </MessageProvider>
 )
-
-// Will render as:
-//   - Viestisi on väärän pituinen (pitäisi olla 42 merkkiä)
-//   - The value must be equal to 13
 ```
 
 Note that in the preceding, `en` and `fi` could also be [immutable] Maps defined
