@@ -4,7 +4,7 @@ const defaultValue = {
   locales: [],
   merge: Object.assign,
   messages: {},
-  pathSep: undefined
+  pathSep: '.'
 }
 const context = React.createContext(defaultValue)
 

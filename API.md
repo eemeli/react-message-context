@@ -92,10 +92,9 @@ furthest.
   `MessageProvider` overwrite those defined in a parent. Set this to [`_.merge`]
   or some other function with the same arguments as [Object.assign] to allow for
   deep merges.
-- [`pathSep`] (_bool_ or _string_): By default, `.` in a `<Message id>` splits
-  the path into parts, such that e.g. `'a.b'` is equivalent to `['a', 'b']`.
-  Use this option to customize or disable this behaviour. Only valid in an
-  outermost `MessageProvider`.
+- [`pathSep`] (_string_): By default, `.` in a `<Message id>` splits the path
+  into parts, such that e.g. `'a.b'` is equivalent to `['a', 'b']`. Use this
+  option to customize or disable this behaviour (by setting it to `null`).
 - `children` (_ReactElement_): The root of your component hierarchy.
 
 [provider]: https://reactjs.org/docs/context.html#provider

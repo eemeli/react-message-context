@@ -46,7 +46,7 @@ describe('pathSep', () => {
 
   test('Disabled by false prop', () => {
     const component = renderer.create(
-      <MessageProvider pathSep={false} messages={{}}>
+      <MessageProvider pathSep={null} messages={{}}>
         <TestConsumer />
       </MessageProvider>
     )
@@ -55,18 +55,18 @@ describe('pathSep', () => {
     )
   })
 
-  test('Ignore inner pathSep', () => {
+  test('Allow redefining pathSep', () => {
     const component = renderer.create(
-      <MessageProvider messages={{}} pathSep=":">
-        <MessageProvider messages={{}} pathSep="/">
-          <MessageProvider messages={{}} pathSep={true}>
+      <MessageProvider messages={{ a: 'A' }} pathSep="/">
+        <MessageProvider messages={{ b: 'B' }} pathSep=":">
+          <MessageProvider messages={{ c: 'C' }}>
             <TestConsumer />
           </MessageProvider>
         </MessageProvider>
       </MessageProvider>
     )
     expect(component.toJSON()).toBe(
-      '{"locales":[""],"messages":{"":{}},"pathSep":":"}'
+      '{"locales":[""],"messages":{"":{"a":"A","b":"B","c":"C"}},"pathSep":":"}'
     )
   })
 })

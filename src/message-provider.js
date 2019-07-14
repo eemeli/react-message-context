@@ -3,24 +3,22 @@ import React, { useContext, useMemo } from 'react'
 import MessageContext, { defaultValue } from './message-context'
 import { ContextType } from './prop-types'
 
-const PATH_SEP = '.'
-
-function getPathSep(context, pathSep) {
-  if (context.pathSep !== undefined) return context.pathSep
-  if (pathSep) return typeof pathSep === 'string' ? pathSep : PATH_SEP
-  return pathSep === undefined ? PATH_SEP : null
-}
-
 function getLocales({ locales }, locale) {
   const fallback = locales.filter(fb => fb !== locale)
   return [locale].concat(fallback)
 }
 
-function getMessages({ merge, messages: ctxMessages }, locale, lcMessages) {
-  const messages = Object.assign({}, ctxMessages)
-  const prev = messages[locale]
-  messages[locale] = prev ? merge({}, prev, lcMessages) : lcMessages
-  return messages
+function getMessages({ merge, messages }, locale, lcMessages) {
+  const res = Object.assign({}, messages)
+  const prev = res[locale]
+  res[locale] = prev ? merge({}, prev, lcMessages) : lcMessages
+  return res
+}
+
+function getPathSep(context, pathSep) {
+  return pathSep === null || typeof pathSep === 'string'
+    ? pathSep
+    : context.pathSep
 }
 
 function MessageProvider({
@@ -54,12 +52,11 @@ MessageProvider.propTypes = {
   locale: PropTypes.string,
   merge: PropTypes.func,
   messages: PropTypes.object.isRequired,
-  pathSep: PropTypes.oneOfType([PropTypes.bool, PropTypes.string])
+  pathSep: PropTypes.string
 }
 
 MessageProvider.defaultProps = {
-  locale: '',
-  pathSep: PATH_SEP
+  locale: ''
 }
 
 export default MessageProvider

@@ -269,7 +269,7 @@ describe('Hierarchical messages', () => {
   test('Bad path, disabled pathSep', () => {
     const messages = { obj: { x: 'X' } }
     const component = renderer.create(
-      <MessageProvider messages={messages} pathSep={false}>
+      <MessageProvider messages={messages} pathSep={null}>
         <Message id={['not', 'valid']} />
       </MessageProvider>
     )
