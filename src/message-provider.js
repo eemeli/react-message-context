@@ -1,3 +1,4 @@
+import merge from 'lodash.merge'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import MessageContext, { defaultValue } from './message-context'
@@ -19,11 +20,7 @@ function getLocales(context, locale) {
 }
 
 function getMessages(context, locale, lcMessages) {
-  // TODO: replace with _.merge({}, context.messages, { [locale]: lcMessages })
-  const messages = context ? Object.assign({}, context.messages) : {}
-  const prev = messages[locale]
-  messages[locale] = prev ? Object.assign({}, prev, lcMessages) : lcMessages
-  return messages
+  return merge({}, context && context.messages, { [locale]: lcMessages })
 }
 
 class InnerMessageProvider extends Component {

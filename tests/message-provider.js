@@ -156,4 +156,17 @@ describe('Inheritance', () => {
       '{"locales":["aa"],"messages":{"aa":{"bb":{},"cc":"CC","dd":{}}},"pathSep":"."}'
     )
   })
+
+  test('Deeply overlapping keys', () => {
+    const component = renderer.create(
+      <MessageProvider messages={{ aa: { bb: 'BB', cc: 'CC' } }}>
+        <MessageProvider messages={{ aa: { bb: 'B', dd: 'D' } }}>
+          <TestConsumer />
+        </MessageProvider>
+      </MessageProvider>
+    )
+    expect(component.toJSON()).toBe(
+      '{"locales":[""],"messages":{"":{"aa":{"bb":"B","cc":"CC","dd":"D"}}},"pathSep":"."}'
+    )
+  })
 })
