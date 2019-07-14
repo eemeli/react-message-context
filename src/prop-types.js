@@ -1,11 +1,9 @@
-import PropTypes from 'prop-types'
+import { arrayOf, object, oneOfType, shape, string } from 'prop-types'
 
-export const PathSepType = PropTypes.oneOfType([
-  PropTypes.bool,
-  PropTypes.string
-])
+export const ContextType = shape({
+  locales: arrayOf(string).isRequired,
+  messages: object.isRequired,
+  pathSep: string
+})
 
-export const PathType = PropTypes.oneOfType([
-  PropTypes.string,
-  PropTypes.arrayOf(PropTypes.string)
-])
+export const PathType = oneOfType([string, arrayOf(string)])

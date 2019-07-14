@@ -6,6 +6,5 @@ const defaultValue = {
   pathSep: undefined
 }
 const context = React.createContext(defaultValue)
-const { Consumer, Provider } = context
 
-export { context as default, Consumer, Provider, defaultValue }
+export { context as default, defaultValue }

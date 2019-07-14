@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import MessageContext, { defaultValue } from './message-context'
-import { PathSepType, PathType } from './prop-types'
+import { ContextType } from './prop-types'
 
 const PATH_SEP = '.'
 
@@ -28,14 +28,10 @@ function getMessages(context, locale, lcMessages) {
 
 class InnerMessageProvider extends Component {
   static propTypes = {
-    context: PropTypes.shape({
-      locales: PropTypes.arrayOf(PropTypes.string).isRequired,
-      messages: PropTypes.object.isRequired,
-      pathSep: PathSepType
-    }),
+    context: ContextType,
     locale: PropTypes.string,
     messages: PropTypes.object.isRequired,
-    pathSep: PathSepType
+    pathSep: PropTypes.oneOfType([PropTypes.bool, PropTypes.string])
   }
 
   static defaultProps = {
@@ -76,4 +72,5 @@ const MessageProvider = props => (
     {context => <InnerMessageProvider context={context} {...props} />}
   </MessageContext.Consumer>
 )
+MessageProvider.displayName = 'MessageProvider'
 export default MessageProvider

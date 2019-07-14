@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
 import renderer from 'react-test-renderer'
 
-import { Consumer } from '../src/message-context'
+import MessageContext from '../src/message-context'
 import MessageProvider from '../src/message-provider'
 
 const TestConsumer = () => (
-  <Consumer>{context => JSON.stringify(context)}</Consumer>
+  <MessageContext.Consumer>
+    {context => JSON.stringify(context)}
+  </MessageContext.Consumer>
 )
 
 test('Minimal messages; no locale', () => {
