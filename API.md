@@ -7,6 +7,7 @@ import {
   MessageProvider,
   Message,
   useLocales,
+  useMessage,
   useMessageGetter
 } from 'react-message-context'
 ```
@@ -76,6 +77,24 @@ identifiers, with earlier entries taking precedence over latter ones. Undefined
 locales are identified by an empty string `''`.
 
 [react hook]: https://reactjs.org/docs/hooks-intro.html
+
+<a id="use-message"></a>
+<br/>
+
+### `useMessage(id, [locale])`
+
+A custom [React hook] providing an entry from the messages object of the
+crrent or given locale.
+
+The returned value will be `undefined` if not found, or otherwise exactly as set
+in the MessageProvider props.
+
+#### Arguments
+
+- [`id`] (_string_ or _string[]_): The key or key path of the message or
+  message object. If empty or `[]`, matches the root of the messages object
+- [`locale`] (_string_ or _string[]_): If set, overrides the current locale
+  precedence as set by parent MessageProviders.
 
 <a id="use-message-getter"></a>
 <br/>
