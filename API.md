@@ -4,6 +4,7 @@ The public API is available as named exports of the package:
 
 ```js
 import {
+  getMessage,
   MessageContext,
   MessageProvider,
   Message,
@@ -13,14 +14,63 @@ import {
 } from 'react-message-context'
 ```
 
+<a id="get-message"></a>
+<br/>
+
+### `getMessage(context, id, [locale])`
+
+Given a MessageContext instance, fetches an entry from the messages object of
+the current or given locale. The returned value will be `undefined` if not
+found, or otherwise exactly as set in the MessageProvider props.
+
+#### Arguments
+
+- `context` (_MessageContext_): The MessageContext instance
+- `id` (_string_ or _string[]_): The key or key path of the message or message
+  object. If empty or `[]`, matches the root of the messages object
+- [`locale`] (_string_ or _string[]_): If set, overrides the current locale
+  precedence as set by parent MessageProviders.
+
+#### Example
+
+```js
+import React, { Component } from 'react'
+import {
+  getMessage,
+  MessageContext,
+  MessageProvider
+} from 'react-message-context'
+
+const messages = {
+  example: {
+    key: 'Your message here'
+  }
+}
+
+class Example extends Component {
+  render() {
+    const message = getMessage(this.context, 'example.key')
+    return <span>{message}</span>
+  }
+}
+Example.contextType = MessageContext
+
+export const App = () => (
+  <MessageProvider messages={messages}>
+    <Example />
+  </MessageProvider>
+)
+```
+
 <a id="message-context"></a>
 <br/>
 
 ### `MessageContext`
 
 The context object used internally by the library. Probably only useful with
-[`Class.contextType`](https://reactjs.org/docs/context.html#classcontexttype) or
-for building your own hooks.
+[`Class.contextType`] or for building your own hooks.
+
+[`class.contexttype`]: https://reactjs.org/docs/context.html#classcontexttype
 
 <a id="message-provider"></a>
 <br/>
@@ -94,10 +144,8 @@ locales are identified by an empty string `''`.
 ### `useMessage(id, [locale])`
 
 A custom [React hook] providing an entry from the messages object of the
-crrent or given locale.
-
-The returned value will be `undefined` if not found, or otherwise exactly as set
-in the MessageProvider props.
+current or given locale. The returned value will be `undefined` if not found, or
+otherwise exactly as set in the MessageProvider props.
 
 #### Arguments
 
