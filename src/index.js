@@ -1,4 +1,5 @@
 export { default as Message } from './message'
+export { default as MessageContext } from './message-context'
 export { default as MessageProvider } from './message-provider'
 export { default as useLocales } from './use-locales'
 export { default as useMessage } from './use-message'

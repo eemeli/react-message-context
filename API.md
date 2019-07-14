@@ -4,6 +4,7 @@ The public API is available as named exports of the package:
 
 ```js
 import {
+  MessageContext,
   MessageProvider,
   Message,
   useLocales,
@@ -11,6 +12,15 @@ import {
   useMessageGetter
 } from 'react-message-context'
 ```
+
+<a id="message-context"></a>
+<br/>
+
+### `MessageContext`
+
+The context object used internally by the library. Probably only useful with
+[`Class.contextType`](https://reactjs.org/docs/context.html#classcontexttype) or
+for building your own hooks.
 
 <a id="message-provider"></a>
 <br/>
