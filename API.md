@@ -19,17 +19,29 @@ import {
 
 ### `getMessage(context, id, [locale])`
 
-Given a MessageContext instance, fetches an entry from the messages object of
+Given a `MessageContext` instance, fetches an entry from the messages object of
 the current or given locale. The returned value will be `undefined` if not
-found, or otherwise exactly as set in the MessageProvider props.
+found, or otherwise exactly as set in the `MessageProvider` props.
 
 #### Arguments
 
-- `context` (_MessageContext_): The MessageContext instance
+- `context` (_MessageContext_): The `MessageContext` instance
 - `id` (_string_ or _string[]_): The key or key path of the message or message
   object. If empty or `[]`, matches the root of the messages object
 - [`locale`] (_string_ or _string[]_): If set, overrides the current locale
   precedence as set by parent MessageProviders.
+
+See `MessageContext` for example usage.
+
+<a id="message-context"></a>
+<br/>
+
+### `MessageContext`
+
+The context object used internally by the library. Probably only useful with
+[`Class.contextType`] or for building your own hooks.
+
+[`class.contexttype`]: https://reactjs.org/docs/context.html#classcontexttype
 
 #### Example
 
@@ -41,16 +53,12 @@ import {
   MessageProvider
 } from 'react-message-context'
 
-const messages = {
-  example: {
-    key: 'Your message here'
-  }
-}
+const messages = { example: { key: 'Your message here' } }
 
 class Example extends Component {
   render() {
     const message = getMessage(this.context, 'example.key')
-    return <span>{message}</span>
+    return <span>{message}</span> // 'Your message here'
   }
 }
 Example.contextType = MessageContext
@@ -61,16 +69,6 @@ export const App = () => (
   </MessageProvider>
 )
 ```
-
-<a id="message-context"></a>
-<br/>
-
-### `MessageContext`
-
-The context object used internally by the library. Probably only useful with
-[`Class.contextType`] or for building your own hooks.
-
-[`class.contexttype`]: https://reactjs.org/docs/context.html#classcontexttype
 
 <a id="message-provider"></a>
 <br/>
@@ -102,6 +100,34 @@ furthest.
 [provider]: https://reactjs.org/docs/context.html#provider
 [immutable collections]: https://facebook.github.io/immutable-js/docs/#/Collection/getIn
 
+#### Example
+
+```js
+import React, { Component } from 'react'
+import { Message, MessageProvider } from 'react-message-context'
+
+const messages = { example: { key: 'Your message here' } }
+const extended = { other: { key: 'Another message' } }
+
+const Example = () => (
+  <span>
+    <Message id="example.key" />
+    {' | '}
+    <Message id="other.key" />
+  </span>
+) // 'Your message here | Another message'
+
+export const App = () => (
+  <MessageProvider messages={messages}>
+    <MessageProvider messages={extended}>
+      <Example />
+    </MessageProvider>
+  </MessageProvider>
+)
+```
+
+Also see `Message` and other components for example usage.
+
 <a id="message"></a>
 <br/>
 
@@ -127,6 +153,29 @@ also be used with a render prop: `<Message id={id}>{msg => {...}}</Message>`.
 
 [consumer]: https://reactjs.org/docs/context.html#consumer
 
+#### Example
+
+```js
+import React, { Component } from 'react'
+import { Message, MessageProvider } from 'react-message-context'
+
+const messages = { example: { key: 'Your message here' } }
+
+const Example = () => (
+  <span>
+    <Message id="example/key" />
+  </span>
+) // 'Your message here'
+
+export const App = () => (
+  <MessageProvider messages={messages} pathSep="/">
+    <Example />
+  </MessageProvider>
+)
+```
+
+Also see `MessageProvider` for example usage.
+
 <a id="use-locales"></a>
 <br/>
 
@@ -137,6 +186,8 @@ identifiers, with earlier entries taking precedence over latter ones. Undefined
 locales are identified by an empty string `''`.
 
 [react hook]: https://reactjs.org/docs/hooks-intro.html
+
+See `useMessage()` for example usage.
 
 <a id="use-message"></a>
 <br/>
@@ -157,6 +208,38 @@ otherwise exactly as set in the MessageProvider props.
 <a id="use-message-getter"></a>
 <br/>
 
+#### Example
+
+```js
+import React, { Component } from 'react'
+import { MessageProvider, useLocales, useMessage } from 'react-message-context'
+
+const en = { example: { key: 'Your message here' } }
+const fi = { example: { key: 'Lisää viestisi tähän' } }
+
+function Example() {
+  const locales = useLocales() // ['fi', 'en']
+  const lsOpt = { style: 'long', type: 'conjunction' }
+  const lf = new Intl.ListFormat(locales, lsOpt)
+  const lcMsg = lf.format(locales.map(JSON.stringify)) // '"fi" ja "en"'
+  const keyMsg = useMessage('example.key') // 'Lisää viestisi tähän'
+  return (
+    <article>
+      <h1>{lcMsg}</h1>
+      <p>{keyMsg}</p>
+    </article>
+  )
+}
+
+export const App = () => (
+  <MessageProvider locale="en" messages={en}>
+    <MessageProvider locale="fi" messages={fi}>
+      <Example />
+    </MessageProvider>
+  </MessageProvider>
+)
+```
+
 ### `useMessageGetter(rootId, [{ baseParams, locale }])`
 
 A custom [React hook] providing a message getter function, which may have a
@@ -173,3 +256,29 @@ extend any values set by the hook's arguments.
   to always be an object, with these values initially set.
 - [`locale`] (_string_ or _string[]_): If set, overrides the current locale
   precedence as set by parent MessageProviders.
+
+#### Example
+
+```js
+import React, { Component } from 'react'
+import { MessageProvider, useMessageGetter } from 'react-message-context'
+
+const messages = {
+  example: {
+    funMsg: ({ thing }) => `Your ${thing} here`,
+    thing: 'message'
+  }
+}
+
+function Example() {
+  const getMsg = useMessageGetter('example')
+  const thing = getMsg('thing')
+  return getMsg('funMsg', { thing }) // 'Your message here'
+}
+
+export const App = () => (
+  <MessageProvider messages={messages}>
+    <Example />
+  </MessageProvider>
+)
+```
