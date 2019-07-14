@@ -205,9 +205,6 @@ otherwise exactly as set in the MessageProvider props.
 - [`locale`] (_string_ or _string[]_): If set, overrides the current locale
   precedence as set by parent MessageProviders.
 
-<a id="use-message-getter"></a>
-<br/>
-
 #### Example
 
 ```js
@@ -239,6 +236,9 @@ export const App = () => (
   </MessageProvider>
 )
 ```
+
+<a id="use-message-getter"></a>
+<br/>
 
 ### `useMessageGetter(rootId, [{ baseParams, locale }])`
 
