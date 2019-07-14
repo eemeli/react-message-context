@@ -88,13 +88,13 @@ furthest.
   `messages` may be hierarchical, and if it does not use `[]` bracket notation
   to access child values, it should provide a `getIn()` accessor as used by
   [Immutable collections].
-- [`locale`](_string_): A key for the locale of the given messages. If uset,
+- [`locale`] (_string_): A key for the locale of the given messages. If uset,
   will inherit the locale from the parent context, or ultimately use en empty
   string.
 - [`pathSep`] (_bool_ or _string_): By default, `.` in a `<Message id>` splits
   the path into parts, such that e.g. `'a.b'` is equivalent to `['a', 'b']`.
   Use this option to customize or disable this behaviour. Only valid in an
-  outermost MessageProvider.
+  outermost `MessageProvider`.
 - `children` (_ReactElement_): The root of your component hierarchy.
 
 [provider]: https://reactjs.org/docs/context.html#provider
@@ -141,14 +141,14 @@ also be used with a render prop: `<Message id={id}>{msg => {...}}</Message>`.
 - `id` (_string_ or _string[]_): The key or key path of the message.
 - [`locale`] (_string_ or _string[]_): If set, overrides the `locale` of the
   nearest MessageProvider.
-- [`onError(id, type): string`](_function_): If set, called if `id` does not
+- [`onError(id, type): string`] (_function_): If set, called if `id` does not
   resolve to a message value (after checking fallback locales, if set). `type`
   is the type of the value at `id`, most likely either `'object'` or `'unknown'`.
   A non-empty return value will replace the default `String(id)` fallback value.
-- [`params`] and [`msgParams`](_object_): Parameters to pass to function
+- [`params`] and [`msgParams`] (_object_): Parameters to pass to function
   messages as their first and only argument. `params` will override `msgParams`,
   to allow for data keys such as `key` and `locale`.
-- [`children`](_function_): If set, will be called with the found message. In
+- [`children`] (_function_): If set, will be called with the found message. In
   this case, `onError` and `params` will be ignored and `id` is optional.
 
 [consumer]: https://reactjs.org/docs/context.html#consumer
@@ -196,12 +196,12 @@ See `useMessage()` for example usage.
 
 A custom [React hook] providing an entry from the messages object of the
 current or given locale. The returned value will be `undefined` if not found, or
-otherwise exactly as set in the MessageProvider props.
+otherwise exactly as set in the `MessageProvider` props.
 
 #### Arguments
 
-- [`id`] (_string_ or _string[]_): The key or key path of the message or
-  message object. If empty or `[]`, matches the root of the messages object
+- `id` (_string_ or _string[]_): The key or key path of the message or message
+  object. If empty or `[]`, matches the root of the messages object
 - [`locale`] (_string_ or _string[]_): If set, overrides the current locale
   precedence as set by parent MessageProviders.
 
@@ -216,8 +216,8 @@ const fi = { example: { key: 'Lisää viestisi tähän' } }
 
 function Example() {
   const locales = useLocales() // ['fi', 'en']
-  const lsOpt = { style: 'long', type: 'conjunction' }
-  const lf = new Intl.ListFormat(locales, lsOpt)
+  const lfOpt = { style: 'long', type: 'conjunction' }
+  const lf = new Intl.ListFormat(locales, lfOpt)
   const lcMsg = lf.format(locales.map(JSON.stringify)) // '"fi" ja "en"'
   const keyMsg = useMessage('example.key') // 'Lisää viestisi tähän'
   return (
@@ -250,9 +250,9 @@ extend any values set by the hook's arguments.
 
 #### Arguments
 
-- [`rootId`] (_string_ or _string[]_): The key or key path of the message or
+- `rootId` (_string_ or _string[]_): The key or key path of the message or
   message object. If empty or `[]`, matches the root of the messages object
-- [`baseParams`](_Object_): If set, message function parameters will be assumed
+- [`baseParams`] (_Object_): If set, message function parameters will be assumed
   to always be an object, with these values initially set.
 - [`locale`] (_string_ or _string[]_): If set, overrides the current locale
   precedence as set by parent MessageProviders.
