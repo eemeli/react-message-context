@@ -12,6 +12,14 @@ function getIn(messages, path) {
   }
 }
 
+export function getLocales(ctxLocales, argLocale) {
+  return Array.isArray(argLocale)
+    ? argLocale
+    : argLocale != null
+    ? [argLocale]
+    : ctxLocales
+}
+
 export function getPath(id, pathSep) {
   if (!id) return []
   if (Array.isArray(id)) return id

@@ -1,17 +1,13 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import getMessage from './get-message'
+import getMessage, { getLocales } from './get-message'
 import MessageContext from './message-context'
 import { PathType } from './prop-types'
 
 const Message = ({ children, id, locale, onError, params, ...msgParams }) => (
   <MessageContext.Consumer>
     {({ locales, messages, pathSep }) => {
-      const lc = Array.isArray(locale)
-        ? locale
-        : locale != null
-        ? [locale]
-        : locales
+      const lc = getLocales(locales, locale)
       const msg = getMessage(messages, lc, id, pathSep)
       if (children) return children(msg)
       switch (typeof msg) {
