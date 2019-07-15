@@ -1,8 +1,8 @@
 function getIn(messages, path) {
   if (!messages) return undefined
   let msg = messages
-  for (const p of path) {
-    msg = msg[p]
+  for (let i = 0; i < path.length; ++i) {
+    msg = msg[path[i]]
     if (msg === undefined) return undefined
   }
   return msg
@@ -24,7 +24,8 @@ export function getPath(id, pathSep) {
 export default function getMessage({ locales, messages, pathSep }, id, locale) {
   if (locale != null) locales = Array.isArray(locale) ? locale : [locale]
   const path = getPath(id, pathSep)
-  for (const lc of locales) {
+  for (let i = 0; i < locales.length; ++i) {
+    const lc = locales[i]
     const msg = getIn(messages[lc], path)
     if (msg !== undefined) return msg
   }
