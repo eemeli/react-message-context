@@ -1,4 +1,5 @@
 .*
-/dist
+/cjs
+/esm
 /node_modules
 /yarn.lock
