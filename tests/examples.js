@@ -40,9 +40,6 @@ describe('README', () => {
             <Message id="message" />
           </li>
           <li>
-            The answer is <Message id="answers.sixByNine" base={13} />
-          </li>
-          <li>
             <Equality />
           </li>
         </ul>
@@ -159,12 +156,12 @@ describe('API', () => {
       <span>
         <Message id={['example', 'key']} />
         {' | '}
-        <Message id="other.key" />
+        <Message id="other/key" />
       </span>
     )
 
     const App = () => (
-      <MessageProvider messages={messages}>
+      <MessageProvider messages={messages} pathSep="/">
         <MessageProvider messages={extended}>
           <Example />
         </MessageProvider>
@@ -176,16 +173,16 @@ describe('API', () => {
   })
 
   test('Message Example', () => {
-    const messages = { example: { key: 'Your message here' } }
+    const messages = { example: { key: ({ thing }) => `Your ${thing} here` } }
 
     const Example = () => (
       <span>
-        <Message id="example/key" />
+        <Message id="example.key" thing="message" />
       </span>
     )
 
     const App = () => (
-      <MessageProvider messages={messages} pathSep="/">
+      <MessageProvider messages={messages}>
         <Example />
       </MessageProvider>
     )

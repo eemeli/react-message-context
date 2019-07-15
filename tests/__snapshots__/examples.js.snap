@@ -41,10 +41,6 @@ exports[`README Example 1 1`] = `
     Your message is important
   </li>
   <li>
-    The answer is 
-    42
-  </li>
-  <li>
     42 and 42 are equal
   </li>
 </ul>

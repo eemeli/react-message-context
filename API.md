@@ -148,12 +148,12 @@ const Example = () => (
   <span>
     <Message id={['example', 'key']} />
     {' | '}
-    <Message id="other.key" />
+    <Message id="other/key" />
   </span>
 ) // 'Your message here | Another message'
 
 export const App = () => (
-  <MessageProvider messages={messages}>
+  <MessageProvider messages={messages} pathSep="/">
     <MessageProvider messages={extended}>
       <Example />
     </MessageProvider>
@@ -194,16 +194,16 @@ also be used with a render prop: `<Message id={id}>{msg => {...}}</Message>`.
 import React from 'react'
 import { Message, MessageProvider } from 'react-message-context'
 
-const messages = { example: { key: 'Your message here' } }
+const messages = { example: { key: ({ thing }) => `Your ${thing} here` } }
 
 const Example = () => (
   <span>
-    <Message id="example/key" />
+    <Message id="example.key" thing="message" />
   </span>
 ) // 'Your message here'
 
 export const App = () => (
-  <MessageProvider messages={messages} pathSep="/">
+  <MessageProvider messages={messages}>
     <Example />
   </MessageProvider>
 )

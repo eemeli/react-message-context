@@ -31,11 +31,15 @@ React and prop-types are peer dependencies. **React 16.8** or later is required.
 ## Examples
 
 Within a `MessageProvider`, access to the messages is possible using either the
-`Message` component, or via custom hooks such as `useMessage`:
+`Message` component, or via custom hooks such as `useMessageGetter`:
 
 ```js
 import React from 'react'
-import { Message, MessageProvider, useMessage } from 'react-message-context'
+import {
+  Message,
+  MessageProvider,
+  useMessageGetter
+} from 'react-message-context'
 
 const messages = {
   message: 'Your message is important',
@@ -46,9 +50,10 @@ const messages = {
 }
 
 function Equality() {
-  const foo = useMessage('answers.sixByNine')
-  const bar = useMessage('answers.universe')
-  return `${foo({ base: 13 })} and ${bar} are equal`
+  const getAnswer = useMessageGetter('answers')
+  const foo = getAnswer('sixByNine', { base: 13 })
+  const bar = getAnswer('universe')
+  return `${foo} and ${bar} are equal`
 }
 
 export const Example = () => (
@@ -56,9 +61,6 @@ export const Example = () => (
     <ul>
       <li>
         <Message id="message" />
-      </li>
-      <li>
-        The answer is <Message id="answers.sixByNine" base={13} />
       </li>
       <li>
         <Equality />
@@ -69,7 +71,6 @@ export const Example = () => (
 
 // Will render as:
 //   - Your message is important
-//   - The answer is 42
 //   - 42 and 42 are equal
 ```
 
