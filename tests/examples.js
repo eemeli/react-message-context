@@ -1,89 +1,105 @@
-import React from 'react'
+import 'intl-list-format'
+import 'intl-list-format/locale-data/en'
+import 'intl-list-format/locale-data/fi'
+import React, { Component } from 'react'
 import renderer from 'react-test-renderer'
 
-import { Message, MessageProvider, useMessageGetter } from '../src/index'
+import {
+  getMessage,
+  Message,
+  MessageContext,
+  MessageProvider,
+  useLocales,
+  useMessage,
+  useMessageGetter
+} from '../src/index'
 
 // actually precompiled with messageformat-cli
 import en from './fixtures/messages_en'
 import fi from './fixtures/messages_fi'
 
-test('Example 1', () => {
-  const messages = {
-    message: 'Your message is important',
-    answers: {
-      sixByNine: ({ base }) => (6 * 9).toString(base),
-      universe: 42
+describe('README', () => {
+  test('Example 1', () => {
+    const messages = {
+      message: 'Your message is important',
+      answers: {
+        sixByNine: ({ base }) => (6 * 9).toString(base),
+        universe: 42
+      }
     }
-  }
 
-  function Equality() {
-    const getAnswer = useMessageGetter('answers')
-    const foo = getAnswer('sixByNine', { base: 13 })
-    const bar = getAnswer('universe')
-    return `${foo} and ${bar} are equal`
-  }
+    function Equality() {
+      const getAnswer = useMessageGetter('answers')
+      const foo = getAnswer('sixByNine', { base: 13 })
+      const bar = getAnswer('universe')
+      return `${foo} and ${bar} are equal`
+    }
 
-  const Example = () => (
-    <MessageProvider messages={messages}>
-      <ul>
-        <li>
-          <Message id="message" />
-        </li>
-        <li>
-          The answer is <Message id="answers.sixByNine" base={13} />
-        </li>
-        <li>
-          <Equality />
-        </li>
-      </ul>
-    </MessageProvider>
-  )
-
-  const component = renderer.create(
-    <MessageProvider messages={messages}>
-      <Example />
-    </MessageProvider>
-  )
-  expect(component.toJSON()).toMatchSnapshot()
-})
-
-describe('Example 2', () => {
-  const ComponentErrors = () => (
-    <ul>
-      <li>
-        <Message id="errors.wrong_length" length={42} />
-      </li>
-      <li>
-        <Message id="errors.equal_to" count={13} />
-      </li>
-    </ul>
-  )
-
-  function HookErrors() {
-    const getErrorMsg = useMessageGetter('errors')
-    return (
-      <ul>
-        <li>{getErrorMsg('wrong_length', { length: 42 })}</li>
-        <li>{getErrorMsg('equal_to', { count: 13 })}</li>
-      </ul>
+    const Example = () => (
+      <MessageProvider messages={messages}>
+        <ul>
+          <li>
+            <Message id="message" />
+          </li>
+          <li>
+            The answer is <Message id="answers.sixByNine" base={13} />
+          </li>
+          <li>
+            <Equality />
+          </li>
+        </ul>
+      </MessageProvider>
     )
-  }
 
-  test('ComponentErrors', () => {
     const component = renderer.create(
-      <MessageProvider locale="en" messages={en}>
-        <MessageProvider locale="fi" messages={fi}>
-          <ComponentErrors />
+      <MessageProvider messages={messages}>
+        <Example />
+      </MessageProvider>
+    )
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  test('Example 2', () => {
+    const component = renderer.create(
+      <MessageProvider locale="en" messages={{ foo: 'FOO', qux: 'QUX' }}>
+        <MessageProvider locale="fi" messages={{ foo: 'FÖÖ', bar: 'BÄR' }}>
+          <Message id="foo" />
+          <Message id="foo" locale="en" />
+          <Message id="bar" />
+          <Message id="bar" locale="en" />
+          <Message id="qux" />
         </MessageProvider>
       </MessageProvider>
     )
     expect(component.toJSON()).toMatchSnapshot()
   })
 
-  test('HookErrors', () => {
+  test('Example 3', () => {
+    const ComponentErrors = () => (
+      <ul>
+        <li>
+          <Message id="errors.wrong_length" length={42} />
+        </li>
+        <li>
+          <Message id="errors.equal_to" count={13} />
+        </li>
+      </ul>
+    )
+
+    function HookErrors() {
+      const getErrorMsg = useMessageGetter('errors')
+      return (
+        <ul>
+          <li>{getErrorMsg('wrong_length', { length: 42 })}</li>
+          <li>{getErrorMsg('equal_to', { count: 13 })}</li>
+        </ul>
+      )
+    }
+
     const component = renderer.create(
       <MessageProvider locale="en" messages={en}>
         <MessageProvider locale="fi" messages={fi}>
+          <ComponentErrors />
           <HookErrors />
         </MessageProvider>
       </MessageProvider>
@@ -92,17 +108,122 @@ describe('Example 2', () => {
   })
 })
 
-test('Example 3', () => {
-  const component = renderer.create(
-    <MessageProvider locale="en" messages={{ foo: 'FOO', qux: 'QUX' }}>
-      <MessageProvider locale="fi" messages={{ foo: 'FÖÖ', bar: 'BÄR' }}>
-        <Message id="foo" />
-        <Message id="foo" locale="en" />
-        <Message id="bar" />
-        <Message id="bar" locale="en" />
-        <Message id="qux" />
+describe('API', () => {
+  test('MessageContext Example', () => {
+    const messages = { example: { key: 'Your message here' } }
+
+    class Example extends Component {
+      render() {
+        const message = getMessage(this.context, 'example.key')
+        return <span>{message}</span>
+      }
+    }
+    Example.contextType = MessageContext
+
+    const App = () => (
+      <MessageProvider messages={messages}>
+        <Example />
       </MessageProvider>
-    </MessageProvider>
-  )
-  expect(component.toJSON()).toMatchSnapshot()
+    )
+
+    const component = renderer.create(<App />)
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  test('MessageProvider Example', () => {
+    const messages = { example: { key: 'Your message here' } }
+    const extended = { other: { key: 'Another message' } }
+
+    const Example = () => (
+      <span>
+        <Message id={['example', 'key']} />
+        {' | '}
+        <Message id="other.key" />
+      </span>
+    )
+
+    const App = () => (
+      <MessageProvider messages={messages}>
+        <MessageProvider messages={extended}>
+          <Example />
+        </MessageProvider>
+      </MessageProvider>
+    )
+
+    const component = renderer.create(<App />)
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  test('Message Example', () => {
+    const messages = { example: { key: 'Your message here' } }
+
+    const Example = () => (
+      <span>
+        <Message id="example/key" />
+      </span>
+    )
+
+    const App = () => (
+      <MessageProvider messages={messages} pathSep="/">
+        <Example />
+      </MessageProvider>
+    )
+
+    const component = renderer.create(<App />)
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  test('useMessage Example', () => {
+    const en = { example: { key: 'Your message here' } }
+    const fi = { example: { key: 'Lisää viestisi tähän' } }
+
+    function Example() {
+      const locales = useLocales()
+      const lfOpt = { style: 'long', type: 'conjunction' }
+      const lf = new Intl.ListFormat(locales, lfOpt)
+      const lcMsg = lf.format(locales.map(JSON.stringify))
+      const keyMsg = useMessage('example.key')
+      return (
+        <article>
+          <h1>{lcMsg}</h1>
+          <p>{keyMsg}</p>
+        </article>
+      )
+    }
+
+    const App = () => (
+      <MessageProvider locale="en" messages={en}>
+        <MessageProvider locale="fi" messages={fi}>
+          <Example />
+        </MessageProvider>
+      </MessageProvider>
+    )
+
+    const component = renderer.create(<App />)
+    expect(component.toJSON()).toMatchSnapshot()
+  })
+
+  test('useMessageGetter Example', () => {
+    const messages = {
+      example: {
+        funMsg: ({ thing }) => `Your ${thing} here`,
+        thing: 'message'
+      }
+    }
+
+    function Example() {
+      const getMsg = useMessageGetter('example')
+      const thing = getMsg('thing')
+      return getMsg('funMsg', { thing })
+    }
+
+    const App = () => (
+      <MessageProvider messages={messages}>
+        <Example />
+      </MessageProvider>
+    )
+
+    const component = renderer.create(<App />)
+    expect(component.toJSON()).toMatchSnapshot()
+  })
 })

@@ -104,7 +104,7 @@ furthest.
 #### Example
 
 ```js
-import React, { Component } from 'react'
+import React from 'react'
 import { Message, MessageProvider } from 'react-message-context'
 
 const messages = { example: { key: 'Your message here' } }
@@ -157,7 +157,7 @@ also be used with a render prop: `<Message id={id}>{msg => {...}}</Message>`.
 #### Example
 
 ```js
-import React, { Component } from 'react'
+import React from 'react'
 import { Message, MessageProvider } from 'react-message-context'
 
 const messages = { example: { key: 'Your message here' } }
@@ -209,12 +209,13 @@ otherwise exactly as set in the `MessageProvider` props.
 #### Example
 
 ```js
-import React, { Component } from 'react'
+import React from 'react'
 import { MessageProvider, useLocales, useMessage } from 'react-message-context'
 
 const en = { example: { key: 'Your message here' } }
 const fi = { example: { key: 'Lisää viestisi tähän' } }
 
+// Intl.ListFormat may require a polyfill, such as intl-list-format
 function Example() {
   const locales = useLocales() // ['fi', 'en']
   const lfOpt = { style: 'long', type: 'conjunction' }
@@ -261,7 +262,7 @@ extend any values set by the hook's arguments.
 #### Example
 
 ```js
-import React, { Component } from 'react'
+import React from 'react'
 import { MessageProvider, useMessageGetter } from 'react-message-context'
 
 const messages = {
