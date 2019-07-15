@@ -9,6 +9,8 @@ exports[`API Message Example 1`] = `
 exports[`API MessageContext Example 1`] = `
 <span>
   Your message here
+   | 
+  Another message
 </span>
 `;
 

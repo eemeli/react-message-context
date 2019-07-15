@@ -1,4 +1,4 @@
-export { default as getMessage } from './get-message'
+export { getMessage, getMessageGetter } from './get-message'
 export { default as Message } from './message'
 export { default as MessageContext } from './message-context'
 export { default as MessageProvider } from './message-provider'

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import getMessage from './get-message'
+import { getMessage } from './get-message'
 import MessageContext from './message-context'
 import { PathType } from './prop-types'
 

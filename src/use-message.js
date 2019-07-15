@@ -1,6 +1,6 @@
 import { useContext } from 'react'
 
-import getMessage from './get-message'
+import { getMessage } from './get-message'
 import MessageContext from './message-context'
 
 export default function useMessage(id, locale) {

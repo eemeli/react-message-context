@@ -3,6 +3,7 @@ import renderer from 'react-test-renderer'
 
 import {
   getMessage,
+  getMessageGetter,
   Message,
   MessageContext,
   MessageProvider,
@@ -122,12 +123,20 @@ describe('API', () => {
   })
 
   test('MessageContext Example', () => {
-    const messages = { example: { key: 'Your message here' } }
+    const messages = {
+      example: { key: 'Your message here' },
+      other: { key: 'Another message' }
+    }
 
     class Example extends Component {
       render() {
         const message = getMessage(this.context, 'example.key')
-        return <span>{message}</span>
+        const otherMsg = getMessageGetter(this.context, 'other')
+        return (
+          <span>
+            {message} | {otherMsg('key')}
+          </span>
+        )
       }
     }
     Example.contextType = MessageContext

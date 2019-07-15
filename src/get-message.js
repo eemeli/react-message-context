@@ -8,20 +8,13 @@ function getIn(messages, path) {
   return msg
 }
 
-export function getPath(id, pathSep) {
+function getPath(id, pathSep) {
   if (!id) return []
   if (Array.isArray(id)) return id
   return pathSep ? id.split(pathSep) : [id]
 }
 
-/**
- * @private
- * @param {Context} context
- * @param {string|string[]} id
- * @param {string|string[]} [locale]
- * @returns {any}
- */
-export default function getMessage({ locales, messages, pathSep }, id, locale) {
+export function getMessage({ locales, messages, pathSep }, id, locale) {
   if (locale != null) locales = Array.isArray(locale) ? locale : [locale]
   const path = getPath(id, pathSep)
   for (let i = 0; i < locales.length; ++i) {
@@ -30,4 +23,18 @@ export default function getMessage({ locales, messages, pathSep }, id, locale) {
     if (msg !== undefined) return msg
   }
   return undefined
+}
+
+export function getMessageGetter(context, rootId, { baseParams, locale } = {}) {
+  const { pathSep } = context
+  const pathPrefix = getPath(rootId, pathSep)
+  return function message(id, params) {
+    const path = pathPrefix.concat(getPath(id, pathSep))
+    const msg = getMessage(context, path, locale)
+    if (typeof msg !== 'function') return msg
+    const msgParams = baseParams
+      ? Object.assign({}, baseParams, params)
+      : params
+    return msg(msgParams)
+  }
 }

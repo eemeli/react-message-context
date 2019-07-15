@@ -5,6 +5,7 @@ The public API is available as named exports of the package:
 ```js
 import {
   getMessage,
+  getMessageGetter,
   MessageContext,
   MessageProvider,
   Message,
@@ -33,6 +34,30 @@ found, or otherwise exactly as set in the `MessageProvider` props.
 
 See `MessageContext` for example usage.
 
+<a id="get-message-getter"></a>
+<br/>
+
+### `getMessageGetter(context, rootId, [{ baseParams, locale }])`
+
+Given a `MessageContext` instance, returns a message getter function, which may
+have a preset root id path, locale, and/or base parameters for message
+functions.
+
+The returned function takes two parameters `(msgId, msgParams)`, which will
+extend any values set by the hook's arguments.
+
+#### Arguments
+
+- `context` (_MessageContext_): The `MessageContext` instance
+- `rootId` (_string_ or _string[]_): The key or key path of the message or
+  message object. If empty or `[]`, matches the root of the messages object
+- [`baseParams`](_Object_): If set, message function parameters will be assumed
+  to always be an object, with these values initially set.
+- [`locale`] (_string_ or _string[]_): If set, overrides the current locale
+  precedence as set by parent MessageProviders.
+
+See `MessageContext` for example usage.
+
 <a id="message-context"></a>
 <br/>
 
@@ -49,16 +74,25 @@ The context object used internally by the library. Probably only useful with
 import React, { Component } from 'react'
 import {
   getMessage,
+  getMessageGetter,
   MessageContext,
   MessageProvider
 } from 'react-message-context'
 
-const messages = { example: { key: 'Your message here' } }
+const messages = {
+  example: { key: 'Your message here' },
+  other: { key: 'Another message' }
+}
 
 class Example extends Component {
   render() {
     const message = getMessage(this.context, 'example.key')
-    return <span>{message}</span> // 'Your message here'
+    const otherMsg = getMessageGetter(this.context, 'other')
+    return (
+      <span>
+        {message} | {otherMsg('key')}
+      </span>
+    ) // 'Your message here | Another message'
   }
 }
 Example.contextType = MessageContext
@@ -85,14 +119,14 @@ furthest.
 
 - `messages` (_object_): A hierarchical object containing the messages as
   boolean, number, string or function values.
-- [`locale`] (_string_): A key for the locale of the given messages. If uset,
+- [`locale`](_string_): A key for the locale of the given messages. If uset,
   will inherit the locale from the parent context, or ultimately use en empty
   string.
-- [`merge`] (_Function_): By default, top-level namespaces defined in a child
+- [`merge`](_Function_): By default, top-level namespaces defined in a child
   `MessageProvider` overwrite those defined in a parent. Set this to [`_.merge`]
   or some other function with the same arguments as [Object.assign] to allow for
   deep merges.
-- [`pathSep`] (_string_): By default, `.` in a `<Message id>` splits the path
+- [`pathSep`](_string_): By default, `.` in a `<Message id>` splits the path
   into parts, such that e.g. `'a.b'` is equivalent to `['a', 'b']`. Use this
   option to customize or disable this behaviour (by setting it to `null`).
 - `children` (_ReactElement_): The root of your component hierarchy.
@@ -142,14 +176,14 @@ also be used with a render prop: `<Message id={id}>{msg => {...}}</Message>`.
 - `id` (_string_ or _string[]_): The key or key path of the message.
 - [`locale`] (_string_ or _string[]_): If set, overrides the `locale` of the
   nearest MessageProvider.
-- [`onError(id, type): string`] (_function_): If set, called if `id` does not
+- [`onError(id, type): string`](_function_): If set, called if `id` does not
   resolve to a message value (after checking fallback locales, if set). `type`
   is the type of the value at `id`, most likely either `'object'` or `'unknown'`.
   A non-empty return value will replace the default `String(id)` fallback value.
-- [`params`] and [`msgParams`] (_object_): Parameters to pass to function
+- [`params`] and [`msgParams`](_object_): Parameters to pass to function
   messages as their first and only argument. `params` will override `msgParams`,
   to allow for data keys such as `key` and `locale`.
-- [`children`] (_function_): If set, will be called with the found message. In
+- [`children`](_function_): If set, will be called with the found message. In
   this case, `onError` and `params` will be ignored and `id` is optional.
 
 [consumer]: https://reactjs.org/docs/context.html#consumer
@@ -254,7 +288,7 @@ extend any values set by the hook's arguments.
 
 - `rootId` (_string_ or _string[]_): The key or key path of the message or
   message object. If empty or `[]`, matches the root of the messages object
-- [`baseParams`] (_Object_): If set, message function parameters will be assumed
+- [`baseParams`](_Object_): If set, message function parameters will be assumed
   to always be an object, with these values initially set.
 - [`locale`] (_string_ or _string[]_): If set, overrides the current locale
   precedence as set by parent MessageProviders.

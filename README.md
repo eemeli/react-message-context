@@ -20,6 +20,7 @@ React and prop-types are peer dependencies. **React 16.8** or later is required.
 #### [API](API.md)
 
 - [`getMessage(context, id, [locale])`](API.md#get-message)
+- [`getMessageGetter(context, rootId, [{ baseParams, locale }])`](API.md#get-message-getter)
 - [`MessageContext`](API.md#message-context)
 - [`<MessageProvider messages [locale] [pathSep]>`](API.md#message-provider)
 - [`<Message id [locale] [onError] [props] [...msgProps]>`](API.md#message)
