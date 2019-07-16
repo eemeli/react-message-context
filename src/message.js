@@ -8,7 +8,7 @@ const Message = ({ children, id, locale, onError, params, ...msgParams }) => (
   <MessageContext.Consumer>
     {context => {
       const msg = getMessage(context, id, locale)
-      if (children) return children(msg)
+      if (typeof children === 'function') return children(msg)
       switch (typeof msg) {
         case 'function':
           return msg(Object.assign(msgParams, params))
@@ -19,6 +19,7 @@ const Message = ({ children, id, locale, onError, params, ...msgParams }) => (
         default:
           let res = onError && onError(id, typeof msg)
           if (!res) {
+            if (children) return children
             const { pathSep } = context
             res = pathSep && Array.isArray(id) ? id.join(pathSep) : String(id)
           }
@@ -31,7 +32,7 @@ const Message = ({ children, id, locale, onError, params, ...msgParams }) => (
 Message.displayName = 'Message'
 
 Message.propTypes = {
-  children: PropTypes.func,
+  children: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
   id: PathType,
   locale: PathType,
   onError: PropTypes.func,

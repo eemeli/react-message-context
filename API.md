@@ -183,8 +183,10 @@ also be used with a render prop: `<Message id={id}>{msg => {...}}</Message>`.
 - [`params`] and [`msgParams`](_object_): Parameters to pass to function
   messages as their first and only argument. `params` will override `msgParams`,
   to allow for data keys such as `key` and `locale`.
-- [`children`](_function_): If set, will be called with the found message. In
-  this case, `onError` and `params` will be ignored and `id` is optional.
+- [`children`](_function_ or _node_): If a function, will be called with the
+  found message. In this case, `onError` and `params` will be ignored and `id`
+  is optional. If some other type of non-empty renderable node, it will be used
+  as a fallback value if the messge is not found.
 
 [consumer]: https://reactjs.org/docs/context.html#consumer
 

@@ -298,6 +298,31 @@ describe('Hierarchical messages', () => {
     )
     expect(component.toJSON()).toBe('not,valid,undefined')
   })
+
+  test('Bad path, fallback message', () => {
+    const messages = { obj: { x: 'X' } }
+    const component = renderer.create(
+      <MessageProvider messages={messages}>
+        <Message id="not.valid">fallback</Message>
+      </MessageProvider>
+    )
+    expect(component.toJSON()).toBe('fallback')
+  })
+
+  test('Bad path, fallback message with error handler', () => {
+    const messages = { obj: { x: 'X' } }
+    const mock = jest.fn()
+    mock.mockReturnValue(false)
+    const component = renderer.create(
+      <MessageProvider messages={messages}>
+        <Message id="not.valid" onError={mock}>
+          fallback
+        </Message>
+      </MessageProvider>
+    )
+    expect(component.toJSON()).toBe('fallback')
+    expect(mock).toHaveBeenCalledWith('not.valid', 'undefined')
+  })
 })
 
 describe('Render prop', () => {
