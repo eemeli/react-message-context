@@ -51,7 +51,7 @@ MessageProvider.propTypes = {
   context: ContextType,
   locale: PropTypes.string,
   merge: PropTypes.func,
-  messages: PropTypes.object.isRequired,
+  messages: PropTypes.object,
   pathSep: PropTypes.string
 }
 
