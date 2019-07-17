@@ -1,10 +1,7 @@
 # react-message-context
 
-React message provider, using the React [Context API]. Works well with just one
-or many locales, and with messages stored as strings or functions. Designed in
-particular for use with [messageformat].
+An efficient React front-end for message formatting libraries. Designed in particular for use with [messageformat], but will work with any messages. Provides the best possible API for a front-end developer, without making the back end any more difficult than it needs to be either. Should add at most about 1kB to your compiled & minified bundle size.
 
-[context api]: https://reactjs.org/docs/context.html
 [messageformat]: https://messageformat.github.io
 
 ## Installation
@@ -15,9 +12,9 @@ npm install react-message-context
 
 The library has **React 16.8** or later as a peer dependency.
 
-## Documentation
+## [API Documentation]
 
-#### [API](API.md)
+[API documentation]: API.md
 
 - [`getMessage(context, id, [locale])`](API.md#get-message)
 - [`getMessageGetter(context, rootId, [{ baseParams, locale }])`](API.md#get-message-getter)
@@ -28,10 +25,20 @@ The library has **React 16.8** or later as a peer dependency.
 - [`useMessage(id, [locale])`](API.md#use-message)
 - [`useMessageGetter(rootId, [{ baseParams, locale }])`](API.md#use-message-getter)
 
-## Examples
+The changelog is [available on GitHub](https://github.com/eemeli/react-message-context/releases).
 
-Within a `MessageProvider`, access to the messages is possible using either the
-`Message` component, or via custom hooks such as `useMessageGetter`:
+## Usage Examples
+
+In addition to the examples included below and in the [API documentation], see [react-message-context-example] for a simple, but fully functional example of using this library along with [messageformat] and [messageformat-loader] to handle localized messages, with dynamic loading of non-default locales.
+
+[react-message-context-example]: https://github.com/eemeli/react-message-context/tree/master/example#react-message-context-example
+[react-message-context]: https://www.npmjs.com/package/react-message-context
+[messageformat]: https://www.npmjs.com/package/messageformat
+[messageformat-loader]: https://www.npmjs.com/package/messageformat-loader
+
+---
+
+Within a `MessageProvider`, access to the messages is possible using either the `Message` component, or via custom hooks such as `useMessageGetter`:
 
 ```js
 import React from 'react'
@@ -76,8 +83,7 @@ export const Example = () => (
 
 ---
 
-Using MessageProviders within each other allows for multiple locales and
-namespaces:
+Using MessageProviders within each other allows for multiple locales and namespaces:
 
 ```jsx
 import React from 'react'
@@ -117,98 +123,4 @@ export const Example = () => (
 // - bar  (uses fallback to key)
 // - QUX  (uses fallback to "en" locale)
 // - xyzzy  (uses fallback to child node)
-```
-
----
-
-For a more complete experience, use [messageformat] and [messageformat-loader],
-which allows for importing your messages from multiple sources. As a
-demonstration of locale fallback, both of the following will render as:
-
-```
-- Viestisi on väärän pituinen (pitäisi olla 42 merkkiä)
-- The value must be equal to 13
-```
-
-[messageformat-loader]: https://www.npmjs.com/package/messageformat-loader
-
-#### messages_en.yaml
-
-```yaml
-confirm: Are you sure?
-errors:
-  wrong_length: |
-    Your message is the wrong length (should be {length, plural,
-      one {1 character}
-      other {# characters}
-    })
-  equal_to: The value must be equal to {count}
-```
-
-#### messages_fi.yaml
-
-```yaml
-confirm: Oletko varma?
-errors:
-  wrong_length: |
-    Viestisi on väärän pituinen (pitäisi olla {length, plural,
-      one {1 merkki}
-      other {# merkkiä}
-    })
-```
-
-#### component-errors.js
-
-```jsx
-import React from 'react'
-import { Message } from 'react-message-context'
-
-export const ComponentErrors = () => (
-  <ul>
-    <li>
-      <Message id="errors.wrong_length" length={42} />
-    </li>
-    <li>
-      <Message id="errors.equal_to" count={13} />
-    </li>
-  </ul>
-)
-```
-
-#### hook-errors.js
-
-```jsx
-import React from 'react'
-import { useMessageGetter } from 'react-message-context'
-
-export function HookErrors() {
-  const getErrorMsg = useMessageGetter('errors')
-  return (
-    <ul>
-      <li>{getErrorMsg('wrong_length', { length: 42 })}</li>
-      <li>{getErrorMsg('equal_to', { count: 13 })}</li>
-    </ul>
-  )
-}
-```
-
-#### example.js
-
-```jsx
-import React from 'react'
-import { MessageProvider } from 'react-message-context'
-
-import { ComponentErrors } from './component-errors'
-import { HookErrors } from './hook-errors'
-import en from './messages_en.yaml'
-import fi from './messages_fi.yaml'
-
-export const Example = () => (
-  <MessageProvider locale="en" messages={en}>
-    <MessageProvider locale="fi" messages={fi}>
-      <ComponentErrors />
-      <HookErrors />
-    </MessageProvider>
-  </MessageProvider>
-)
 ```
