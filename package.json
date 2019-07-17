@@ -15,8 +15,10 @@
   "homepage": "https://github.com/eemeli/react-message-context#readme",
   "main": "cjs/index.js",
   "module": "esm/index.js",
+  "types": "index.d.ts",
   "files": [
     "API.md",
+    "index.d.ts",
     "cjs/",
     "esm/"
   ],
