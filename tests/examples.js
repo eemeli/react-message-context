@@ -63,6 +63,7 @@ describe('README', () => {
           <Message id="bar" />
           <Message id="bar" locale="en" />
           <Message id="qux" />
+          <Message id="quux">xyzzy</Message>
         </MessageProvider>
       </MessageProvider>
     )

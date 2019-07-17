@@ -102,6 +102,9 @@ export const Example = () => (
         <li>
           <Message id="qux" />
         </li>
+        <li>
+          <Message id="quux">xyzzy</Message>
+        </li>
       </ul>
     </MessageProvider>
   </MessageProvider>
@@ -113,6 +116,7 @@ export const Example = () => (
 // - BÄR
 // - bar  (uses fallback to key)
 // - QUX  (uses fallback to "en" locale)
+// - xyzzy  (uses fallback to child node)
 ```
 
 ---
