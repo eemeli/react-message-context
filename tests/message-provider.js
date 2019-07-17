@@ -32,6 +32,13 @@ test('Minimal messages with locale', () => {
   )
 })
 
+test('Invalid messages', () => {
+  const spy = jest.spyOn(console, 'error').mockImplementation()
+  renderer.create(<MessageProvider messages={'foo'} />)
+  expect(spy).toHaveBeenCalledTimes(1)
+  spy.mockRestore()
+})
+
 describe('pathSep', () => {
   test('Set by string prop', () => {
     const component = renderer.create(
