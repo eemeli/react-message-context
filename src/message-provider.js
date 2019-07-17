@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types'
 import React, { useContext, useMemo } from 'react'
 import MessageContext, { defaultValue } from './message-context'
-import { ContextType } from './prop-types'
 
 function getLocales({ locales }, locale) {
   const fallback = locales.filter(fb => fb !== locale)
@@ -48,7 +47,12 @@ function MessageProvider({
 }
 
 MessageProvider.propTypes = {
-  context: ContextType,
+  context: PropTypes.shape({
+    locales: PropTypes.arrayOf(PropTypes.string).isRequired,
+    merge: PropTypes.func.isRequired,
+    messages: PropTypes.object.isRequired,
+    pathSep: PropTypes.string
+  }),
   locale: PropTypes.string,
   merge: PropTypes.func,
   messages: PropTypes.object,

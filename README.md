@@ -10,10 +10,10 @@ particular for use with [messageformat].
 ## Installation
 
 ```
-npm install react-message-context react prop-types
+npm install react-message-context
 ```
 
-React and prop-types are peer dependencies. **React 16.8** or later is required.
+The library has **React 16.8** or later as a peer dependency.
 
 ## Documentation
 

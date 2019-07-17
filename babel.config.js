@@ -6,5 +6,8 @@ module.exports = {
     ['@babel/preset-env', { loose: true, modules }],
     '@babel/preset-react'
   ],
-  plugins: ['@babel/plugin-proposal-class-properties']
+  plugins: [
+    '@babel/plugin-proposal-class-properties',
+    ['transform-react-remove-prop-types', { removeImport: true }]
+  ]
 }

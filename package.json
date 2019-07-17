@@ -44,6 +44,7 @@
     "@babel/preset-env": "^7.5.4",
     "@babel/preset-react": "^7.0.0",
     "babel-jest": "^24.8.0",
+    "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "intl-list-format": "^1.0.3",
     "jest": "^24.8.0",
     "lodash.merge": "^4.6.2",
@@ -53,7 +54,6 @@
     "react-test-renderer": "^16.8.6"
   },
   "peerDependencies": {
-    "prop-types": ">=15.5.7",
     "react": ">=16.8.0"
   },
   "dependencies": {}

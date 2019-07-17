@@ -2,7 +2,6 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import { getMessage } from './get-message'
 import MessageContext from './message-context'
-import { PathType } from './prop-types'
 
 const Message = ({ children, id, locale, onError, params, ...msgParams }) => (
   <MessageContext.Consumer>
@@ -33,8 +32,14 @@ Message.displayName = 'Message'
 
 Message.propTypes = {
   children: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
-  id: PathType,
-  locale: PathType,
+  id: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.arrayOf(PropTypes.string)
+  ]),
+  locale: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.arrayOf(PropTypes.string)
+  ]),
   onError: PropTypes.func,
   params: PropTypes.object
 }
