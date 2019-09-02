@@ -4,8 +4,8 @@ import renderer from 'react-test-renderer'
 import { MessageProvider, useMessage } from '../src/index'
 
 function ShowMessage({ id, locale, params }) {
-  const msg = useMessage(id, locale)
-  return JSON.stringify(params ? msg(params) : msg)
+  const msg = useMessage(id, params, locale)
+  return JSON.stringify(msg)
 }
 
 const cases = [
@@ -68,10 +68,32 @@ for (const { title, locale, messages } of cases) {
       expect(component.toJSON()).toBe('{"y":"Y"}')
     })
 
-    test('Function value', () => {
+    test('Function value: Object', () => {
       const component = renderer.create(
         <MessageProvider locale={locale} messages={{ x: p => p }}>
           <ShowMessage id="x" params={{ p: 'P' }} />
+        </MessageProvider>
+      )
+      expect(component.toJSON()).toBe('{"p":"P"}')
+    })
+
+    test('Function value: false', () => {
+      const component = renderer.create(
+        <MessageProvider locale={locale} messages={{ x: p => p }}>
+          <ShowMessage id="x" params={false} />
+        </MessageProvider>
+      )
+      expect(component.toJSON()).toBe('false')
+    })
+
+    test('Function value without params', () => {
+      function FunMessage() {
+        const msg = useMessage('x')
+        return JSON.stringify(msg({ p: 'P' }))
+      }
+      const component = renderer.create(
+        <MessageProvider locale={locale} messages={{ x: p => p }}>
+          <FunMessage />
         </MessageProvider>
       )
       expect(component.toJSON()).toBe('{"p":"P"}')

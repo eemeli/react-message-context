@@ -229,16 +229,20 @@ See `useMessage()` for example usage.
 <a id="use-message"></a>
 <br/>
 
-### `useMessage(id, [locale])`
+### `useMessage(id, [params], [locale])`
 
 A custom [React hook] providing an entry from the messages object of the
-current or given locale. The returned value will be `undefined` if not found, or
-otherwise exactly as set in the `MessageProvider` props.
+current or given locale. The returned value will be `undefined` if not found. If
+`params` is set and the identified message value is a function, the returned
+value will be `msg(params)`; otherwise the value set in the `MessageProvider`
+props will be returned.
 
 #### Arguments
 
 - `id` (_string_ or _string[]_): The key or key path of the message or message
   object. If empty or `[]`, matches the root of the messages object
+- [`params`] (_any_): If not empty and the identified message is a function, the
+  returned value will be `msg(params)`.
 - [`locale`] (_string_ or _string[]_): If set, overrides the current locale
   precedence as set by parent MessageProviders.
 

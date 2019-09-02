@@ -22,7 +22,7 @@ The library has **React 16.8** or later as a peer dependency.
 - [`<MessageProvider messages [locale] [pathSep]>`](API.md#message-provider)
 - [`<Message id [locale] [onError] [props] [...msgProps]>`](API.md#message)
 - [`useLocales()`](API.md#use-locales)
-- [`useMessage(id, [locale])`](API.md#use-message)
+- [`useMessage(id, [params], [locale])`](API.md#use-message)
 - [`useMessageGetter(rootId, [{ baseParams, locale }])`](API.md#use-message-getter)
 
 The changelog is [available on GitHub](https://github.com/eemeli/react-message-context/releases).
