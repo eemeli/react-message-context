@@ -125,3 +125,38 @@ describe('Wrapped provider', () => {
     expect(component.toJSON()).toMatchObject(['"XX"', '"XX"'])
   })
 })
+
+describe('Errors', () => {
+  class Catch extends React.Component {
+    state = { error: null }
+    static getDerivedStateFromError(error) {
+      return { error }
+    }
+    render() {
+      const { error } = this.state
+      return error ? error.message : this.props.children
+    }
+  }
+
+  test('Message not found', () => {
+    const component = renderer.create(
+      <Catch>
+        <MessageProvider debug="error" messages={{ x: 'X' }}>
+          <ShowMessage msgId="y" />
+        </MessageProvider>
+      </Catch>
+    )
+    expect(component.toJSON()).toBe('Message not found: y')
+  })
+
+  test('Expected function', () => {
+    const component = renderer.create(
+      <Catch>
+        <MessageProvider debug="error" messages={{ x: 'X' }}>
+          <ShowMessage msgId="x" msgParams={true} />
+        </MessageProvider>
+      </Catch>
+    )
+    expect(component.toJSON()).toBe('Params given for non-function message: x')
+  })
+})

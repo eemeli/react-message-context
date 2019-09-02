@@ -6,5 +6,9 @@ import MessageContext from './message-context'
 export default function useMessage(id, params, locale) {
   const context = useContext(MessageContext)
   const msg = getMessage(context, id, locale)
-  return typeof msg === 'function' && params != null ? msg(params) : msg
+  if (params != null) {
+    if (typeof msg === 'function') return msg(params)
+    context.debug(`Params given for non-function message: ${id}`)
+  }
+  return msg
 }

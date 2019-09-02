@@ -2,6 +2,25 @@ import PropTypes from 'prop-types'
 import React, { useContext, useMemo } from 'react'
 import MessageContext, { defaultValue } from './message-context'
 
+function debugError(msg) {
+  throw new Error(msg)
+}
+function debugWarn(msg) {
+  console.warn(msg)
+}
+function getDebug(context, debug) {
+  switch (debug) {
+    case 'error':
+      return debugError
+    case 'warn':
+      return debugWarn
+    case null:
+      return defaultValue.debug
+    default:
+      return typeof debug === 'function' ? debug : context.debug
+  }
+}
+
 function getLocales({ locales }, locale) {
   const fallback = locales.filter(fb => fb !== locale)
   return [locale].concat(fallback)
@@ -23,6 +42,7 @@ function getPathSep(context, pathSep) {
 function MessageProvider({
   children,
   context: parent,
+  debug,
   locale,
   merge,
   messages,
@@ -32,6 +52,7 @@ function MessageProvider({
   else if (parent === null) parent = defaultValue
   const context = useMemo(
     () => ({
+      debug: getDebug(parent, debug),
       locales: getLocales(parent, locale),
       merge: merge || parent.merge,
       messages: getMessages(parent, locale, messages),
@@ -48,11 +69,16 @@ function MessageProvider({
 
 MessageProvider.propTypes = {
   context: PropTypes.shape({
+    debug: PropTypes.func.isRequired,
     locales: PropTypes.arrayOf(PropTypes.string).isRequired,
     merge: PropTypes.func.isRequired,
     messages: PropTypes.object.isRequired,
     pathSep: PropTypes.string
   }),
+  debug: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.oneOf(['error', 'warn'])
+  ]),
   locale: PropTypes.string,
   merge: PropTypes.func,
   messages: PropTypes.object,

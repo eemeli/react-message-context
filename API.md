@@ -107,7 +107,7 @@ export const App = () => (
 <a id="message-provider"></a>
 <br/>
 
-### `<MessageProvider messages [locale] [merge] [pathSep]>`
+### `<MessageProvider messages [debug] [locale] [merge] [pathSep]>`
 
 Makes the messages available for its descendants. Internally uses a Context API
 [Provider]. To support multiple locales and/or namespaces, MessageProviders may
@@ -119,14 +119,18 @@ furthest.
 
 - `messages` (_object_): A hierarchical object containing the messages as
   boolean, number, string or function values.
-- [`locale`](_string_): A key for the locale of the given messages. If uset,
+- [`debug`] (error"|"warn"|_Function_): What to do if a message is not found,
+  or a non-function message is given parameters: `"error"` will throw, `"warn"`
+  will print in the console, and a custom function will be called with the
+  message string as an argument. If unset, nothing will be done.
+- [`locale`] (_string_): A key for the locale of the given messages. If uset,
   will inherit the locale from the parent context, or ultimately use en empty
   string.
-- [`merge`](_Function_): By default, top-level namespaces defined in a child
+- [`merge`] (_Function_): By default, top-level namespaces defined in a child
   `MessageProvider` overwrite those defined in a parent. Set this to [`_.merge`]
   or some other function with the same arguments as [Object.assign] to allow for
   deep merges.
-- [`pathSep`](_string_): By default, `.` in a `<Message id>` splits the path
+- [`pathSep`] (_string_): By default, `.` in a `<Message id>` splits the path
   into parts, such that e.g. `'a.b'` is equivalent to `['a', 'b']`. Use this
   option to customize or disable this behaviour (by setting it to `null`).
 - `children` (_ReactElement_): The root of your component hierarchy.

@@ -1,6 +1,7 @@
 import React from 'react'
 
 const defaultValue = {
+  debug: () => {},
   locales: [],
   merge: Object.assign,
   messages: {},
