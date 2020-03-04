@@ -2,7 +2,7 @@ import merge from 'lodash.merge'
 import React, { Component } from 'react'
 import renderer from 'react-test-renderer'
 
-import { MessageContext, MessageProvider } from '../src/index'
+import { Message, MessageContext, MessageProvider } from '../src/index'
 
 const TestConsumer = () => (
   <MessageContext.Consumer>
@@ -162,6 +162,42 @@ describe('Inheritance', () => {
     )
     expect(component.toJSON()).toBe(
       '{"locales":["aa"],"messages":{"aa":{"bb":{},"cc":"CC","dd":{}}},"pathSep":"."}'
+    )
+  })
+
+  test('Custom context', () => {
+    const debug = jest.fn()
+    const Inner = () => {
+      const ctx = Object.assign({}, React.useContext(MessageContext), { debug })
+      return (
+        <MessageProvider context={ctx} messages={{ dd: {} }}>
+          <TestConsumer />
+          <Message id="not.valid" />
+        </MessageProvider>
+      )
+    }
+    const component = renderer.create(
+      <MessageProvider messages={{ bb: {}, cc: {} }}>
+        <Inner />
+      </MessageProvider>
+    )
+    expect(component.toJSON()).toMatchObject([
+      '{"locales":[""],"messages":{"":{"bb":{},"cc":{},"dd":{}}},"pathSep":"."}',
+      'not.valid'
+    ])
+    expect(debug).toHaveBeenCalledTimes(1)
+  })
+
+  test('Forced to default context', () => {
+    const component = renderer.create(
+      <MessageProvider messages={{ bb: {}, cc: {} }}>
+        <MessageProvider context={null} messages={{ dd: {} }}>
+          <TestConsumer />
+        </MessageProvider>
+      </MessageProvider>
+    )
+    expect(component.toJSON()).toBe(
+      '{"locales":[""],"messages":{"":{"dd":{}}},"pathSep":"."}'
     )
   })
 })

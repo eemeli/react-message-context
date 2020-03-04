@@ -5,7 +5,7 @@ import { MessageProvider, useMessage } from '../src/index'
 
 function ShowMessage({ id, locale, params }) {
   const msg = useMessage(id, params, locale)
-  return JSON.stringify(msg)
+  return JSON.stringify(msg) || null
 }
 
 const cases = [
@@ -136,47 +136,86 @@ describe('Wrapped provider', () => {
   })
 })
 
-describe('Errors', () => {
-  // Silence pointless console errors until this is resolved:
-  // https://github.com/facebook/react/pull/17383
-  let spy
-  beforeAll(() => {
-    spy = jest.spyOn(console, 'error').mockImplementation()
-  })
-  afterAll(() => {
-    spy.mockRestore()
-  })
-
-  class Catch extends React.Component {
-    state = { error: null }
-    static getDerivedStateFromError(error) {
-      return { error }
-    }
-    render() {
-      const { error } = this.state
-      return error ? error.message : this.props.children
-    }
-  }
-
-  test('Message not found', () => {
+describe('Debugging', () => {
+  test('debug={null}', () => {
     const component = renderer.create(
-      <Catch>
-        <MessageProvider debug="error" messages={{ x: 'X' }}>
+      <MessageProvider debug={null} messages={{ x: 'X' }}>
+        <ShowMessage id="y" />
+      </MessageProvider>
+    )
+    expect(component.toJSON()).toBeNull()
+  })
+
+  test('debug="warn"', () => {
+    const warn = jest.spyOn(console, 'warn').mockImplementation()
+    try {
+      const component = renderer.create(
+        <MessageProvider debug="warn" messages={{ x: 'X' }}>
           <ShowMessage id="y" />
         </MessageProvider>
-      </Catch>
-    )
-    expect(component.toJSON()).toBe('Message not found: y')
+      )
+      expect(component.toJSON()).toBeNull()
+      expect(warn).toHaveBeenCalledTimes(1)
+    } finally {
+      warn.mockRestore()
+    }
   })
 
-  test('Expected function', () => {
+  describe('debug="error"', () => {
+    // Silence pointless console errors until this is resolved:
+    // https://github.com/facebook/react/pull/17383
+    let spy
+    beforeAll(() => {
+      spy = jest.spyOn(console, 'error').mockImplementation()
+    })
+    afterAll(() => {
+      spy.mockRestore()
+    })
+
+    class Catch extends React.Component {
+      state = { error: null }
+      static getDerivedStateFromError(error) {
+        return { error }
+      }
+      render() {
+        const { error } = this.state
+        return error ? error.message : this.props.children
+      }
+    }
+
+    test('Message not found', () => {
+      const component = renderer.create(
+        <Catch>
+          <MessageProvider debug="error" messages={{ x: 'X' }}>
+            <ShowMessage id="y" />
+          </MessageProvider>
+        </Catch>
+      )
+      expect(component.toJSON()).toBe('Message not found: y')
+    })
+
+    test('Expected function', () => {
+      const component = renderer.create(
+        <Catch>
+          <MessageProvider debug="error" messages={{ x: 'X' }}>
+            <ShowMessage id="x" params={true} />
+          </MessageProvider>
+        </Catch>
+      )
+      expect(component.toJSON()).toBe(
+        'Params given for non-function message: x'
+      )
+    })
+  })
+
+  test('debug={function}', () => {
+    const debug = jest.fn()
     const component = renderer.create(
-      <Catch>
-        <MessageProvider debug="error" messages={{ x: 'X' }}>
-          <ShowMessage id="x" params={true} />
-        </MessageProvider>
-      </Catch>
+      <MessageProvider debug={debug} messages={{ x: 'X' }}>
+        <ShowMessage id="y" />
+      </MessageProvider>
     )
-    expect(component.toJSON()).toBe('Params given for non-function message: x')
+    expect(component.toJSON()).toBeNull()
+    expect(debug).toHaveBeenCalledTimes(1)
   })
 })

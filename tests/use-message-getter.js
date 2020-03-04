@@ -88,6 +88,30 @@ for (const { title, locale, messages } of cases) {
   })
 }
 
+describe('Functional messages', () => {
+  const messages = {
+    x: { y: args => args.z }
+  }
+
+  test('Message parameters', () => {
+    const component = renderer.create(
+      <MessageProvider messages={messages}>
+        <ShowMessage msgId="x.y" msgParams={{ z: 'Z' }} />
+      </MessageProvider>
+    )
+    expect(component.toJSON()).toBe('"Z"')
+  })
+
+  test('Base parameters', () => {
+    const component = renderer.create(
+      <MessageProvider messages={messages}>
+        <ShowMessage msgId="x.y" baseParams={{ z: 'Z' }} />
+      </MessageProvider>
+    )
+    expect(component.toJSON()).toBe('"Z"')
+  })
+})
+
 describe('Wrapped provider', () => {
   test('Inherited locale', () => {
     const component = renderer.create(

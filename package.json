@@ -24,12 +24,7 @@
   "scripts": {
     "build": "babel src -d lib",
     "prepublishOnly": "npm run build",
-    "test": "jest"
-  },
-  "jest": {
-    "testMatch": [
-      "**/tests/*.js"
-    ]
+    "test": "jest --coverage"
   },
   "prettier": {
     "semi": false,

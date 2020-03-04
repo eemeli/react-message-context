@@ -266,7 +266,7 @@ describe('Hierarchical messages', () => {
     expect(component.toJSON()).toBe('not/valid')
   })
 
-  test('Bad path, disabled pathSep', () => {
+  test('Bad array path, disabled pathSep', () => {
     const messages = { obj: { x: 'X' } }
     const component = renderer.create(
       <MessageProvider messages={messages} pathSep={null}>
@@ -274,6 +274,16 @@ describe('Hierarchical messages', () => {
       </MessageProvider>
     )
     expect(component.toJSON()).toBe('not,valid')
+  })
+
+  test('Bad string path, disabled pathSep', () => {
+    const messages = { obj: { x: 'X' } }
+    const component = renderer.create(
+      <MessageProvider messages={messages} pathSep={null}>
+        <Message id="not!valid" />
+      </MessageProvider>
+    )
+    expect(component.toJSON()).toBe('not!valid')
   })
 
   test('Bad path, no error handler', () => {
