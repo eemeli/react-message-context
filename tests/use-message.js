@@ -137,6 +137,16 @@ describe('Wrapped provider', () => {
 })
 
 describe('Errors', () => {
+  // Silence pointless console errors until this is resolved:
+  // https://github.com/facebook/react/pull/17383
+  let spy
+  beforeAll(() => {
+    spy = jest.spyOn(console, 'error').mockImplementation()
+  })
+  afterAll(() => {
+    spy.mockRestore()
+  })
+
   class Catch extends React.Component {
     state = { error: null }
     static getDerivedStateFromError(error) {
