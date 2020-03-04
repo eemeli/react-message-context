@@ -119,10 +119,10 @@ furthest.
 
 - `messages` (_object_): A hierarchical object containing the messages as
   boolean, number, string or function values.
-- [`debug`] (error"|"warn"|_Function_): What to do if a message is not found,
+- [`debug`] ("error"|"warn"|_Function_): What to do if a message is not found,
   or a non-function message is given parameters: `"error"` will throw, `"warn"`
-  will print in the console, and a custom function will be called with the
-  message string as an argument. If unset, nothing will be done.
+  will print a warning in the console, and a custom function will be called with
+  the message string as an argument. If unset, nothing will be done.
 - [`locale`] (_string_): A key for the locale of the given messages. If uset,
   will inherit the locale from the parent context, or ultimately use en empty
   string.

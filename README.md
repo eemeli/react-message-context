@@ -10,11 +10,9 @@ An efficient React front-end for message formatting libraries. Designed in parti
 npm install react-message-context
 ```
 
-The library has **React 16.8** or later as a peer dependency.
+The library has **React 16.8** or later as a peer dependency. It is published as an **ES module** only, which should work directly with almost all tools and environments that support modern development targeting browser environments. For tools such as Jest that define their own import methods, you may need to add something like `transformIgnorePatterns: ['node_modules/(?!(react-message-context)/)']` to your configuration.
 
-## [API Documentation]
-
-[API documentation]: API.md
+## [API Documentation](API.md)
 
 - [`getMessage(context, id, [locale])`](API.md#get-message)
 - [`getMessageGetter(context, rootId, [{ baseParams, locale }])`](API.md#get-message-getter)
