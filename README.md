@@ -17,7 +17,7 @@ The library has **React 16.8** or later as a peer dependency. It is published as
 - [`getMessage(context, id, [locale])`](API.md#get-message)
 - [`getMessageGetter(context, rootId, [{ baseParams, locale }])`](API.md#get-message-getter)
 - [`MessageContext`](API.md#message-context)
-- [`<MessageProvider messages [debug] [locale] [pathSep]>`](API.md#message-provider)
+- [`<MessageProvider messages [locale] [onError] [pathSep]>`](API.md#message-provider)
 - [`<Message id [locale] [onError] [props] [...msgProps]>`](API.md#message)
 - [`useLocales()`](API.md#use-locales)
 - [`useMessage(id, [params], [locale])`](API.md#use-message)

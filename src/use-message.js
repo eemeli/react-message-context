@@ -8,6 +8,6 @@ export default function useMessage(id, params, locale) {
   const msg = getMessage(context, id, locale)
   if (typeof msg === 'function') return msg(params == null ? {} : params)
   else if (params != null)
-    context.debug(`Params given for non-function message: ${id}`)
+    context.onError('Params given for non-function message', id)
   return msg
 }

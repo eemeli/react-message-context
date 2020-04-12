@@ -166,9 +166,11 @@ describe('Inheritance', () => {
   })
 
   test('Custom context', () => {
-    const debug = jest.fn()
+    const onError = jest.fn()
     const Inner = () => {
-      const ctx = Object.assign({}, React.useContext(MessageContext), { debug })
+      const ctx = Object.assign({}, React.useContext(MessageContext), {
+        onError
+      })
       return (
         <MessageProvider context={ctx} messages={{ dd: {} }}>
           <TestConsumer />
@@ -185,7 +187,7 @@ describe('Inheritance', () => {
       '{"locales":[""],"messages":{"":{"bb":{},"cc":{},"dd":{}}},"pathSep":"."}',
       'not.valid'
     ])
-    expect(debug).toHaveBeenCalledTimes(1)
+    expect(onError).toHaveBeenCalledTimes(1)
   })
 
   test('Forced to default context', () => {

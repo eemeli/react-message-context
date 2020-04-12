@@ -22,14 +22,6 @@ interface MessageProviderProps {
   context?: IMessageContext
 
   /**
-   * What to do if a message is not found, or a non-function message is given
-   * parameters: `"error"` will throw, `"warn"` will print a warning in the
-   * console, and a custom function will be called with the message string as an
-   * argument. If unset, nothing will be done.
-   */
-  debug?: 'error' | 'warn' | ((msg: string) => void)
-
-  /**
    * A key for the locale of the given messages. If uset, will inherit the locale
    * from the parent context, or ultimately use en empty string.
    */
@@ -52,6 +44,14 @@ interface MessageProviderProps {
   messages?: object
 
   /**
+   * What to do if a message is not found, or a non-function message is given
+   * parameters: `"error"` will throw, `"warn"` will print a warning in the
+   * console, and a custom function will be called with the message string and
+   * identifier as arguments. If unset, nothing will be done.
+   */
+  onError?: 'error' | 'warn' | ((msg: string, id: string | string[]) => void)
+
+  /**
    * By default, `.` in a `<Message id>` splits the path into parts, such that e.g.
    * `'a.b'` is equivalent to `['a', 'b']`. Use this option to customize or disable
    * this behaviour (by setting it to `null`).
@@ -60,7 +60,7 @@ interface MessageProviderProps {
 }
 
 /**
- * `<MessageProvider messages [debug] [locale] [merge] [pathSep]>`
+ * `<MessageProvider messages [locale] [merge] [onError] [pathSep]>`
  *
  * Makes the messages available for its descendants. Internally uses a Context API
  * [Provider]. To support multiple locales and/or namespaces, MessageProviders may
@@ -68,7 +68,7 @@ interface MessageProviderProps {
  * parents. The locale preference order is also set similarly, from nearest to
  * furthest.
  *
- * [API Documentation](https://github.com/eemeli/react-message-context/blob/master/API.md#messageprovider-messages-debug-locale-merge-pathsep)
+ * [API Documentation](https://github.com/eemeli/react-message-context/blob/master/API.md#messageprovider-messages-locale-merge-onerror-pathsep)
  *
  * [provider]: https://reactjs.org/docs/context.html#provider
  */
@@ -81,7 +81,7 @@ interface MessageProps {
    * type of non-empty renderable node, it will be used as a fallback value if
    * the message is not found.
    */
-  children?: ((msg: any) => React.ReactNode)
+  children?: (msg: any) => React.ReactNode
 
   /** The key or key path of the message. */
   id: string | string[]
@@ -95,7 +95,7 @@ interface MessageProps {
    * likely either `'object'` or `'unknown'`. A non-empty return value will
    * replace the default `String(id)` fallback value.
    */
-  onError?: (id: string | string[], type: string) =>  string
+  onError?: (id: string | string[], type: string) => string
 
   /**
    * Parameters to pass to function messages as their first and only argument.

@@ -132,21 +132,21 @@ describe('Wrapped provider', () => {
   })
 })
 
-describe('Debugging', () => {
-  test('debug={null}', () => {
+describe('Reporting errors', () => {
+  test('onError={null}', () => {
     const component = renderer.create(
-      <MessageProvider debug={null} messages={{ x: 'X' }}>
+      <MessageProvider messages={{ x: 'X' }} onError={null}>
         <ShowMessage id="y" />
       </MessageProvider>
     )
     expect(component.toJSON()).toBeNull()
   })
 
-  test('debug="warn"', () => {
+  test('onError="warn"', () => {
     const warn = jest.spyOn(console, 'warn').mockImplementation()
     try {
       const component = renderer.create(
-        <MessageProvider debug="warn" messages={{ x: 'X' }}>
+        <MessageProvider messages={{ x: 'X' }} onError="warn">
           <ShowMessage id="y" />
         </MessageProvider>
       )
@@ -157,7 +157,7 @@ describe('Debugging', () => {
     }
   })
 
-  describe('debug="error"', () => {
+  describe('onError="error"', () => {
     // Silence pointless console errors until this is resolved:
     // https://github.com/facebook/react/pull/17383
     let spy
@@ -182,7 +182,7 @@ describe('Debugging', () => {
     test('Message not found', () => {
       const component = renderer.create(
         <Catch>
-          <MessageProvider debug="error" messages={{ x: 'X' }}>
+          <MessageProvider messages={{ x: 'X' }} onError="error">
             <ShowMessage id="y" />
           </MessageProvider>
         </Catch>
@@ -193,7 +193,7 @@ describe('Debugging', () => {
     test('Expected function', () => {
       const component = renderer.create(
         <Catch>
-          <MessageProvider debug="error" messages={{ x: 'X' }}>
+          <MessageProvider messages={{ x: 'X' }} onError="error">
             <ShowMessage id="x" params={true} />
           </MessageProvider>
         </Catch>
@@ -204,7 +204,18 @@ describe('Debugging', () => {
     })
   })
 
-  test('debug={function}', () => {
+  test('onError={function}', () => {
+    const onError = jest.fn()
+    const component = renderer.create(
+      <MessageProvider messages={{ x: 'X' }} onError={onError}>
+        <ShowMessage id="y" />
+      </MessageProvider>
+    )
+    expect(component.toJSON()).toBeNull()
+    expect(onError).toHaveBeenCalledWith('Message not found', 'y')
+  })
+
+  test('debug={function} (deprecated)', () => {
     const debug = jest.fn()
     const component = renderer.create(
       <MessageProvider debug={debug} messages={{ x: 'X' }}>
@@ -212,6 +223,6 @@ describe('Debugging', () => {
       </MessageProvider>
     )
     expect(component.toJSON()).toBeNull()
-    expect(debug).toHaveBeenCalledTimes(1)
+    expect(debug).toHaveBeenCalledWith('Message not found: y')
   })
 })

@@ -175,7 +175,7 @@ describe('Errors', () => {
   test('Message not found', () => {
     const component = renderer.create(
       <Catch>
-        <MessageProvider debug="error" messages={{ x: 'X' }}>
+        <MessageProvider messages={{ x: 'X' }} onError="error">
           <ShowMessage msgId="y" />
         </MessageProvider>
       </Catch>
@@ -186,7 +186,7 @@ describe('Errors', () => {
   test('Expected function', () => {
     const component = renderer.create(
       <Catch>
-        <MessageProvider debug="error" messages={{ x: 'X' }}>
+        <MessageProvider messages={{ x: 'X' }} onError="error">
           <ShowMessage msgId="x" msgParams={true} />
         </MessageProvider>
       </Catch>

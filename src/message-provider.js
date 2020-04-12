@@ -2,22 +2,25 @@ import PropTypes from 'prop-types'
 import React, { useContext, useMemo } from 'react'
 import MessageContext, { defaultValue } from './message-context'
 
-function debugError(msg) {
-  throw new Error(msg)
-}
-function debugWarn(msg) {
-  console.warn(msg)
-}
-function getDebug(context, debug) {
-  switch (debug) {
+function getOnError(context, onError, debug) {
+  if (onError === undefined) {
+    // debug is deprecated, will be removed later
+    if (typeof debug === 'function') return (msg, id) => debug(msg + ': ' + id)
+    onError = debug
+  }
+  switch (onError) {
     case 'error':
-      return debugError
+      return function msgError(msg, id) {
+        throw new Error(msg + ': ' + id)
+      }
     case 'warn':
-      return debugWarn
+      return function msgWarning(msg, id) {
+        console.warn(msg, { id })
+      }
     case null:
-      return defaultValue.debug
+      return defaultValue.onError
     default:
-      return typeof debug === 'function' ? debug : context.debug
+      return typeof onError === 'function' ? onError : context.onError
   }
 }
 
@@ -46,16 +49,17 @@ function MessageProvider({
   locale,
   merge,
   messages,
+  onError,
   pathSep
 }) {
   if (parent === undefined) parent = useContext(MessageContext)
   else if (parent === null) parent = defaultValue
   const context = useMemo(
     () => ({
-      debug: getDebug(parent, debug),
       locales: getLocales(parent, locale),
       merge: merge || parent.merge,
       messages: getMessages(parent, locale, messages),
+      onError: getOnError(parent, onError, debug),
       pathSep: getPathSep(parent, pathSep)
     }),
     [parent, locale, merge, messages, pathSep]
@@ -69,19 +73,19 @@ function MessageProvider({
 
 MessageProvider.propTypes = {
   context: PropTypes.shape({
-    debug: PropTypes.func.isRequired,
     locales: PropTypes.arrayOf(PropTypes.string).isRequired,
     merge: PropTypes.func.isRequired,
     messages: PropTypes.object.isRequired,
+    onError: PropTypes.func.isRequired,
     pathSep: PropTypes.string
   }),
-  debug: PropTypes.oneOfType([
-    PropTypes.func,
-    PropTypes.oneOf(['error', 'warn'])
-  ]),
   locale: PropTypes.string,
   merge: PropTypes.func,
   messages: PropTypes.object,
+  onError: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.oneOf(['error', 'warn'])
+  ]),
   pathSep: PropTypes.string
 }
 
