@@ -87,16 +87,12 @@ for (const { title, locale, messages } of cases) {
     })
 
     test('Function value without params', () => {
-      function FunMessage() {
-        const msg = useMessage('x')
-        return JSON.stringify(msg({ p: 'P' }))
-      }
       const component = renderer.create(
         <MessageProvider locale={locale} messages={{ x: p => p }}>
-          <FunMessage />
+          <ShowMessage id="x" />
         </MessageProvider>
       )
-      expect(component.toJSON()).toBe('{"p":"P"}')
+      expect(component.toJSON()).toBe('{}')
     })
   })
 }
