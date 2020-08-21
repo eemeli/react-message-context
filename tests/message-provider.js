@@ -2,7 +2,7 @@ import merge from 'lodash.merge'
 import React, { Component } from 'react'
 import renderer from 'react-test-renderer'
 
-import { Message, MessageContext, MessageProvider } from '../src/index'
+import { Message, MessageContext, MessageProvider } from 'react-message-context'
 
 const TestConsumer = () => (
   <MessageContext.Consumer>
@@ -30,13 +30,6 @@ test('Minimal messages with locale', () => {
   expect(component.toJSON()).toBe(
     '{"locales":["aa"],"messages":{"aa":{"x":{}}},"pathSep":"."}'
   )
-})
-
-test('Invalid messages', () => {
-  const spy = jest.spyOn(console, 'error').mockImplementation()
-  renderer.create(<MessageProvider messages={'foo'} />)
-  expect(spy).toHaveBeenCalledTimes(1)
-  spy.mockRestore()
 })
 
 describe('pathSep', () => {

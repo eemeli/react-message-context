@@ -1,7 +1,7 @@
 import React from 'react'
 import renderer from 'react-test-renderer'
 
-import { MessageProvider, useLocales } from '../src/index'
+import { MessageProvider, useLocales } from 'react-message-context'
 
 function ShowLocales() {
   const locales = useLocales()

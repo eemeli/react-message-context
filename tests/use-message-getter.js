@@ -1,7 +1,7 @@
 import React from 'react'
 import renderer from 'react-test-renderer'
 
-import { MessageProvider, useMessageGetter } from '../src/index'
+import { MessageProvider, useMessageGetter } from 'react-message-context'
 
 function ShowMessage({ rootId, baseParams, locale, msgId, msgParams }) {
   const message = useMessageGetter(rootId, { baseParams, locale })

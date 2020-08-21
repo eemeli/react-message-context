@@ -10,7 +10,7 @@ import {
   useLocales,
   useMessage,
   useMessageGetter
-} from '../src/index'
+} from 'react-message-context'
 
 // actually precompiled with messageformat-cli
 import en from './fixtures/messages_en'

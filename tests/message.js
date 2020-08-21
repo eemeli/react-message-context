@@ -1,7 +1,7 @@
 import React from 'react'
 import renderer from 'react-test-renderer'
 
-import { Message, MessageProvider } from '../src/index'
+import { Message, MessageProvider } from 'react-message-context'
 
 describe('No locale', () => {
   test('String message', () => {
