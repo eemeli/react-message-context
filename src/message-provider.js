@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types'
 import React, { useContext, useMemo } from 'react'
 import MessageContext, { defaultValue } from './message-context'
 
@@ -69,24 +68,6 @@ function MessageProvider({
       {children}
     </MessageContext.Provider>
   )
-}
-
-MessageProvider.propTypes = {
-  context: PropTypes.shape({
-    locales: PropTypes.arrayOf(PropTypes.string).isRequired,
-    merge: PropTypes.func.isRequired,
-    messages: PropTypes.object.isRequired,
-    onError: PropTypes.func.isRequired,
-    pathSep: PropTypes.string
-  }),
-  locale: PropTypes.string,
-  merge: PropTypes.func,
-  messages: PropTypes.object,
-  onError: PropTypes.oneOfType([
-    PropTypes.func,
-    PropTypes.oneOf(['error', 'warn'])
-  ]),
-  pathSep: PropTypes.string
 }
 
 MessageProvider.defaultProps = {

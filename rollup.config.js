@@ -11,10 +11,7 @@ export default {
         ['@babel/preset-env', { loose: true, modules: false }],
         '@babel/preset-react'
       ],
-      plugins: [
-        '@babel/plugin-proposal-class-properties',
-        ['transform-react-remove-prop-types', { removeImport: true }]
-      ]
+      plugins: ['@babel/plugin-proposal-class-properties']
     })
   ]
 }

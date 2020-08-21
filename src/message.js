@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types'
 import { useContext } from 'react'
 import { getMessage } from './get-message'
 import MessageContext from './message-context'
@@ -23,20 +22,6 @@ function Message({ children, id, locale, onError, params, ...msgParams }) {
       }
       return res
   }
-}
-
-Message.propTypes = {
-  children: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
-  id: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.arrayOf(PropTypes.string)
-  ]),
-  locale: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.arrayOf(PropTypes.string)
-  ]),
-  onError: PropTypes.func,
-  params: PropTypes.object
 }
 
 export default Message
