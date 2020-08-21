@@ -1,8 +1,15 @@
 import { useContext } from 'react'
-import { getMessage } from './get-message'
-import MessageContext from './message-context'
+import { getMessage } from './get-message.js'
+import { MessageContext } from './message-context.js'
 
-function Message({ children, id, locale, onError, params, ...msgParams }) {
+export function Message({
+  children,
+  id,
+  locale,
+  onError,
+  params,
+  ...msgParams
+}) {
   const context = useContext(MessageContext)
   const msg = getMessage(context, id, locale)
   if (typeof children === 'function') return children(msg)
@@ -23,5 +30,3 @@ function Message({ children, id, locale, onError, params, ...msgParams }) {
       return res
   }
 }
-
-export default Message

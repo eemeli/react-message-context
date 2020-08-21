@@ -1,12 +1,10 @@
 import { createContext } from 'react'
 
-const defaultValue = {
+export const defaultValue = {
   locales: [],
   merge: Object.assign,
   messages: {},
   onError: () => {},
   pathSep: '.'
 }
-const context = createContext(defaultValue)
-
-export { context as default, defaultValue }
+export const MessageContext = createContext(defaultValue)

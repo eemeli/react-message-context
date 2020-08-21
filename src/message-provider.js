@@ -1,5 +1,5 @@
 import React, { useContext, useMemo } from 'react'
-import MessageContext, { defaultValue } from './message-context'
+import { MessageContext, defaultValue } from './message-context.js'
 
 function getOnError(context, onError, debug) {
   if (onError === undefined) {
@@ -41,7 +41,7 @@ function getPathSep(context, pathSep) {
     : context.pathSep
 }
 
-function MessageProvider({
+export function MessageProvider({
   children,
   context: parent,
   debug,
@@ -73,5 +73,3 @@ function MessageProvider({
 MessageProvider.defaultProps = {
   locale: ''
 }
-
-export default MessageProvider

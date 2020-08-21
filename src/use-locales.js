@@ -1,9 +1,7 @@
 import { useContext } from 'react'
+import { MessageContext } from './message-context.js'
 
-import MessageContext from './message-context'
-
-export default function useLocales() {
+export function useLocales() {
   const { locales } = useContext(MessageContext)
   return locales.slice()
 }
-

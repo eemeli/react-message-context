@@ -1,9 +1,8 @@
 import { useContext } from 'react'
+import { getMessage } from './get-message.js'
+import { MessageContext } from './message-context.js'
 
-import { getMessage } from './get-message'
-import MessageContext from './message-context'
-
-export default function useMessage(id, params, locale) {
+export function useMessage(id, params, locale) {
   const context = useContext(MessageContext)
   const msg = getMessage(context, id, locale)
   if (typeof msg === 'function') return msg(params == null ? {} : params)
