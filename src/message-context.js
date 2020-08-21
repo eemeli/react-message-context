@@ -1,4 +1,4 @@
-import React from 'react'
+import { createContext } from 'react'
 
 const defaultValue = {
   locales: [],
@@ -7,6 +7,6 @@ const defaultValue = {
   onError: () => {},
   pathSep: '.'
 }
-const context = React.createContext(defaultValue)
+const context = createContext(defaultValue)
 
 export { context as default, defaultValue }
