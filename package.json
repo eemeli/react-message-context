@@ -13,16 +13,16 @@
   "author": "Eemeli Aro <eemeli@gmail.com>",
   "license": "MIT",
   "homepage": "https://github.com/eemeli/react-message-context#readme",
-  "main": "lib/index.js",
+  "main": "index.js",
   "types": "index.d.ts",
   "files": [
     "API.md",
-    "index.d.ts",
-    "lib/"
+    "index.js",
+    "index.d.ts"
   ],
   "sideEffects": false,
   "scripts": {
-    "build": "babel src -d lib",
+    "build": "rollup -c",
     "prepublishOnly": "npm run build",
     "test": "jest --coverage"
   },
@@ -31,11 +31,11 @@
     "singleQuote": true
   },
   "devDependencies": {
-    "@babel/cli": "^7.10.5",
     "@babel/core": "^7.11.4",
     "@babel/plugin-proposal-class-properties": "^7.10.4",
     "@babel/preset-env": "^7.11.0",
     "@babel/preset-react": "^7.10.4",
+    "@rollup/plugin-babel": "^5.2.0",
     "babel-jest": "^26.3.0",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "intl-list-format": "^1.0.3",
@@ -44,7 +44,8 @@
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-test-renderer": "^16.13.1"
+    "react-test-renderer": "^16.13.1",
+    "rollup": "^2.26.4"
   },
   "peerDependencies": {
     "react": ">=16.8.0"
