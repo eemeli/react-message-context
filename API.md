@@ -51,7 +51,7 @@ extend any values set by the hook's arguments.
 - `context` (_MessageContext_): The `MessageContext` instance
 - `rootId` (_string_ or _string[]_): The key or key path of the message or
   message object. If empty or `[]`, matches the root of the messages object
-- [`baseParams`](_Object_): If set, message function parameters will be assumed
+- [`baseParams`] (_Object_): If set, message function parameters will be assumed
   to always be an object, with these values initially set.
 - [`locale`] (_string_ or _string[]_): If set, overrides the current locale
   precedence as set by parent MessageProviders.
@@ -180,14 +180,14 @@ also be used with a render prop: `<Message id={id}>{msg => {...}}</Message>`.
 - `id` (_string_ or _string[]_): The key or key path of the message.
 - [`locale`] (_string_ or _string[]_): If set, overrides the `locale` of the
   nearest MessageProvider.
-- [`onError(id, type): string`](_function_): If set, called if `id` does not
+- [`onError(id, type): string`] (_function_): If set, called if `id` does not
   resolve to a message value (after checking fallback locales, if set). `type`
   is the type of the value at `id`, most likely either `'object'` or `'unknown'`.
   A non-empty return value will replace the default `String(id)` fallback value.
-- [`params`] and [`msgParams`](_object_): Parameters to pass to function
+- [`params`] and [`msgParams`] (_Object_): Parameters to pass to function
   messages as their first and only argument. `params` will override `msgParams`,
   to allow for data keys such as `key` and `locale`.
-- [`children`](_function_ or _node_): If a function, will be called with the
+- [`children`] (_function_ or _node_): If a function, will be called with the
   found message. In this case, `onError` and `params` will be ignored and `id`
   is optional. If some other type of non-empty renderable node, it will be used
   as a fallback value if the messge is not found.
@@ -298,7 +298,7 @@ extend any values set by the hook's arguments.
 
 - `rootId` (_string_ or _string[]_): The key or key path of the message or
   message object. If empty or `[]`, matches the root of the messages object
-- [`baseParams`](_Object_): If set, message function parameters will be assumed
+- [`baseParams`] (_Object_): If set, message function parameters will be assumed
   to always be an object, with these values initially set.
 - [`locale`] (_string_ or _string[]_): If set, overrides the current locale
   precedence as set by parent MessageProviders.
