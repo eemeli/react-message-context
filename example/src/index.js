@@ -15,10 +15,10 @@ function Wrapper() {
 
     // See https://webpack.js.org/api/module-methods/#dynamic-expressions-in-import
     import(/* webpackChunkName: "[request]" */ `./messages.${locale}.yaml`)
-      .then(lcMessages => {
+      .then(module => {
         // Create a new object for the updated state
         const next = Object.assign({}, messages)
-        next[locale] = lcMessages
+        next[locale] = module.default
         setMessages(next)
       })
       .catch(error => {
