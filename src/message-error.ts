@@ -5,6 +5,7 @@ export const errorMessages = {
 
 export type ErrorCode = keyof typeof errorMessages
 
+/** @internal */
 export class MessageError extends Error {
   code: ErrorCode
   path: string[]

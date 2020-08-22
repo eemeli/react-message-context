@@ -3,11 +3,31 @@ import { getMessage, getPath } from './get-message'
 import { MessageContext } from './message-context'
 import { Id } from './types'
 
+/** @public */
 export interface MessageProps {
+  /**
+   * If a function, will be called with the found message.
+   * In this case, `params` will be ignored and `id` is optional.
+   * If some other type of non-empty renderable node, it will be used as a fallback value if the message is not found.
+   */
   children: any
-  id: Id
+
+  /** The key or key path of the message. */
+  id?: Id
+
+  /** If set, overrides the `locale` of the nearest MessageProvider. */
   locale?: Id
+
+  /**
+   * Parameters to pass to function messages as their first and only argument.
+   * `params` will override `msgParams`, to allow for data keys such as `key` and `locale`.
+   */
   params?: any
+
+  /**
+   * Parameters to pass to function messages as their first and only argument.
+   * Overriden by `params`, to allow for data keys such as `key` and `locale`.
+   */
   [msgParamKey: string]: any
 }
 
@@ -19,6 +39,14 @@ function rest(props: { [key: string]: any }, exclude: string[]) {
   return t
 }
 
+/**
+ * `<Message id [locale] [params] [...msgParams]>`
+ *
+ * The value of a message.
+ * May also be used with a render prop: `<Message id={id}>{msg => {...}}</Message>`.
+ *
+ * @public
+ */
 export function Message(props: MessageProps) {
   const { children, id, locale, params } = props
   const msgParams = rest(props, ['children', 'id', 'locale', 'params'])

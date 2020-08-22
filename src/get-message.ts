@@ -12,15 +12,25 @@ function getIn(messages: MessageValue | MessageObject, path: string[]) {
   return messages
 }
 
-export function getPath(id: Id, pathSep?: string | null) {
+export function getPath(id?: Id, pathSep?: string | null) {
   if (!id) return []
   if (Array.isArray(id)) return id
   return pathSep ? id.split(pathSep) : [id]
 }
 
+/**
+ * Given a `MessageContext` instance, fetches an entry from the messages object of the current or given locale.
+ * The returned value will be `undefined` if not found, or otherwise exactly as set in the `MessageProvider` props.
+ *
+ * @public
+ * @param context - The `MessageContext` instance
+ * @param id - The key or key path of the message or message object.
+ *   If empty or `[]`, matches the root of the messages object
+ * @param locale - If set, overrides the current locale precedence as set by parent MessageProviders.
+ */
 export function getMessage(
   { locales, messages, onError, pathSep }: MessageContext,
-  id: Id,
+  id?: Id,
   locale?: Id
 ) {
   if (locale != null) locales = Array.isArray(locale) ? locale : [locale]
@@ -33,14 +43,30 @@ export function getMessage(
   return onError ? onError(path, 'ENOMSG') : undefined
 }
 
+/**
+ * @param id - Message identifier; extends the path set by `rootId`
+ * @param params - Parameters for a function message
+ */
 export interface MessageGetterOptions {
   baseParams?: any
   locale?: Id
 }
 
+/**
+ * Given a `MessageContext` instance, returns a message getter function, which may have a preset root id path, locale, and/or base parameters for message functions.
+ *
+ * The returned function takes two parameters `(msgId, msgParams)`, which will extend any values set by the hook's arguments.
+ *
+ * @public
+ * @param context - The `MessageContext` instance
+ * @param rootId - The key or key path of the message or message object.
+ *   If empty or `[]`, matches the root of the messages object
+ * @param options - If `baseParams` is set, message function parameters will be assumed to always be an object, with these values initially set.
+ *   `locale` overrides the current locale precedence as set by parent MessageProviders.
+ */
 export function getMessageGetter(
   context: MessageContext,
-  rootId: Id,
+  rootId?: Id,
   { baseParams, locale }: MessageGetterOptions = {}
 ) {
   const { pathSep } = context

@@ -1,16 +1,57 @@
-import { createElement, useContext, useMemo } from 'react'
+import {
+  FunctionComponentElement, // used in d.ts
+  ProviderProps, // used in d.ts
+  createElement,
+  useContext,
+  useMemo
+} from 'react'
 import { MessageContext, defaultValue } from './message-context'
 import { MessageError, ErrorCode, errorMessages } from './message-error'
 import { MessageObject, MergeMessages } from './types'
 
+/** @public */
 export interface MessageProviderProps {
   children: any
+
+  /**
+   * A hierarchical object containing the messages as boolean, number, string or function values.
+   */
   messages: MessageObject
   context?: MessageContext
+
+  /** @deprecated Use onError instead */
   debug?: 'error' | 'warn' | ((msg: string) => any)
+
+  /**
+   * A key for the locale of the given messages.
+   * If uset, will inherit the locale from the parent context, or ultimately use en empty string.
+   */
   locale?: string
+
+  /**
+   * By default, top-level namespaces defined in a child `MessageProvider` overwrite those defined in a parent.
+   * Set this to {@link https://lodash.com/docs/#merge | _.merge} or some other function with the same arguments as {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign | Object.assign} to allow for deep merges.
+   */
   merge?: MergeMessages
+
+  /**
+   * What to do on errors; most often called if a message is not found.
+   *
+   * - `"silent"`: Ignore the error; use the message's id as the replacement message.
+   *
+   * - `"error"`: Throw the error.
+   *
+   * - `"warn"` (default): Print a warning in the console and use the message's id as the replacement message.
+   *
+   * - `(error) => any`: A custom function that is called with an `Error` object with `code: string` and `path: string[]` fields set.
+   *   The return falue is used as the replacement message.
+   */
   onError?: 'error' | 'silent' | 'warn' | ((error: MessageError) => any)
+
+  /**
+   * By default, `.` in a `<Message id>` splits the path into parts, such that e.g. `'a.b'` is equivalent to `['a', 'b']`.
+   * Use this option to customize or disable this behaviour (by setting it to `null`).
+   */
   pathSep?: string
 }
 
@@ -76,6 +117,15 @@ function getPathSep(context: MessageContext, pathSep?: string | null) {
     : context.pathSep
 }
 
+/**
+ * `<MessageProvider messages [locale] [merge] [onError] [pathSep]>`
+ *
+ * Makes the messages available for its descendants via a React Context.
+ * To support multiple locales and/or namespaces, MessageProviders may be used within each other, merging each provider's messages with those of its parents.
+ * The locale preference order is also set similarly, from nearest to furthest.
+ *
+ * @public
+ */
 export function MessageProvider({
   children,
   context: propContext,
