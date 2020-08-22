@@ -4,13 +4,9 @@ import { MessageProvider } from 'react-message-context'
 
 import { App } from './app'
 
-// Include the English messages in the core bundle, and use them as the
-// default/fallback for missing messages.
-import en from './messages.en.yaml'
-
-function ProviderWrapper() {
+function Wrapper() {
   const [locale, setLocale] = useState('en')
-  const [messages, setMessages] = useState({ en })
+  const [messages, setMessages] = useState({})
 
   // Only fetch messages when locale changes
   useEffect(() => {
@@ -31,11 +27,8 @@ function ProviderWrapper() {
       })
   }, [locale])
 
-  // For English, there's no reason to load the messages twice.
   // Note that setLocale could also be passed through using a separate Context
-  return locale === 'en' ? (
-    <App setLocale={setLocale} />
-  ) : (
+  return (
     <MessageProvider locale={locale} messages={messages[locale]}>
       <App setLocale={setLocale} />
     </MessageProvider>
@@ -44,11 +37,4 @@ function ProviderWrapper() {
 
 const root = document.createElement('div')
 document.body.appendChild(root)
-
-ReactDOM.render(
-  // Make sure we always have some locale & messages
-  <MessageProvider locale="en" messages={en}>
-    <ProviderWrapper />
-  </MessageProvider>,
-  root
-)
+ReactDOM.render(<Wrapper />, root)

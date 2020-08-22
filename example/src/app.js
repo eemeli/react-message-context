@@ -21,7 +21,7 @@ const SelectLocale = ({ setLocale }) => {
 }
 
 export function App({ setLocale }) {
-  const getErrorMsg = useMessageGetter('errors')
+  const errorMsg = useMessageGetter('errors')
   return (
     <>
       <SelectLocale setLocale={setLocale} />
@@ -30,9 +30,9 @@ export function App({ setLocale }) {
         <Message id="error-title" />
       </h3>
       <ul>
-        <li>{getErrorMsg('equal-to', { count: 13 })}</li>
-        <li>{getErrorMsg('wrong-length', { length: 42 })}</li>
-        <li>{getErrorMsg('only-english')}</li>
+        <li>{errorMsg('equal-to', { count: 13 })}</li>
+        <li>{errorMsg('wrong-length', { length: 42 })}</li>
+        <li>{errorMsg('only-english')}</li>
         <li>
           <Message id="does.not.exist" />
         </li>
