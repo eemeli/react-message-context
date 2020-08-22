@@ -1,25 +1,35 @@
 import React, { useContext, useMemo } from 'react'
 import { MessageContext, defaultValue } from './message-context.js'
+import { MessageError, errorMessages } from './message-error.js'
 
-function getOnError(context, onError, debug) {
+function getOnError(parent, pathSep, onError, debug) {
+  const asId = path => path.join(pathSep || ',')
+  function msgError(path, code) {
+    throw new MessageError(path, code, asId)
+  }
+  function msgWarning(path, code) {
+    console.warn(errorMessages[code], path)
+    return asId(path)
+  }
+
   if (onError === undefined) {
     // debug is deprecated, will be removed later
-    if (typeof debug === 'function') return (msg, id) => debug(msg + ': ' + id)
+    if (typeof debug === 'function')
+      return (path, code) => debug(`${errorMessages[code]}: ${asId(path)}`)
     onError = debug
   }
+
   switch (onError) {
+    case 'silent':
+      return asId
     case 'error':
-      return function msgError(msg, id) {
-        throw new Error(msg + ': ' + id)
-      }
+      return msgError
     case 'warn':
-      return function msgWarning(msg, id) {
-        console.warn(msg, { id })
-      }
-    case null:
-      return defaultValue.onError
+      return msgWarning
     default:
-      return typeof onError === 'function' ? onError : context.onError
+      return typeof onError === 'function'
+        ? (path, code) => onError(new MessageError(path, code, asId))
+        : parent.onError || msgWarning
   }
 }
 
@@ -53,16 +63,16 @@ export function MessageProvider({
 }) {
   if (parent === undefined) parent = useContext(MessageContext)
   else if (parent === null) parent = defaultValue
-  const context = useMemo(
-    () => ({
+  const context = useMemo(() => {
+    const ps = getPathSep(parent, pathSep)
+    return {
       locales: getLocales(parent, locale),
       merge: merge || parent.merge,
       messages: getMessages(parent, locale, messages),
-      onError: getOnError(parent, onError, debug),
-      pathSep: getPathSep(parent, pathSep)
-    }),
-    [parent, locale, merge, messages, pathSep]
-  )
+      onError: getOnError(parent, ps, onError, debug),
+      pathSep: ps
+    }
+  }, [parent, locale, merge, messages, pathSep])
   return (
     <MessageContext.Provider value={context}>
       {children}

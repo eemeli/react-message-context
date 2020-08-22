@@ -8,13 +8,17 @@ function getIn(messages, path) {
   return msg
 }
 
-function getPath(id, pathSep) {
+export function getPath(id, pathSep) {
   if (!id) return []
   if (Array.isArray(id)) return id
   return pathSep ? id.split(pathSep) : [id]
 }
 
-export function getMessage({ locales, messages, onError, pathSep }, id, locale) {
+export function getMessage(
+  { locales, messages, onError, pathSep },
+  id,
+  locale
+) {
   if (locale != null) locales = Array.isArray(locale) ? locale : [locale]
   const path = getPath(id, pathSep)
   for (let i = 0; i < locales.length; ++i) {
@@ -22,20 +26,16 @@ export function getMessage({ locales, messages, onError, pathSep }, id, locale) 
     const msg = getIn(messages[lc], path)
     if (msg !== undefined) return msg
   }
-  onError('Message not found', id)
-  return undefined
+  return onError(path, 'ENOMSG')
 }
 
 export function getMessageGetter(context, rootId, { baseParams, locale } = {}) {
-  const { onError, pathSep } = context
+  const { pathSep } = context
   const pathPrefix = getPath(rootId, pathSep)
   return function message(id, params) {
     const path = pathPrefix.concat(getPath(id, pathSep))
     const msg = getMessage(context, path, locale)
-    if (typeof msg !== 'function') {
-      if (params != null) onError('Params given for non-function message', id)
-      return msg
-    }
+    if (typeof msg !== 'function') return msg
     const msgParams = baseParams
       ? Object.assign({}, baseParams, params)
       : params

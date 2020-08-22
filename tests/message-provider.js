@@ -159,7 +159,7 @@ describe('Inheritance', () => {
   })
 
   test('Custom context', () => {
-    const onError = jest.fn()
+    const onError = jest.fn(path => path.join(','))
     const Inner = () => {
       const ctx = Object.assign({}, React.useContext(MessageContext), {
         onError
@@ -178,9 +178,9 @@ describe('Inheritance', () => {
     )
     expect(component.toJSON()).toMatchObject([
       '{"locales":[""],"messages":{"":{"bb":{},"cc":{},"dd":{}}},"pathSep":"."}',
-      'not.valid'
+      'not,valid'
     ])
-    expect(onError).toHaveBeenCalledTimes(1)
+    expect(onError.mock.calls).toMatchObject([[['not', 'valid'], 'ENOMSG']])
   })
 
   test('Forced to default context', () => {

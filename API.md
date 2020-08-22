@@ -109,30 +109,25 @@ export const App = () => (
 
 ### `<MessageProvider messages [locale] [merge] [onError] [pathSep]>`
 
-Makes the messages available for its descendants. Internally uses a Context API
-[Provider]. To support multiple locales and/or namespaces, MessageProviders may
-be used within each other, merging each provider's messages with those of its
-parents. The locale preference order is also set similarly, from nearest to
-furthest.
+Makes the messages available for its descendants.
+Internally uses a Context API [Provider].
+To support multiple locales and/or namespaces, MessageProviders may be used within each other, merging each provider's messages with those of its parents.
+The locale preference order is also set similarly, from nearest to furthest.
 
 #### Props
 
-- `messages` (_object_): A hierarchical object containing the messages as
-  boolean, number, string or function values.
-- [`locale`] (_string_): A key for the locale of the given messages. If uset,
-  will inherit the locale from the parent context, or ultimately use en empty
-  string.
-- [`merge`] (_Function_): By default, top-level namespaces defined in a child
-  `MessageProvider` overwrite those defined in a parent. Set this to [`_.merge`]
-  or some other function with the same arguments as [Object.assign] to allow for
-  deep merges.
-- [`onError`] ("error"|"warn"|_Function_): What to do if a message is not found,
-  or a non-function message is given parameters: `"error"` will throw, `"warn"`
-  will print a warning in the console, and a custom function will be called with
-  the message string and identifier as arguments. If unset, nothing will be done.
-- [`pathSep`] (_string_): By default, `.` in a `<Message id>` splits the path
-  into parts, such that e.g. `'a.b'` is equivalent to `['a', 'b']`. Use this
-  option to customize or disable this behaviour (by setting it to `null`).
+- `messages` (_object_): A hierarchical object containing the messages as boolean, number, string or function values.
+- [`locale`] (_string_): A key for the locale of the given messages.
+  If uset, will inherit the locale from the parent context, or ultimately use en empty string.
+- [`merge`] (_Function_): By default, top-level namespaces defined in a child `MessageProvider` overwrite those defined in a parent.
+  Set this to [`_.merge`] or some other function with the same arguments as [Object.assign] to allow for deep merges.
+- [`onError`] ("silent"|"error"|"warn"|_Function_): What to do on errors; most often called if a message is not found.
+  - `"silent"`: Ignore the error; use the message's id as the replacement message.
+  - `"error"`: Throw the error.
+  - `"warn"` (default): Print a warning in the console and use the message's id as the replacement message.
+  - `(error): any`: A custom function that is called with an `Error` object with `code: string` and `path: string[]` fields set.
+    The return falue is used as the replacement message.
+- [`pathSep`] (_string_): By default, `.` in a message `id` splits the path into parts, such that e.g. `'a.b'` is equivalent to `['a', 'b']`. Use this option to customize or disable this behaviour (by setting it to `null`).
 - `children` (_ReactElement_): The root of your component hierarchy.
 
 [provider]: https://reactjs.org/docs/context.html#provider
@@ -170,7 +165,7 @@ Also see `Message` and other components for example usage.
 <a id="message"></a>
 <br/>
 
-### `<Message id [locale] [onError] [params] [...msgParams]>`
+### `<Message id [locale] [params] [...msgParams]>`
 
 The string value of a message. Internally uses a Context API [Consumer]. May
 also be used with a render prop: `<Message id={id}>{msg => {...}}</Message>`.
@@ -178,19 +173,12 @@ also be used with a render prop: `<Message id={id}>{msg => {...}}</Message>`.
 #### Props
 
 - `id` (_string_ or _string[]_): The key or key path of the message.
-- [`locale`] (_string_ or _string[]_): If set, overrides the `locale` of the
-  nearest MessageProvider.
-- [`onError(id, type): string`] (_function_): If set, called if `id` does not
-  resolve to a message value (after checking fallback locales, if set). `type`
-  is the type of the value at `id`, most likely either `'object'` or `'unknown'`.
-  A non-empty return value will replace the default `String(id)` fallback value.
-- [`params`] and [`msgParams`] (_Object_): Parameters to pass to function
-  messages as their first and only argument. `params` will override `msgParams`,
-  to allow for data keys such as `key` and `locale`.
-- [`children`] (_function_ or _node_): If a function, will be called with the
-  found message. In this case, `onError` and `params` will be ignored and `id`
-  is optional. If some other type of non-empty renderable node, it will be used
-  as a fallback value if the messge is not found.
+- [`locale`] (_string_ or _string[]_): If set, overrides the `locale` of the nearest MessageProvider.
+- [`params`] and [`msgParams`] (_Object_): Parameters to pass to function messages as their first and only argument.
+  `params` will override `msgParams`, to allow for data keys such as `key` and `locale`.
+- [`children`] (_function_ or _node_): If a function, will be called with the found message.
+  In this case, `params` will be ignored and `id` is optional.
+  If some other type of non-empty renderable node, it will be used as a fallback value if the message is not found.
 
 [consumer]: https://reactjs.org/docs/context.html#consumer
 

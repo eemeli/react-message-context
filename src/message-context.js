@@ -4,7 +4,7 @@ export const defaultValue = {
   locales: [],
   merge: Object.assign,
   messages: {},
-  onError: () => {},
+  onError: undefined,
   pathSep: '.'
 }
 export const MessageContext = createContext(defaultValue)

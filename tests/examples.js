@@ -56,7 +56,11 @@ describe('README', () => {
 
   test('Example 2', () => {
     const component = renderer.create(
-      <MessageProvider locale="en" messages={{ foo: 'FOO', qux: 'QUX' }}>
+      <MessageProvider
+        locale="en"
+        messages={{ foo: 'FOO', qux: 'QUX' }}
+        onError="silent"
+      >
         <MessageProvider locale="fi" messages={{ foo: 'FÖÖ', bar: 'BÄR' }}>
           <Message id="foo" />
           <Message id="foo" locale="en" />

@@ -32,7 +32,7 @@ function Wrapper() {
     <MessageProvider
       locale={locale}
       messages={messages[locale]}
-      onError={messages[locale] ? 'warn' : null}
+      onError={messages[locale] ? 'warn' : 'silent'}
     >
       <App setLocale={setLocale} />
     </MessageProvider>

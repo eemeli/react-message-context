@@ -133,13 +133,34 @@ describe('Wrapped provider', () => {
 })
 
 describe('Reporting errors', () => {
+  test('onError="silent"', () => {
+    const warn = jest.spyOn(console, 'warn').mockImplementation()
+    try {
+      const component = renderer.create(
+        <MessageProvider messages={{ x: 'X' }} onError="silent">
+          <ShowMessage id="y" />
+        </MessageProvider>
+      )
+      expect(component.toJSON()).toBe('"y"')
+      expect(warn).not.toHaveBeenCalled()
+    } finally {
+      warn.mockRestore()
+    }
+  })
+
   test('onError={null}', () => {
-    const component = renderer.create(
-      <MessageProvider messages={{ x: 'X' }} onError={null}>
-        <ShowMessage id="y" />
-      </MessageProvider>
-    )
-    expect(component.toJSON()).toBeNull()
+    const warn = jest.spyOn(console, 'warn').mockImplementation()
+    try {
+      const component = renderer.create(
+        <MessageProvider messages={{ x: 'X' }} onError={null}>
+          <ShowMessage id="y" />
+        </MessageProvider>
+      )
+      expect(component.toJSON()).toBe('"y"')
+      expect(warn).toHaveBeenCalledTimes(1)
+    } finally {
+      warn.mockRestore()
+    }
   })
 
   test('onError="warn"', () => {
@@ -150,7 +171,7 @@ describe('Reporting errors', () => {
           <ShowMessage id="y" />
         </MessageProvider>
       )
-      expect(component.toJSON()).toBeNull()
+      expect(component.toJSON()).toBe('"y"')
       expect(warn).toHaveBeenCalledTimes(1)
     } finally {
       warn.mockRestore()
@@ -189,40 +210,53 @@ describe('Reporting errors', () => {
       )
       expect(component.toJSON()).toBe('Message not found: y')
     })
-
-    test('Expected function', () => {
-      const component = renderer.create(
-        <Catch>
-          <MessageProvider messages={{ x: 'X' }} onError="error">
-            <ShowMessage id="x" params={true} />
-          </MessageProvider>
-        </Catch>
-      )
-      expect(component.toJSON()).toBe(
-        'Params given for non-function message: x'
-      )
-    })
   })
 
-  test('onError={function}', () => {
-    const onError = jest.fn()
+  test('onError={() => string}', () => {
+    const onError = jest.fn(err => err.path.join('.'))
     const component = renderer.create(
       <MessageProvider messages={{ x: 'X' }} onError={onError}>
         <ShowMessage id="y" />
       </MessageProvider>
     )
-    expect(component.toJSON()).toBeNull()
-    expect(onError).toHaveBeenCalledWith('Message not found', 'y')
+    expect(component.toJSON()).toBe('"y"')
+    expect(onError.mock.calls).toMatchObject([
+      [{ code: 'ENOMSG', path: ['y'] }]
+    ])
   })
 
-  test('debug={function} (deprecated)', () => {
-    const debug = jest.fn()
+  test('onError={() => null}', () => {
+    const onError = jest.fn(() => null)
+    const component = renderer.create(
+      <MessageProvider messages={{ x: 'X' }} onError={onError}>
+        <ShowMessage id="y" />
+      </MessageProvider>
+    )
+    expect(component.toJSON()).toBe('null')
+    expect(onError.mock.calls).toMatchObject([
+      [{ code: 'ENOMSG', path: ['y'] }]
+    ])
+  })
+
+  test('debug={() => string} (deprecated)', () => {
+    const debug = jest.fn(msg => `[${msg}]`)
     const component = renderer.create(
       <MessageProvider debug={debug} messages={{ x: 'X' }}>
         <ShowMessage id="y" />
       </MessageProvider>
     )
-    expect(component.toJSON()).toBeNull()
+    expect(component.toJSON()).toBe('"[Message not found: y]"')
+    expect(debug).toHaveBeenCalledWith('Message not found: y')
+  })
+
+  test('debug={() => null} (deprecated)', () => {
+    const debug = jest.fn(() => null)
+    const component = renderer.create(
+      <MessageProvider debug={debug} messages={{ x: 'X' }}>
+        <ShowMessage id="y" />
+      </MessageProvider>
+    )
+    expect(component.toJSON()).toBe('null')
     expect(debug).toHaveBeenCalledWith('Message not found: y')
   })
 })

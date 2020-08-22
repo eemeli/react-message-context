@@ -4,6 +4,15 @@ import renderer from 'react-test-renderer'
 import { Message, MessageProvider } from 'react-message-context'
 
 describe('No locale', () => {
+  test('Null message', () => {
+    const component = renderer.create(
+      <MessageProvider messages={{ x: null }}>
+        <Message id="x" />
+      </MessageProvider>
+    )
+    expect(component.toJSON()).toBeNull()
+  })
+
   test('String message', () => {
     const component = renderer.create(
       <MessageProvider messages={{ x: 'X' }}>
@@ -227,7 +236,7 @@ describe('Hierarchical messages', () => {
   test('Path id, custom separator', () => {
     const messages = { obj: { x: 'X' } }
     const component = renderer.create(
-      <MessageProvider messages={messages} pathSep="/">
+      <MessageProvider messages={messages} onError="silent" pathSep="/">
         <Message id="obj/x" />
         <Message id="obj/y" />
         <Message id="obj.x" />
@@ -236,10 +245,10 @@ describe('Hierarchical messages', () => {
     expect(component.toJSON()).toMatchObject(['X', 'obj/y', 'obj.x'])
   })
 
-  test('Incomplete path, no error handler', () => {
+  test('Incomplete path, silenced error handler', () => {
     const messages = { obj: { x: 'X' } }
     const component = renderer.create(
-      <MessageProvider messages={messages}>
+      <MessageProvider messages={messages} onError="silent">
         <Message id={['obj']} />
       </MessageProvider>
     )
@@ -248,18 +257,22 @@ describe('Hierarchical messages', () => {
 
   test('Incomplete path, with error handler', () => {
     const messages = { obj: { x: 'X' } }
+    const onError = jest.fn(err => err.path.join(','))
     const component = renderer.create(
-      <MessageProvider messages={messages}>
-        <Message id={['obj']} onError={(id, type) => String(id.concat(type))} />
+      <MessageProvider messages={messages} onError={onError}>
+        <Message id={['obj']} />
       </MessageProvider>
     )
-    expect(component.toJSON()).toBe('obj,object')
+    expect(component.toJSON()).toBe('obj')
+    expect(onError.mock.calls).toMatchObject([
+      [{ code: 'EBADMSG', path: ['obj'] }]
+    ])
   })
 
   test('Bad path, custom pathSep', () => {
     const messages = { obj: { x: 'X' } }
     const component = renderer.create(
-      <MessageProvider messages={messages} pathSep="/">
+      <MessageProvider messages={messages} onError="silent" pathSep="/">
         <Message id={['not', 'valid']} />
       </MessageProvider>
     )
@@ -269,7 +282,7 @@ describe('Hierarchical messages', () => {
   test('Bad array path, disabled pathSep', () => {
     const messages = { obj: { x: 'X' } }
     const component = renderer.create(
-      <MessageProvider messages={messages} pathSep={null}>
+      <MessageProvider messages={messages} onError="silent" pathSep={null}>
         <Message id={['not', 'valid']} />
       </MessageProvider>
     )
@@ -279,17 +292,17 @@ describe('Hierarchical messages', () => {
   test('Bad string path, disabled pathSep', () => {
     const messages = { obj: { x: 'X' } }
     const component = renderer.create(
-      <MessageProvider messages={messages} pathSep={null}>
+      <MessageProvider messages={messages} onError="silent" pathSep={null}>
         <Message id="not!valid" />
       </MessageProvider>
     )
     expect(component.toJSON()).toBe('not!valid')
   })
 
-  test('Bad path, no error handler', () => {
+  test('Bad path, silenced error handler', () => {
     const messages = { obj: { x: 'X' } }
     const component = renderer.create(
-      <MessageProvider messages={messages}>
+      <MessageProvider messages={messages} onError="silent">
         <Message id={['not', 'valid']} />
       </MessageProvider>
     )
@@ -298,21 +311,22 @@ describe('Hierarchical messages', () => {
 
   test('Bad path, with error handler', () => {
     const messages = { obj: { x: 'X' } }
+    const onError = jest.fn(err => err.path.join(','))
     const component = renderer.create(
-      <MessageProvider messages={messages}>
-        <Message
-          id={['not', 'valid']}
-          onError={(id, type) => String(id.concat(type))}
-        />
+      <MessageProvider messages={messages} onError={onError}>
+        <Message id={['not', 'valid']} />
       </MessageProvider>
     )
-    expect(component.toJSON()).toBe('not,valid,undefined')
+    expect(component.toJSON()).toBe('not,valid')
+    expect(onError.mock.calls).toMatchObject([
+      [{ code: 'ENOMSG', path: ['not', 'valid'] }]
+    ])
   })
 
   test('Bad path, fallback message', () => {
     const messages = { obj: { x: 'X' } }
     const component = renderer.create(
-      <MessageProvider messages={messages}>
+      <MessageProvider messages={messages} onError="silent">
         <Message id="not.valid">fallback</Message>
       </MessageProvider>
     )
@@ -321,17 +335,14 @@ describe('Hierarchical messages', () => {
 
   test('Bad path, fallback message with error handler', () => {
     const messages = { obj: { x: 'X' } }
-    const mock = jest.fn()
-    mock.mockReturnValue(false)
+    const onError = jest.fn(err => err.path.join(','))
     const component = renderer.create(
-      <MessageProvider messages={messages}>
-        <Message id="not.valid" onError={mock}>
-          fallback
-        </Message>
+      <MessageProvider messages={messages} onError={onError}>
+        <Message id="not.valid">fallback</Message>
       </MessageProvider>
     )
     expect(component.toJSON()).toBe('fallback')
-    expect(mock).toHaveBeenCalledWith('not.valid', 'undefined')
+    expect(onError).not.toHaveBeenCalled()
   })
 })
 

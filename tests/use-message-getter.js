@@ -182,15 +182,4 @@ describe('Errors', () => {
     )
     expect(component.toJSON()).toBe('Message not found: y')
   })
-
-  test('Expected function', () => {
-    const component = renderer.create(
-      <Catch>
-        <MessageProvider messages={{ x: 'X' }} onError="error">
-          <ShowMessage msgId="x" msgParams={true} />
-        </MessageProvider>
-      </Catch>
-    )
-    expect(component.toJSON()).toBe('Params given for non-function message: x')
-  })
 })
