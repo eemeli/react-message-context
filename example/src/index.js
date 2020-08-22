@@ -29,7 +29,11 @@ function Wrapper() {
 
   // Note that setLocale could also be passed through using a separate Context
   return (
-    <MessageProvider locale={locale} messages={messages[locale]}>
+    <MessageProvider
+      locale={locale}
+      messages={messages[locale]}
+      onError={messages[locale] ? 'warn' : null}
+    >
       <App setLocale={setLocale} />
     </MessageProvider>
   )

@@ -1,4 +1,5 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const PreloadWebpackPlugin = require('preload-webpack-plugin')
 
 module.exports = {
   entry: './src/index.js',
@@ -17,5 +18,19 @@ module.exports = {
       }
     ]
   },
-  plugins: [new HtmlWebpackPlugin()]
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendor',
+          chunks: 'all'
+        }
+      }
+    }
+  },
+  plugins: [
+    new HtmlWebpackPlugin(),
+    new PreloadWebpackPlugin({ include: ['messages-en-yaml'] })
+  ]
 }
