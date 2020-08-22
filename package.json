@@ -2,7 +2,10 @@
   "name": "react-message-context",
   "version": "0.6.2",
   "description": "React message provider, using the Context API",
-  "repository": "eemeli/react-message-context",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/eemeli/react-message-context.git"
+  },
   "keywords": [
     "i18n",
     "React",
@@ -18,15 +21,17 @@
     ".": "./lib/index.js",
     "./package.json": "./package.json"
   },
-  "types": "lib/index.d.ts",
+  "types": "lib/react-message-context.d.ts",
   "files": [
-    "API.md",
-    "lib/"
+    "lib/index.js",
+    "lib/react-message-context.d.ts"
   ],
   "sideEffects": false,
   "scripts": {
     "build": "rollup -c",
-    "prepublishOnly": "npm run build",
+    "predocs": "api-extractor run --local --verbose",
+    "docs": "api-documenter markdown -i lib/ -o docs/",
+    "prepublishOnly": "npm run build && npm run docs",
     "test": "jest",
     "test:build": "jest --config jest.build.config.js"
   },
@@ -39,6 +44,8 @@
     "@babel/preset-env": "^7.11.0",
     "@babel/preset-react": "^7.10.4",
     "@babel/preset-typescript": "^7.10.4",
+    "@microsoft/api-documenter": "^7.8.33",
+    "@microsoft/api-extractor": "^7.9.9",
     "@rollup/plugin-babel": "^5.2.0",
     "@rollup/plugin-typescript": "^5.0.2",
     "@types/react": "^16.9.46",
