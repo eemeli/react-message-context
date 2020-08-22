@@ -1,6 +1,9 @@
 # react-message-context
 
-An efficient React front-end for message formatting libraries. Designed in particular for use with [messageformat], but will work with any messages. Provides the best possible API for a front-end developer, without making the back end any more difficult than it needs to be either. Should add at most about 1kB to your compiled & minified bundle size.
+An efficient React front-end for message formatting libraries.
+Designed in particular for use with [messageformat], but will work with any messages.
+Provides the best possible API for a front-end developer, without making the back end any more difficult than it needs to be either.
+Should add at most about 1kB to your compiled & minified bundle size.
 
 [messageformat]: https://messageformat.github.io
 
@@ -10,18 +13,19 @@ An efficient React front-end for message formatting libraries. Designed in parti
 npm install react-message-context
 ```
 
-The library has **React 16.8** or later as a peer dependency. It is published as an **ES module** only, which should work directly with almost all tools and environments that support modern development targeting browser environments. For tools such as Jest that define their own import methods, you may need to add something like `transformIgnorePatterns: ['node_modules/(?!(react-message-context)/)']` to your configuration.
+The library has React 16.8 or later as a peer dependency.
+It is published as an **ES module** only, which should work directly with almost all tools and environments that support modern development targeting browser environments.
+For tools such as Jest that define their own import methods, you may need to add something like `transformIgnorePatterns: ['node_modules/(?!(react-message-context)/)']` to your configuration.
 
-## [API Documentation](API.md)
+## [API Documentation]
 
-- [`getMessage(context, id, [locale])`](API.md#get-message)
-- [`getMessageGetter(context, rootId, [{ baseParams, locale }])`](API.md#get-message-getter)
-- [`MessageContext`](API.md#message-context)
-- [`<MessageProvider messages [locale] [onError] [pathSep]>`](API.md#message-provider)
-- [`<Message id [locale] [onError] [props] [...msgProps]>`](API.md#message)
-- [`useLocales()`](API.md#use-locales)
-- [`useMessage(id, [params], [locale])`](API.md#use-message)
-- [`useMessageGetter(rootId, [{ baseParams, locale }])`](API.md#use-message-getter)
+- [`getMessage(context, id, [locale])`](https://github.com/eemeli/react-message-context/tree/master/docs/react-message-context.getmessage.md)
+- [`getMessageGetter(context, rootId, [{ baseParams, locale }])`](https://github.com/eemeli/react-message-context/tree/master/docs/react-message-context.getmessagegetter.md)
+- [`<MessageProvider messages [locale] [onError] [pathSep]>`](https://github.com/eemeli/react-message-context/tree/master/docs/react-message-context.messageprovider.md)
+- [`<Message id [locale] [props] [...msgProps]>`](https://github.com/eemeli/react-message-context/tree/master/docs/react-message-context.message.md)
+- [`useLocales()`](https://github.com/eemeli/react-message-context/tree/master/docs/react-message-context.uselocales.md)
+- [`useMessage(id, [params], [locale])`](https://github.com/eemeli/react-message-context/tree/master/docs/react-message-context.usemessage.md)
+- [`useMessageGetter(rootId, [{ baseParams, locale }])`](https://github.com/eemeli/react-message-context/tree/master/docs/react-message-context.usemessagegetter.md)
 
 The changelog is [available on GitHub](https://github.com/eemeli/react-message-context/releases).
 
@@ -29,6 +33,7 @@ The changelog is [available on GitHub](https://github.com/eemeli/react-message-c
 
 In addition to the examples included below and in the [API documentation], see [react-message-context-example] for a simple, but fully functional example of using this library along with [messageformat] and [messageformat-loader] to handle localized messages, with dynamic loading of non-default locales.
 
+[API Documentation]: https://github.com/eemeli/react-message-context/tree/master/docs/react-message-context.md
 [react-message-context-example]: https://github.com/eemeli/react-message-context/tree/master/example#react-message-context-example
 [react-message-context]: https://www.npmjs.com/package/react-message-context
 [messageformat]: https://www.npmjs.com/package/messageformat
