@@ -1,17 +1,8 @@
-import babel from '@rollup/plugin-babel'
+import typescript from '@rollup/plugin-typescript'
 
 export default {
-  input: 'src/index.js',
-  output: { file: 'index.js' },
+  input: 'src/index.ts',
+  output: { dir: 'lib' },
   external: ['react'],
-  plugins: [
-    babel({
-      babelHelpers: 'bundled',
-      presets: [
-        ['@babel/preset-env', { loose: true, modules: false }],
-        '@babel/preset-react'
-      ],
-      plugins: ['@babel/plugin-proposal-class-properties']
-    })
-  ]
+  plugins: [typescript()]
 }

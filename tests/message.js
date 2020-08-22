@@ -1,7 +1,7 @@
 import React from 'react'
 import renderer from 'react-test-renderer'
 
-import { Message, MessageProvider } from 'react-message-context'
+import { Message, MessageContext, MessageProvider } from 'react-message-context'
 
 describe('No locale', () => {
   test('Null message', () => {
@@ -269,6 +269,23 @@ describe('Hierarchical messages', () => {
     ])
   })
 
+  test('Incomplete path, hacked context with no error handler', () => {
+    const onError = jest.fn()
+    const messages = { obj: { x: 'X' } }
+    const Inner = () => {
+      const ctx = React.useContext(MessageContext)
+      delete ctx.onError
+      return <Message id={['obj']} />
+    }
+    const component = renderer.create(
+      <MessageProvider messages={messages} onError={onError}>
+        <Inner />
+      </MessageProvider>
+    )
+    expect(component.toJSON()).toBeNull()
+    expect(onError).not.toHaveBeenCalled()
+  })
+
   test('Bad path, custom pathSep', () => {
     const messages = { obj: { x: 'X' } }
     const component = renderer.create(
@@ -343,6 +360,11 @@ describe('Hierarchical messages', () => {
     )
     expect(component.toJSON()).toBe('fallback')
     expect(onError).not.toHaveBeenCalled()
+  })
+
+  test('Silently render nothing outside MessageProvider', () => {
+    const component = renderer.create(<Message id="x" />)
+    expect(component.toJSON()).toBeNull()
   })
 })
 

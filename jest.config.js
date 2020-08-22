@@ -1,6 +1,6 @@
 module.exports = {
   collectCoverage: true,
-  collectCoverageFrom: ['src/**/*.js'],
+  collectCoverageFrom: ['src/**/*'],
   coverageThreshold: {
     global: {
       branches: 100,
@@ -10,7 +10,7 @@ module.exports = {
     }
   },
   moduleNameMapper: {
-    'react-message-context': '<rootDir>/src/index.js'
+    'react-message-context': '<rootDir>/src/index.ts'
   },
   testMatch: ['**/tests/*.js']
 }

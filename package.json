@@ -13,16 +13,15 @@
   "author": "Eemeli Aro <eemeli@gmail.com>",
   "license": "MIT",
   "homepage": "https://github.com/eemeli/react-message-context#readme",
-  "main": "index.js",
+  "main": "lib/index.js",
   "exports": {
-    ".": "./index.js",
+    ".": "./lib/index.js",
     "./package.json": "./package.json"
   },
-  "types": "index.d.ts",
+  "types": "lib/index.d.ts",
   "files": [
     "API.md",
-    "index.js",
-    "index.d.ts"
+    "lib/"
   ],
   "sideEffects": false,
   "scripts": {
@@ -37,10 +36,12 @@
   },
   "devDependencies": {
     "@babel/core": "^7.11.4",
-    "@babel/plugin-proposal-class-properties": "^7.10.4",
     "@babel/preset-env": "^7.11.0",
     "@babel/preset-react": "^7.10.4",
+    "@babel/preset-typescript": "^7.10.4",
     "@rollup/plugin-babel": "^5.2.0",
+    "@rollup/plugin-typescript": "^5.0.2",
+    "@types/react": "^16.9.46",
     "babel-jest": "^26.3.0",
     "intl-list-format": "^1.0.3",
     "jest": "^26.4.1",
@@ -48,7 +49,9 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-test-renderer": "^16.13.1",
-    "rollup": "^2.26.4"
+    "rollup": "^2.26.4",
+    "tslib": "^2.0.1",
+    "typescript": "^4.0.2"
   },
   "peerDependencies": {
     "react": ">=16.8.0"

@@ -1,8 +1,8 @@
 module.exports = {
   collectCoverage: true,
-  collectCoverageFrom: ['index.js'],
+  collectCoverageFrom: ['lib/index.js'],
   moduleNameMapper: {
-    'react-message-context': '<rootDir>/index.js'
+    'react-message-context': '<rootDir>/lib/index.js'
   },
   testMatch: ['**/tests/*.js']
 }

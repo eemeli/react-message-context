@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "declaration": true,
+    "jsx": "react",
+    "moduleResolution": "node",
+    "outDir": "lib/",
+    "rootDir": "src/",
+    "strict": true,
+    "target": "ES2017"
+  },
+  "include": ["src/**/*"]
+}

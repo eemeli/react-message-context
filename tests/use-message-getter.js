@@ -162,9 +162,12 @@ describe('Errors', () => {
   })
 
   class Catch extends React.Component {
-    state = { error: null }
     static getDerivedStateFromError(error) {
       return { error }
+    }
+    constructor() {
+      super()
+      this.state = { error: null }
     }
     render() {
       const { error } = this.state

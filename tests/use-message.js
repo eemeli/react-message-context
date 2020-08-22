@@ -190,9 +190,12 @@ describe('Reporting errors', () => {
     })
 
     class Catch extends React.Component {
-      state = { error: null }
       static getDerivedStateFromError(error) {
         return { error }
+      }
+      constructor() {
+        super()
+        this.state = { error: null }
       }
       render() {
         const { error } = this.state
@@ -258,5 +261,25 @@ describe('Reporting errors', () => {
     )
     expect(component.toJSON()).toBe('null')
     expect(debug).toHaveBeenCalledWith('Message not found: y')
+  })
+
+  test('non-object messages', () => {
+    const warn = jest.spyOn(console, 'warn').mockImplementation()
+    try {
+      const component = renderer.create(
+        <MessageProvider messages={42}>
+          <ShowMessage id="y" />
+        </MessageProvider>
+      )
+      expect(component.toJSON()).toBe('"y"')
+      expect(warn.mock.calls).toMatchObject([['Message not found', ['y']]])
+    } finally {
+      warn.mockRestore()
+    }
+  })
+
+  test('Silently render nothing outside MessageProvider', () => {
+    const component = renderer.create(<ShowMessage id="y" />)
+    expect(component.toJSON()).toBeNull()
   })
 })
