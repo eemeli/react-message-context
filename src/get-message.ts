@@ -1,5 +1,4 @@
-import { MessageContext } from './message-context'
-import { Id, MessageObject, MessageValue } from './types'
+import { MessageContext, MessageObject, MessageValue } from './message-context'
 
 function getIn(messages: MessageValue | MessageObject, path: string[]) {
   if (messages) {
@@ -12,7 +11,7 @@ function getIn(messages: MessageValue | MessageObject, path: string[]) {
   return messages
 }
 
-export function getPath(id?: Id, pathSep?: string | null) {
+export function getPath(id?: string | string[], pathSep?: string | null) {
   if (!id) return []
   if (Array.isArray(id)) return id
   return pathSep ? id.split(pathSep) : [id]
@@ -30,8 +29,8 @@ export function getPath(id?: Id, pathSep?: string | null) {
  */
 export function getMessage(
   { locales, messages, onError, pathSep }: MessageContext,
-  id?: Id,
-  locale?: Id
+  id?: string | string[],
+  locale?: string | string[]
 ) {
   if (locale != null) locales = Array.isArray(locale) ? locale : [locale]
   const path = getPath(id, pathSep)
@@ -49,7 +48,7 @@ export function getMessage(
  */
 export interface MessageGetterOptions {
   baseParams?: any
-  locale?: Id
+  locale?: string | string[]
 }
 
 /**
@@ -66,12 +65,12 @@ export interface MessageGetterOptions {
  */
 export function getMessageGetter(
   context: MessageContext,
-  rootId?: Id,
+  rootId?: string | string[],
   { baseParams, locale }: MessageGetterOptions = {}
 ) {
   const { pathSep } = context
   const pathPrefix = getPath(rootId, pathSep)
-  return function message(id: Id, params: any) {
+  return function message(id?: string | string[], params?: any) {
     const path = pathPrefix.concat(getPath(id, pathSep))
     const msg = getMessage(context, path, locale)
     if (typeof msg !== 'function') return msg

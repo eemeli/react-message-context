@@ -24,3 +24,26 @@ export declare function Message(props: MessageProps): any;
 
 any
 
+## Example
+
+
+```js
+import React from 'react'
+import { Message, MessageProvider } from 'react-message-context'
+
+const messages = { example: { key: ({ thing }) => `Your ${thing} here` } }
+
+const Example = () => (
+  <span>
+    <Message id="example.key" thing="message" />
+  </span>
+) // 'Your message here'
+
+export const App = () => (
+  <MessageProvider messages={messages}>
+    <Example />
+  </MessageProvider>
+)
+
+```
+

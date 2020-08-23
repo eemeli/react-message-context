@@ -9,5 +9,5 @@ By default, top-level namespaces defined in a child `MessageProvider` overwrite 
 <b>Signature:</b>
 
 ```typescript
-merge?: MergeMessages;
+merge?: MessageContext['merge'];
 ```

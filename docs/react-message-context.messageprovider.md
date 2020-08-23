@@ -22,5 +22,33 @@ export declare function MessageProvider({ children, context: propContext, debug,
 
 <b>Returns:</b>
 
-FunctionComponentElement&lt;ProviderProps&lt;MessageContext&gt;&gt;
+FunctionComponentElement&lt;ProviderProps&lt;[MessageContext](./react-message-context.messagecontext.md)<!-- -->&gt;&gt;
+
+## Example
+
+
+```js
+import React from 'react'
+import { Message, MessageProvider } from 'react-message-context'
+
+const messages = { example: { key: 'Your message here' } }
+const extended = { other: { key: 'Another message' } }
+
+const Example = () => (
+  <span>
+    <Message id={['example', 'key']} />
+    {' | '}
+    <Message id="other/key" />
+  </span>
+) // 'Your message here | Another message'
+
+export const App = () => (
+  <MessageProvider messages={messages} pathSep="/">
+    <MessageProvider messages={extended}>
+      <Example />
+    </MessageProvider>
+  </MessageProvider>
+)
+
+```
 

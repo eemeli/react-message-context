@@ -9,5 +9,5 @@ The key or key path of the message.
 <b>Signature:</b>
 
 ```typescript
-id?: Id;
+id?: string | string[];
 ```

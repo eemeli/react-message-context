@@ -9,16 +9,16 @@ Given a `MessageContext` instance, fetches an entry from the messages object of 
 <b>Signature:</b>
 
 ```typescript
-export declare function getMessage({ locales, messages, onError, pathSep }: MessageContext, id?: Id, locale?: Id): any;
+export declare function getMessage({ locales, messages, onError, pathSep }: MessageContext, id?: string | string[], locale?: string | string[]): any;
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  { locales, messages, onError, pathSep } | MessageContext |  |
-|  id | Id | The key or key path of the message or message object. If empty or <code>[]</code>, matches the root of the messages object |
-|  locale | Id | If set, overrides the current locale precedence as set by parent MessageProviders. |
+|  { locales, messages, onError, pathSep } | [MessageContext](./react-message-context.messagecontext.md) |  |
+|  id | string \| string\[\] | The key or key path of the message or message object. If empty or <code>[]</code>, matches the root of the messages object |
+|  locale | string \| string\[\] | If set, overrides the current locale precedence as set by parent MessageProviders. |
 
 <b>Returns:</b>
 

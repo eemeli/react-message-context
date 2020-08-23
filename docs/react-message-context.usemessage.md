@@ -11,18 +11,53 @@ If the identified message value is a function, the returned value will be the re
 <b>Signature:</b>
 
 ```typescript
-export declare function useMessage(id: Id, params?: any, locale?: Id): any;
+export declare function useMessage(id: string | string[], params?: any, locale?: string | string[]): any;
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  id | Id | The key or key path of the message or message object. If empty or <code>[]</code>, matches the root of the messages object |
+|  id | string \| string\[\] | The key or key path of the message or message object. If empty or <code>[]</code>, matches the root of the messages object |
 |  params | any | Argument to use if the identified message is a function |
-|  locale | Id | If set, overrides the current locale precedence as set by parent MessageProviders. |
+|  locale | string \| string\[\] | If set, overrides the current locale precedence as set by parent MessageProviders. |
 
 <b>Returns:</b>
 
 any
+
+## Example
+
+
+```js
+import React from 'react'
+import { MessageProvider, useLocales, useMessage } from 'react-message-context'
+
+const en = { example: { key: 'Your message here' } }
+const fi = { example: { key: 'Lisää viestisi tähän' } }
+
+// Intl.ListFormat may require a polyfill, such as intl-list-format
+function Example() {
+  const locales = useLocales() // ['fi', 'en']
+  const lfOpt = { style: 'long', type: 'conjunction' }
+  const lf = new Intl.ListFormat(locales, lfOpt)
+  const lcMsg = lf.format(locales.map(lc => JSON.stringify(lc))) // '"fi" ja "en"'
+  const keyMsg = useMessage('example.key') // 'Lisää viestisi tähän'
+  return (
+    <article>
+      <h1>{lcMsg}</h1>
+      <p>{keyMsg}</p>
+    </article>
+  )
+}
+
+export const App = () => (
+  <MessageProvider locale="en" messages={en}>
+    <MessageProvider locale="fi" messages={fi}>
+      <Example />
+    </MessageProvider>
+  </MessageProvider>
+)
+
+```
 

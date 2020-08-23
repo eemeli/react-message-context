@@ -19,10 +19,10 @@ For tools such as Jest that define their own import methods, you may need to add
 
 ## [API Documentation]
 
-- [`getMessage(context, id, [locale])`](https://github.com/eemeli/react-message-context/tree/master/docs/react-message-context.getmessage.md)
-- [`getMessageGetter(context, rootId, [{ baseParams, locale }])`](https://github.com/eemeli/react-message-context/tree/master/docs/react-message-context.getmessagegetter.md)
 - [`<MessageProvider messages [locale] [onError] [pathSep]>`](https://github.com/eemeli/react-message-context/tree/master/docs/react-message-context.messageprovider.md)
 - [`<Message id [locale] [props] [...msgProps]>`](https://github.com/eemeli/react-message-context/tree/master/docs/react-message-context.message.md)
+- [`getMessage(context, id, [locale])`](https://github.com/eemeli/react-message-context/tree/master/docs/react-message-context.getmessage.md)
+- [`getMessageGetter(context, rootId, [{ baseParams, locale }])`](https://github.com/eemeli/react-message-context/tree/master/docs/react-message-context.getmessagegetter.md)
 - [`useLocales()`](https://github.com/eemeli/react-message-context/tree/master/docs/react-message-context.uselocales.md)
 - [`useMessage(id, [params], [locale])`](https://github.com/eemeli/react-message-context/tree/master/docs/react-message-context.usemessage.md)
 - [`useMessageGetter(rootId, [{ baseParams, locale }])`](https://github.com/eemeli/react-message-context/tree/master/docs/react-message-context.usemessagegetter.md)

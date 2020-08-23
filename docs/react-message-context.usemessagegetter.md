@@ -11,17 +11,45 @@ The returned function takes two parameters `(msgId, msgParams)`<!-- -->, which w
 <b>Signature:</b>
 
 ```typescript
-export declare function useMessageGetter(rootId: Id, opt?: MessageGetterOptions): (id: Id, params: any) => any;
+export declare function useMessageGetter(rootId: string | string[], opt?: MessageGetterOptions): (id?: string | string[] | undefined, params?: any) => any;
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  rootId | Id | The key or key path of the message or message object. If empty or <code>[]</code>, matches the root of the messages object |
+|  rootId | string \| string\[\] | The key or key path of the message or message object. If empty or <code>[]</code>, matches the root of the messages object |
 |  opt | MessageGetterOptions |  |
 
 <b>Returns:</b>
 
-(id: Id, params: any) =&gt; any
+(id?: string \| string\[\] \| undefined, params?: any) =&gt; any
+
+## Example
+
+
+```js
+import React from 'react'
+import { MessageProvider, useMessageGetter } from 'react-message-context'
+
+const messages = {
+  example: {
+    funMsg: ({ thing }) => `Your ${thing} here`,
+    thing: 'message'
+  }
+}
+
+function Example() {
+  const getMsg = useMessageGetter('example')
+  const thing = getMsg('thing') // 'message'
+  return getMsg('funMsg', { thing }) // 'Your message here'
+}
+
+export const App = () => (
+  <MessageProvider messages={messages}>
+    <Example />
+  </MessageProvider>
+)
+
+```
 

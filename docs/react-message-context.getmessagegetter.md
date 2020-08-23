@@ -11,18 +11,18 @@ The returned function takes two parameters `(msgId, msgParams)`<!-- -->, which w
 <b>Signature:</b>
 
 ```typescript
-export declare function getMessageGetter(context: MessageContext, rootId?: Id, { baseParams, locale }?: MessageGetterOptions): (id: Id, params: any) => any;
+export declare function getMessageGetter(context: MessageContext, rootId?: string | string[], { baseParams, locale }?: MessageGetterOptions): (id?: string | string[] | undefined, params?: any) => any;
 ```
 
 ## Parameters
 
 |  Parameter | Type | Description |
 |  --- | --- | --- |
-|  context | MessageContext | The <code>MessageContext</code> instance |
-|  rootId | Id | The key or key path of the message or message object. If empty or <code>[]</code>, matches the root of the messages object |
+|  context | [MessageContext](./react-message-context.messagecontext.md) | The <code>MessageContext</code> instance |
+|  rootId | string \| string\[\] | The key or key path of the message or message object. If empty or <code>[]</code>, matches the root of the messages object |
 |  { baseParams, locale } | MessageGetterOptions |  |
 
 <b>Returns:</b>
 
-(id: Id, params: any) =&gt; any
+(id?: string \| string\[\] \| undefined, params?: any) =&gt; any
 

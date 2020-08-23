@@ -5,9 +5,8 @@ import {
   useContext,
   useMemo
 } from 'react'
-import { MessageContext, defaultValue } from './message-context'
+import { MessageContext, MessageObject, defaultValue } from './message-context'
 import { MessageError, ErrorCode, errorMessages } from './message-error'
-import { MessageObject, MergeMessages } from './types'
 
 /** @public */
 export interface MessageProviderProps {
@@ -32,7 +31,7 @@ export interface MessageProviderProps {
    * By default, top-level namespaces defined in a child `MessageProvider` overwrite those defined in a parent.
    * Set this to {@link https://lodash.com/docs/#merge | _.merge} or some other function with the same arguments as {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign | Object.assign} to allow for deep merges.
    */
-  merge?: MergeMessages
+  merge?: MessageContext['merge']
 
   /**
    * What to do on errors; most often called if a message is not found.
@@ -107,7 +106,8 @@ function getMessages(
 ) {
   const res = Object.assign({}, messages)
   const prev = res[locale]
-  res[locale] = prev ? merge({}, prev, lcMessages) : lcMessages
+  res[locale] =
+    prev && typeof prev === 'object' ? merge({}, prev, lcMessages) : lcMessages
   return res
 }
 
@@ -125,6 +125,31 @@ function getPathSep(context: MessageContext, pathSep?: string | null) {
  * The locale preference order is also set similarly, from nearest to furthest.
  *
  * @public
+ *
+ * @example
+ * ```js
+ * import React from 'react'
+ * import { Message, MessageProvider } from 'react-message-context'
+ *
+ * const messages = { example: { key: 'Your message here' } }
+ * const extended = { other: { key: 'Another message' } }
+ *
+ * const Example = () => (
+ *   <span>
+ *     <Message id={['example', 'key']} />
+ *     {' | '}
+ *     <Message id="other/key" />
+ *   </span>
+ * ) // 'Your message here | Another message'
+ *
+ * export const App = () => (
+ *   <MessageProvider messages={messages} pathSep="/">
+ *     <MessageProvider messages={extended}>
+ *       <Example />
+ *     </MessageProvider>
+ *   </MessageProvider>
+ * )
+ * ```
  */
 export function MessageProvider({
   children,

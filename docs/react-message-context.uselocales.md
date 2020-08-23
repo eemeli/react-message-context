@@ -15,3 +15,40 @@ export declare function useLocales(): string[];
 
 string\[\]
 
+## Example 1
+
+
+```js
+import React from 'react'
+import { MessageProvider, useLocales } from 'react-message-context'
+
+<MessageProvider locale="en" messages={{ foo: 'FOO' }}>
+  {() => useLocales().join(',') // 'en'
+  }
+  <MessageProvider locale="fi" messages={{ foo: 'FÖÖ' }}>
+    {() => useLocales().join(',') // 'fi,en'
+    }
+  </MessageProvider>
+</MessageProvider>
+
+```
+
+## Example 2
+
+
+```js
+import React, { Component } from 'react'
+import { MessageContext, MessageProvider, useLocales } from 'react-message-context'
+
+// Within a class component, locales are available via the context object
+class Foo extends Component {
+  static contextType = MessageContext
+  declare context: React.ContextType<typeof MessageContext> // TS
+  render() {
+    const { locales } = this.context
+    return locales.join(',')
+  }
+}
+
+```
+

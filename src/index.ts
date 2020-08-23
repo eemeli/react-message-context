@@ -7,11 +7,11 @@
  * @example
  * ```js
  * import {
- *   getMessage,
- *   getMessageGetter,
  *   MessageContext,
  *   MessageProvider,
  *   Message,
+ *   getMessage,
+ *   getMessageGetter,
  *   useLocales,
  *   useMessage,
  *   useMessageGetter
@@ -22,10 +22,9 @@
  */
 export { getMessage, getMessageGetter } from './get-message'
 export { Message, MessageProps } from './message'
-export { MessageContext } from './message-context'
+export { MessageContext, MessageObject, MessageValue } from './message-context'
 export { MessageError } from './message-error'
 export { MessageProvider, MessageProviderProps } from './message-provider'
-export { Id, MessageObject, MessageValue } from './types'
 export { useLocales } from './use-locales'
 export { useMessage } from './use-message'
 export { useMessageGetter } from './use-message-getter'

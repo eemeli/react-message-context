@@ -11,11 +11,11 @@ An efficient React front-end for message formatting libraries. Designed in parti
 
 ```js
 import {
-  getMessage,
-  getMessageGetter,
   MessageContext,
   MessageProvider,
   Message,
+  getMessage,
+  getMessageGetter,
   useLocales,
   useMessage,
   useMessageGetter
@@ -39,6 +39,13 @@ import {
 
 |  Interface | Description |
 |  --- | --- |
+|  [MessageContext](./react-message-context.messagecontext.md) |  |
 |  [MessageProps](./react-message-context.messageprops.md) |  |
 |  [MessageProviderProps](./react-message-context.messageproviderprops.md) |  |
+
+## Variables
+
+|  Variable | Description |
+|  --- | --- |
+|  [MessageContext](./react-message-context.messagecontext.md) | The context object used internally by the library. Probably only useful with <code>Class.contextType</code> or for building custom hooks. |
 

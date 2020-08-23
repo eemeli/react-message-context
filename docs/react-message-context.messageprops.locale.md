@@ -9,5 +9,5 @@ If set, overrides the `locale` of the nearest MessageProvider.
 <b>Signature:</b>
 
 ```typescript
-locale?: Id;
+locale?: string | string[];
 ```

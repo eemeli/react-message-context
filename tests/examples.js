@@ -204,7 +204,7 @@ describe('API', () => {
       const locales = useLocales()
       const lfOpt = { style: 'long', type: 'conjunction' }
       const lf = new Intl.ListFormat(locales, lfOpt)
-      const lcMsg = lf.format(locales.map(JSON.stringify))
+      const lcMsg = lf.format(locales.map(lc => JSON.stringify(lc)))
       const keyMsg = useMessage('example.key')
       return (
         <article>

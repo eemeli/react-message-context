@@ -6,6 +6,37 @@ import { MessageContext } from './message-context'
  * Undefined locales are identified by an empty string `''`.
  *
  * @public
+ *
+ * @example
+ * ```js
+ * import React from 'react'
+ * import { MessageProvider, useLocales } from 'react-message-context'
+ *
+ * <MessageProvider locale="en" messages={{ foo: 'FOO' }}>
+ *   {() => useLocales().join(',') // 'en'
+ *   }
+ *   <MessageProvider locale="fi" messages={{ foo: 'FÖÖ' }}>
+ *     {() => useLocales().join(',') // 'fi,en'
+ *     }
+ *   </MessageProvider>
+ * </MessageProvider>
+ * ```
+ *
+ * @example
+ * ```js
+ * import React, { Component } from 'react'
+ * import { MessageContext, MessageProvider, useLocales } from 'react-message-context'
+ *
+ * // Within a class component, locales are available via the context object
+ * class Foo extends Component {
+ *   static contextType = MessageContext
+ *   declare context: React.ContextType<typeof MessageContext> // TS
+ *   render() {
+ *     const { locales } = this.context
+ *     return locales.join(',')
+ *   }
+ * }
+ * ```
  */
 export function useLocales() {
   const { locales } = useContext(MessageContext)
