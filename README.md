@@ -1,3 +1,9 @@
+# Renamed as @messageformat/react
+
+For the current version of this library, see: https://github.com/messageformat/messageformat/tree/master/packages/react
+
+---
+
 # react-message-context
 
 An efficient React front-end for message formatting libraries.
